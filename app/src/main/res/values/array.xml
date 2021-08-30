@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="itemList">
+        <item>횃불코스</item>
+        <item>희생코스</item>
+        <item>열정코스</item>
+        <item>영혼코스</item>
+        <item>광장코스</item>
+        <item>나만의 VR코스</item>
+    </string-array>
+</resources>

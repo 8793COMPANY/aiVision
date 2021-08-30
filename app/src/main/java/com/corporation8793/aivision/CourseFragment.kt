@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,6 +22,7 @@ class CourseFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    val items = arrayOf("아이템0","아이템1","아이템2","아이템3","아이템4")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +37,12 @@ class CourseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_course, container, false)
+        val view : View = inflater.inflate(R.layout.fragment_course, container, false)
+
+        val course_list : Spinner = view.findViewById(R.id.course_list);
+        course_list.adapter = ArrayAdapter.createFromResource(view.context,R.array.itemList,android.R.layout.simple_spinner_item)
+
+        return view
     }
 
     companion object {
