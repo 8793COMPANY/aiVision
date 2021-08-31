@@ -10,15 +10,14 @@
         android:id="@+id/fragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintDimensionRatio="720:1118"
         app:layout_constraintWidth_default="percent"
         app:layout_constraintWidth_percent="1"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"></androidx.fragment.app.FragmentContainerView>
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintBottom_toTopOf="@+id/linear"></androidx.fragment.app.FragmentContainerView>
 
 
     <LinearLayout
@@ -29,10 +28,11 @@
         android:elevation="20dp"
         android:weightSum="720"
         android:background="@color/white"
+        app:layout_constraintDimensionRatio="720:112"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment"
+
         >
 
         <View
