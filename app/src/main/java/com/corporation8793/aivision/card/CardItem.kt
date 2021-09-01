@@ -15,9 +15,33 @@ class CardItem (
     private var mCourseStart : String = courseStart
     private var mCourseGoal : String = courseGoal
     private var mCourseDistance : String = courseDistance
-    private var mCourseStar_b : Boolean = courseStar_b
+    private var mCourseStar : Boolean = courseStar_b
+
+    fun getCourseType():Int {
+        return mCourseType
+    }
 
     fun getCourseName():String {
         return mCourseName
+    }
+
+    fun getCourseTime():String {
+        return mCourseTime
+    }
+
+    fun getCourseStart():String {
+        return mCourseStart
+    }
+
+    fun getCourseGoal():String {
+        return mCourseGoal
+    }
+
+    fun getCourseDistance():String {
+        return mCourseDistance
+    }
+
+    fun getCourseStar():Boolean {
+        return mCourseStar
     }
 }

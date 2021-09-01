@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.viewpager.widget.PagerAdapter
+import com.corporation8793.aivision.R
 import com.corporation8793.aivision.card.CardAdapter
 import com.corporation8793.aivision.card.CardAdapter.Companion.MAX_ELEVATION_FACTOR
 import com.corporation8793.aivision.card.CardItem
@@ -32,7 +33,27 @@ class CardPagerAdapter(val context: Context): CardAdapter, PagerAdapter(){
                 as LayoutInflater
 
         binding = CardAdaptorBinding.inflate(inflater)
-        binding.mCourseName.text = mData[position].getCourseName()
+        if (mData[position].getCourseType() == 0) {
+            binding.mCourseName.text = mData[position].getCourseName()
+            binding.mCourseTime.text = mData[position].getCourseTime()
+            binding.mCourseStart.text = mData[position].getCourseStart()
+            binding.mCourseGoal.text = mData[position].getCourseGoal()
+            binding.mCourseDistance.text = mData[position].getCourseDistance()
+            binding.mySpotImg.visibility = View.INVISIBLE
+            binding.mySpotText.visibility = View.INVISIBLE
+        } else {
+            binding.mCourseName.text = mData[position].getCourseName()
+            binding.mCourseTime.visibility = View.INVISIBLE
+            binding.mCourseStart.visibility = View.INVISIBLE
+            binding.mCourseGoal.visibility = View.INVISIBLE
+            binding.mCourseDistance.visibility = View.INVISIBLE
+            binding.startSpotImg.visibility = View.INVISIBLE
+            binding.goalSpotImg.visibility = View.INVISIBLE
+            binding.cardDistance.visibility = View.INVISIBLE
+            binding.courseStartBtn.setBackgroundResource(R.drawable.course_start_btn_2)
+            binding.mySpotImg.visibility = View.VISIBLE
+            binding.mySpotText.visibility = View.VISIBLE
+        }
 
         binding.cardView.maxCardElevation = mBaseElevation * MAX_ELEVATION_FACTOR
 

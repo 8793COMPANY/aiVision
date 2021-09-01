@@ -8,6 +8,6 @@ interface CardAdapter {
     fun getCount(): Int
 
     companion object {
-        const val MAX_ELEVATION_FACTOR = 8
+        const val MAX_ELEVATION_FACTOR = 10
     }
 }
