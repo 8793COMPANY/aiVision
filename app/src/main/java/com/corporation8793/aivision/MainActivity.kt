@@ -1,5 +1,6 @@
 package com.corporation8793.aivision
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button

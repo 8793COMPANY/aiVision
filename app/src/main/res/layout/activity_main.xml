@@ -41,28 +41,28 @@
             android:layout_weight="30"></View>
 
 
-        <androidx.appcompat.widget.AppCompatButton
+        <Button
             android:background="@drawable/home_btn_selector"
             android:id="@+id/home_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="220"></androidx.appcompat.widget.AppCompatButton>
+            android:layout_weight="220"></Button>
 
 
-        <androidx.appcompat.widget.AppCompatButton
+        <Button
             android:background="@drawable/course_btn_selector"
             android:id="@+id/course_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="220"></androidx.appcompat.widget.AppCompatButton>
+            android:layout_weight="220"></Button>
 
 
-        <androidx.appcompat.widget.AppCompatButton
+        <Button
             android:background="@drawable/my_btn_selector"
             android:id="@+id/my_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="220"></androidx.appcompat.widget.AppCompatButton>
+            android:layout_weight="220"></Button>
 
 
         <View
