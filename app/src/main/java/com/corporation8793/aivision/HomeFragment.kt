@@ -22,10 +22,11 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class HomeFragment : Fragment() {
+class HomeFragment(val activity: MainActivity) : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var mActivity = activity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +43,7 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_home, container, false)
         var binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val testCardAdapter = CardPagerAdapter(requireActivity().applicationContext)
+        val testCardAdapter = CardPagerAdapter(requireActivity().applicationContext, mActivity)
 
         // 카드뷰 뷰페이저 데이터 입력
         testCardAdapter.addCardItem( CardItem(0, "횃불코스", "1시간 50분", "전남대학교 정문", "구 전남도청", "6.7km", false))
@@ -118,12 +119,8 @@ class HomeFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance(): Companion {
+            return this
+        }
     }
 }

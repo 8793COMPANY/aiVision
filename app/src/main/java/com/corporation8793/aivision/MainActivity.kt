@@ -3,69 +3,64 @@ package com.corporation8793.aivision
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
+import android.widget.Switch
 import androidx.appcompat.app.ActionBar
+import androidx.fragment.app.Fragment
 
 class MainActivity : AppCompatActivity() {
+    lateinit var home_btn: Button
+    lateinit var course_btn: Button
+    lateinit var my_btn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(
-            R.id.fragment,
-            HomeFragment()
-        )
+        home_btn = findViewById(R.id.home_btn)
+        course_btn = findViewById(R.id.course_btn)
+        my_btn = findViewById(R.id.my_btn)
 
+        replaceFragment(HomeFragment(this), 1)
 
-        transaction.commit()
+        home_btn.isSelected = true
 
-        val home_btn: Button = findViewById(R.id.home_btn);
-        val course_btn: Button = findViewById(R.id.course_btn);
-        val my_btn: Button = findViewById(R.id.my_btn);
-
-        home_btn.setSelected(true);
-
-        home_btn.setOnClickListener{
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(
-                R.id.fragment,
-                HomeFragment()
-            )
-
-            transaction.commit()
-            settingBtn(home_btn, course_btn, my_btn)
+        home_btn.setOnClickListener {
+            replaceFragment(HomeFragment(this), 1)
         }
 
-        course_btn.setOnClickListener{
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(
-                R.id.fragment,
-                CourseFragment()
-            )
-
-            transaction.commit()
-            settingBtn(course_btn,home_btn,my_btn)
+        course_btn.setOnClickListener {
+            replaceFragment(CourseFragment(), 2)
         }
 
-        my_btn.setOnClickListener{
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(
-                R.id.fragment,
-                MyFragment()
-            )
-
-            transaction.commit()
-            settingBtn(my_btn,home_btn,course_btn)
+        my_btn.setOnClickListener {
+            replaceFragment(MyFragment(), 3)
         }
-
-
     }
 
-    fun settingBtn(btn1 : Button, btn2 : Button, btn3 : Button){
-        btn1.setSelected(true);
-        btn2.setSelected(false);
-        btn3.setSelected(false);
+    private fun settingBtn(btn1: Button, btn2: Button, btn3: Button) {
+        btn1.isSelected = true
+        btn2.isSelected = false
+        btn3.isSelected = false
+    }
+
+        private fun settingFlagBtn(flag: Int) {
+            when (flag) {
+                1 -> settingBtn(home_btn, course_btn, my_btn)
+                2 -> settingBtn(course_btn, home_btn, my_btn)
+                3 -> settingBtn(my_btn, home_btn, course_btn)
+            }
+        }
+
+    fun replaceFragment(fragment: Fragment, flag: Int) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(
+            R.id.fragment,
+            fragment
+        )
+
+        transaction.commit()
+        settingFlagBtn(flag)
     }
 }

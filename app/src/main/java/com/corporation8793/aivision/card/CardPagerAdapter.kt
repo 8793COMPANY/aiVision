@@ -4,13 +4,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.viewpager.widget.PagerAdapter
+import com.corporation8793.aivision.CourseFragment
+import com.corporation8793.aivision.MainActivity
+import com.corporation8793.aivision.MyFragment
 import com.corporation8793.aivision.R
 import com.corporation8793.aivision.card.CardAdapter
 import com.corporation8793.aivision.card.CardAdapter.Companion.MAX_ELEVATION_FACTOR
 import com.corporation8793.aivision.card.CardItem
 import com.corporation8793.aivision.databinding.CardAdaptorBinding
 
-class CardPagerAdapter(val context: Context): CardAdapter, PagerAdapter(){
+class CardPagerAdapter(val context: Context, val activity: MainActivity): CardAdapter, PagerAdapter(){
     private var mViews: MutableList<CardView> = mutableListOf()
     private var mData: MutableList<CardItem> = mutableListOf()
     private lateinit var binding : CardAdaptorBinding
@@ -41,6 +44,10 @@ class CardPagerAdapter(val context: Context): CardAdapter, PagerAdapter(){
             binding.mCourseDistance.text = mData[position].getCourseDistance()
             binding.mySpotImg.visibility = View.INVISIBLE
             binding.mySpotText.visibility = View.INVISIBLE
+
+            binding.courseStartBtn.setOnClickListener {
+                activity.replaceFragment(CourseFragment(), 2)
+            }
         } else {
             binding.mCourseName.text = mData[position].getCourseName()
             binding.mCourseTime.visibility = View.INVISIBLE
@@ -53,6 +60,10 @@ class CardPagerAdapter(val context: Context): CardAdapter, PagerAdapter(){
             binding.courseStartBtn.setBackgroundResource(R.drawable.course_start_btn_2)
             binding.mySpotImg.visibility = View.VISIBLE
             binding.mySpotText.visibility = View.VISIBLE
+
+            binding.courseStartBtn.setOnClickListener {
+                activity.replaceFragment(MyFragment(), 3)
+            }
         }
 
         binding.cardView.maxCardElevation = mBaseElevation * MAX_ELEVATION_FACTOR
