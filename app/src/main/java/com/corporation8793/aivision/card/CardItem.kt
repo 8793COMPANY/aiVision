@@ -7,7 +7,7 @@ class CardItem (
     courseStart: String,
     courseGoal: String,
     courseDistance: String,
-    courseStar_b: Boolean) {
+    courseStar: Boolean) {
 
     private var mCourseType : Int = courseType
     private var mCourseName : String = courseName
@@ -15,7 +15,7 @@ class CardItem (
     private var mCourseStart : String = courseStart
     private var mCourseGoal : String = courseGoal
     private var mCourseDistance : String = courseDistance
-    private var mCourseStar : Boolean = courseStar_b
+    private var mCourseStar : Boolean = courseStar
 
     fun getCourseType():Int {
         return mCourseType

@@ -41,10 +41,10 @@
                     android:text="{@CardItem.mCourseName}"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageButton"
+                    app:layout_constraintBottom_toBottomOf="@+id/card_course_star_selector"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/imageButton" />
+                    app:layout_constraintTop_toTopOf="@+id/card_course_star_selector" />
 
                 <TextView
                     android:id="@+id/mCourseTime"
@@ -59,10 +59,10 @@
                     tools:visibility="invisible" />
 
                 <ImageButton
-                    android:id="@+id/imageButton"
+                    android:id="@+id/card_course_star_selector"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/card_course_star_off"
+                    android:background="@drawable/card_course_star_selector"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.95"

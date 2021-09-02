@@ -1,4 +1,4 @@
-package com.corporation8793.aivision
+package com.corporation8793.aivision.fragment
 
 import CardPagerAdapter
 import android.os.Bundle
@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.viewpager.widget.ViewPager
+import com.corporation8793.aivision.MainActivity
 import com.corporation8793.aivision.card.CardAdapter
 import com.corporation8793.aivision.card.CardItem
 import com.corporation8793.aivision.databinding.FragmentHomeBinding

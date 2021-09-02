@@ -2,16 +2,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.viewpager.widget.PagerAdapter
-import com.corporation8793.aivision.CourseFragment
 import com.corporation8793.aivision.MainActivity
-import com.corporation8793.aivision.MyFragment
 import com.corporation8793.aivision.R
 import com.corporation8793.aivision.card.CardAdapter
 import com.corporation8793.aivision.card.CardAdapter.Companion.MAX_ELEVATION_FACTOR
 import com.corporation8793.aivision.card.CardItem
 import com.corporation8793.aivision.databinding.CardAdaptorBinding
+import com.corporation8793.aivision.fragment.CourseFragment
+import com.corporation8793.aivision.fragment.MyFragment
 
 class CardPagerAdapter(val context: Context, val activity: MainActivity): CardAdapter, PagerAdapter(){
     private var mViews: MutableList<CardView> = mutableListOf()
@@ -46,9 +47,16 @@ class CardPagerAdapter(val context: Context, val activity: MainActivity): CardAd
             binding.mySpotText.visibility = View.INVISIBLE
 
             binding.courseStartBtn.setOnClickListener {
+                // TODO : 시작하기 클릭 처리 리스너
                 activity.replaceFragment(CourseFragment(), 2)
             }
+
+            binding.cardCourseStarSelector.setOnClickListener {
+                // TODO : 별 클릭 처리 리스너
+                getCardViewAt(position).isSelected = !getCardViewAt(position).isSelected
+            }
         } else {
+            binding.cardCourseStarSelector.isSelected = mData[position].getCourseStar()
             binding.mCourseName.text = mData[position].getCourseName()
             binding.mCourseTime.visibility = View.INVISIBLE
             binding.mCourseStart.visibility = View.INVISIBLE
@@ -62,7 +70,13 @@ class CardPagerAdapter(val context: Context, val activity: MainActivity): CardAd
             binding.mySpotText.visibility = View.VISIBLE
 
             binding.courseStartBtn.setOnClickListener {
+                // TODO : 시작하기 클릭 처리 리스너
                 activity.replaceFragment(MyFragment(), 3)
+            }
+
+            binding.cardCourseStarSelector.setOnClickListener {
+                // TODO : 별 클릭 처리 리스너
+                getCardViewAt(position).isSelected = !getCardViewAt(position).isSelected
             }
         }
 

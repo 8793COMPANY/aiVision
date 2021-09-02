@@ -8,6 +8,9 @@ import android.widget.Button
 import android.widget.Switch
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
+import com.corporation8793.aivision.fragment.CourseFragment
+import com.corporation8793.aivision.fragment.HomeFragment
+import com.corporation8793.aivision.fragment.MyFragment
 
 class MainActivity : AppCompatActivity() {
     lateinit var home_btn: Button
