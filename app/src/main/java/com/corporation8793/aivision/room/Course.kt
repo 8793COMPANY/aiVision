@@ -6,13 +6,13 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Course(
-    @PrimaryKey val uid : Int,
-    @ColumnInfo(name = "courseType") val courseType : String? = null,
-    @ColumnInfo(name = "courseName") val courseName : String? = null,
-    @ColumnInfo(name = "courseImgName") val courseImgName : String? = null,
-    @ColumnInfo(name = "courseTitle") val courseTitle : String? = null,
-    @ColumnInfo(name = "courseContent") val courseContent : String? = null,
-    @ColumnInfo(name = "courseLatitude") val courseLatitude : String? = null,
-    @ColumnInfo(name = "courseLongitude") val courseLongitude : String? = null,
-    @ColumnInfo(name = "courseURL") val courseURL : String? = null
+    @PrimaryKey(autoGenerate = true) val uid: Int = 0,
+    @ColumnInfo(name = "courseType") val courseType: String,
+    @ColumnInfo(name = "courseName") val courseName: String,
+    @ColumnInfo(name = "courseImgName") val courseImgName: String,
+    @ColumnInfo(name = "courseTitle") val courseTitle: String,
+    @ColumnInfo(name = "courseContent") val courseContent: String,
+    @ColumnInfo(name = "courseLatitude") val courseLatitude: String,
+    @ColumnInfo(name = "courseLongitude") val courseLongitude: String,
+    @ColumnInfo(name = "courseURL") val courseURL: String
 )

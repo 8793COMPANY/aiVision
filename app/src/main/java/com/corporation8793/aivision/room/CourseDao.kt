@@ -1,0 +1,20 @@
+package com.corporation8793.aivision.room
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+
+@Dao
+interface CourseDao {
+    @Query("SELECT * FROM course")
+    fun getAll(): List<Course>
+
+    @Query("SELECT * FROM course WHERE courseType == :courseType")
+    fun getAllByCourseType(courseType: String): List<Course>
+
+    @Query("SELECT * FROM course WHERE courseName == :courseName")
+    fun findByCourseName(courseName: String) : List<Course>
+
+    @Insert
+    fun insertAll(vararg course : List<Course>)
+}

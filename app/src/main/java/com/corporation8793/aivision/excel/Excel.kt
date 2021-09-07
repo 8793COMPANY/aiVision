@@ -13,7 +13,9 @@ class Excel(context: Context, xlsFileNameWithExtension:String) {
     private var colTotal = sheet.columns
     private var rowTotal = sheet.rows
 
-    fun extractTotalSheet(data : Array<String>): Array<String> {
+    fun extractTotalSheet(data : Array<String>): List<Array<String>> {
+        val list : List<Array<String>> = mutableListOf()
+
         for (row in 1..rowTotal) {
             for (col in data.indices) {
                 if (sheet.getCell(col, row).contents != null) {
@@ -24,8 +26,9 @@ class Excel(context: Context, xlsFileNameWithExtension:String) {
                     Log.e("Excel.kt", "extractTotalSheet: NULL in row : $row col : ${sheet.getCell(col, 0).contents}")
                 }
             }
+            list.plus(data)
         }
-        return data
+        return list
     }
 
     fun printTotalSheet() {

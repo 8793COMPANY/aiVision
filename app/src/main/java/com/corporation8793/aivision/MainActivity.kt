@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         course_btn = findViewById(R.id.course_btn)
         my_btn = findViewById(R.id.my_btn)
 
+        val application = Application(applicationContext)
+
         replaceFragment(HomeFragment(this), 1)
 
         home_btn.isSelected = true
