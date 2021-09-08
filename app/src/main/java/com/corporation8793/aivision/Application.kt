@@ -2,12 +2,14 @@ package com.corporation8793.aivision
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
 import com.corporation8793.aivision.excel.Excel
 import com.corporation8793.aivision.room.AppDatabase
 import com.corporation8793.aivision.room.Course
 
 class Application(context: Context) : Application() {
+
     private val excel : Excel = Excel(context, "gj_spot.xls")
 
     private val db = Room.databaseBuilder(
