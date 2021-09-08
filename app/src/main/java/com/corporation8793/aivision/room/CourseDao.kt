@@ -3,6 +3,7 @@ package com.corporation8793.aivision.room
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface CourseDao {
@@ -16,5 +17,8 @@ interface CourseDao {
     fun findByCourseName(courseName: String) : List<Course>
 
     @Insert
-    fun insertAll(vararg course : List<Course>)
+    fun insertAll(vararg course: Course)
+
+    @Update
+    fun update(vararg course: Course)
 }

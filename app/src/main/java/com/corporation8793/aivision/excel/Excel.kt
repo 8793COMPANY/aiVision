@@ -14,9 +14,9 @@ class Excel(context: Context, xlsFileNameWithExtension:String) {
     private var rowTotal = sheet.rows
 
     fun extractTotalSheet(data : Array<String>): List<Array<String>> {
-        val list : List<Array<String>> = mutableListOf()
+        var list : List<Array<String>> = emptyList()
 
-        for (row in 1..rowTotal) {
+        for (row in 1 until rowTotal) {
             for (col in data.indices) {
                 if (sheet.getCell(col, row).contents != null) {
                     data[col] = sheet.getCell(col, row).contents
@@ -26,8 +26,12 @@ class Excel(context: Context, xlsFileNameWithExtension:String) {
                     Log.e("Excel.kt", "extractTotalSheet: NULL in row : $row col : ${sheet.getCell(col, 0).contents}")
                 }
             }
-            list.plus(data)
+            // TODO : 데이터 추가가 안됨. 확인 필요
+//            Log.i("Excel.kt", "extractTotalSheet!@#$: ${data[1]}")
+//            list.toMutableList().add(data)
+//            Log.i("Excel.kt", "extractTotalSheet!@#$: ${list[0]}")
         }
+        Log.i("Excel.kt", "extractTotalSheet: $list")
         return list
     }
 

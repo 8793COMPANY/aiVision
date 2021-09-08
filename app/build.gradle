@@ -59,7 +59,8 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     // To use Kotlin annotation processing tool (kapt)
-    //kapt("androidx.room:room-compiler:$room_version")
+    apply plugin: 'kotlin-kapt'
+    kapt("androidx.room:room-compiler:$room_version")
     // To use Kotlin Symbolic Processing (KSP)
     //ksp("androidx.room:room-compiler:$room_version")
 

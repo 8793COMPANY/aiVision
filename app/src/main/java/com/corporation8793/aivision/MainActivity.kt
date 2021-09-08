@@ -25,7 +25,8 @@ class MainActivity : AppCompatActivity() {
         course_btn = findViewById(R.id.course_btn)
         my_btn = findViewById(R.id.my_btn)
 
-        val application = Application(applicationContext)
+        val application = Application().getInstance(applicationContext)
+        application.xlsToRoom()
 
         replaceFragment(HomeFragment(this), 1)
 
