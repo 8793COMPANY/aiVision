@@ -14,24 +14,26 @@ class Excel(context: Context, xlsFileNameWithExtension:String) {
     private var rowTotal = sheet.rows
 
     fun extractTotalSheet(data : Array<String>): List<Array<String>> {
-        var list : List<Array<String>> = emptyList()
+        var list : MutableList<Array<String>> = mutableListOf()
 
         for (row in 1 until rowTotal) {
+            var insertData : Array<String> = data.copyOf()
+
             for (col in data.indices) {
                 if (sheet.getCell(col, row).contents != null) {
                     data[col] = sheet.getCell(col, row).contents
+                    insertData[col] = data[col]
                     Log.i("Excel.kt", "extractTotalSheet: DATA(${data[col]}) in row : $row col : ${sheet.getCell(col, 0).contents}")
                 } else {
                     data[col] = "NULL"
+                    insertData[col] = data[col]
                     Log.e("Excel.kt", "extractTotalSheet: NULL in row : $row col : ${sheet.getCell(col, 0).contents}")
                 }
             }
-            // TODO : 데이터 추가가 안됨. 확인 필요
-//            Log.i("Excel.kt", "extractTotalSheet!@#$: ${data[1]}")
-//            list.toMutableList().add(data)
-//            Log.i("Excel.kt", "extractTotalSheet!@#$: ${list[0]}")
+
+            list.add(insertData)
         }
-        Log.i("Excel.kt", "extractTotalSheet: $list")
+
         return list
     }
 

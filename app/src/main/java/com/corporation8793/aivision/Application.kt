@@ -27,41 +27,38 @@ class Application : Application() {
     fun xlsToRoom() {
         val xlsData : List<Array<String>> = excel.extractTotalSheet(arrayOf("A", "B", "C", "D", "E", "F", "G", "H"))
 
-        Log.i("Application.kt", "$xlsData")
-
-
-        val roomData : List<Course> = mutableListOf()
-        for (xd in xlsData) {
-            roomData.plus(Course(
-                courseType = xd[0],
-                courseName = xd[1],
-                courseImgName = xd[2],
-                courseTitle = xd[3],
-                courseContent = xd[4],
-                courseLatitude = xd[5],
-                courseLongitude = xd[6],
-                courseURL = xd[7]
+        val roomData : MutableList<Course> = mutableListOf()
+        for (row in xlsData.indices) {
+            roomData.add(Course(
+                courseType = xlsData[row][0],
+                courseName = xlsData[row][1],
+                courseImgName = xlsData[row][2],
+                courseTitle = xlsData[row][3],
+                courseContent = xlsData[row][4],
+                courseLatitude = xlsData[row][5],
+                courseLongitude = xlsData[row][6],
+                courseURL = xlsData[row][7]
             ))
-            Log.i("Application.kt", "")
         }
 
         Thread {
             for (i in roomData.indices) {
-//                if (db.courseDao().findByCourseName(rd.courseName) != null) {
-//                    db.courseDao().update(rd)
-//                } else {
-//                    db.courseDao().insertAll(rd)
-//                }
-                db.courseDao().insertAll(roomData[i])
-                Log.i("Application", "${roomData[i]}")
+                if (db.courseDao().findByCourseName(roomData[i].courseName) != null) {
+                    Log.i("Application", "DB Data Already Exist !! -> ${roomData[i].courseName}")
+                } else {
+                    db.courseDao().insertAll(roomData[i])
+                    Log.i("Application", "DB Data Successful Inserted !! -> ${roomData[i]}")
+                }
             }
 
-            Log.i("Application", "=== xlsToRoom - DB All Out Start ===")
+            Log.i("Application", "<<=== xlsToRoom - DB All Out Start ===>>")
+
             val dataLog = db.courseDao().getAll()
             for (DL in dataLog) {
                 Log.i("Application", "$DL")
             }
-            Log.i("Application", "=== xlsToRoom - DB All Out End ===")
+
+            Log.i("Application", "<<=== xlsToRoom - DB All Out End ===>>")
         }.start()
     }
 }
