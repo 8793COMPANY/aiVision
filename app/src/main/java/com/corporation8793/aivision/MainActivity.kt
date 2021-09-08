@@ -3,6 +3,7 @@ package com.corporation8793.aivision
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Switch
@@ -27,6 +28,12 @@ class MainActivity : AppCompatActivity() {
 
         val application = Application().getInstance(applicationContext)
         application.xlsToRoom()
+        val dataLog = application.getAllByCourseType("횃불코스")
+        Log.i("MainActivity", "$dataLog")
+        for (dl in dataLog) {
+            Log.i("MainActivity", "$dl")
+        }
+        Log.i("MainActivity", "DONE")
 
         replaceFragment(HomeFragment(this), 1)
 
@@ -37,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         course_btn.setOnClickListener {
-            replaceFragment(CourseFragment(), 2)
+            replaceFragment(CourseFragment(this), 2)
         }
 
         my_btn.setOnClickListener {

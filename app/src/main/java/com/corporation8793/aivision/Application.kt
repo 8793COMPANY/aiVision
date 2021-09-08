@@ -61,4 +61,34 @@ class Application : Application() {
             Log.i("Application", "<<=== xlsToRoom - DB All Out End ===>>")
         }.start()
     }
+
+    fun getAllByCourseType(type : String) : List<Course> {
+        var dataLog : List<Course> = mutableListOf()
+
+        Thread {
+            dataLog = db.courseDao().getAllByCourseType(type)
+            Log.i("Application", "<<=== getAllByCourseType ===>>")
+            for (DL in dataLog) {
+                Log.i("Application", "$DL")
+            }
+            Log.i("Application", "<<=== getAllByCourseType ===>>")
+        }.start()
+
+        return dataLog
+    }
+
+    fun findByCourseName(name : String) : List<Course> {
+        var dataLog : List<Course> = mutableListOf()
+
+        Thread {
+            dataLog = db.courseDao().findByCourseName(name)
+            Log.i("Application", "<<=== findByCourseName ===>>")
+            for (DL in dataLog) {
+                Log.i("Application", "$DL")
+            }
+            Log.i("Application", "<<=== findByCourseName ===>>")
+        }.start()
+
+        return dataLog
+    }
 }
