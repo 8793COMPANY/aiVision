@@ -1,11 +1,15 @@
 package com.corporation8793.aivision.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.corporation8793.aivision.R
+import com.google.android.material.tabs.TabLayout
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +40,39 @@ class MyFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var view : View = inflater.inflate(R.layout.fragment_my, container, false)
+        var tabs : TabLayout = view.findViewById(R.id.course_tab)
+        var linear : LinearLayout = view.findViewById(R.id.edit_linear)
+
+        tabs.addTab(tabs.newTab().setText("횃불코스"))
+        tabs.addTab(tabs.newTab().setText("희생코스"))
+        tabs.addTab(tabs.newTab().setText("광장코스"))
+        tabs.addTab(tabs.newTab().setText("열정코스"))
+        tabs.addTab(tabs.newTab().setText("영혼코스"))
+        tabs.addTab(tabs.newTab().setText("내맘코스"))
+
+        tabs.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when(tab!!.position){
+//                    0-> text.setText("0")
+//                    1-> text.setText("1")
+//                    2-> text.setText("2")
+//                    3-> text.setText("3")
+//                    4-> text.setText("4")
+//                    5->text.setText("5")
+
+                }
+            }
+
+        })
+
         return view
     }
 

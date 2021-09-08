@@ -8,17 +8,29 @@ import com.corporation8793.aivision.excel.Excel
 import com.corporation8793.aivision.room.AppDatabase
 import com.corporation8793.aivision.room.Course
 
-class Application(context: Context) : Application() {
 
-    private val excel : Excel = Excel(context, "gj_spot.xls")
+class Application : Application() {
+    lateinit var context: Context
+    private lateinit var excel: Excel
+    private lateinit var db : AppDatabase
 
-    private val db = Room.databaseBuilder(
-        applicationContext,
-        AppDatabase::class.java, "CourseDB"
-    ).build()
+    fun getInstance(c: Context) : com.corporation8793.aivision.Application {
+        context = c
+        excel = Excel(c, "gj_spot.xls")
+        db = Room.databaseBuilder(
+            c,
+            AppDatabase::class.java, "CourseDB"
+        ).build()
+
+        return this
+    }
 
     fun xlsToRoom() {
         val xlsData : List<Array<String>> = excel.extractTotalSheet(arrayOf("A", "B", "C", "D", "E", "F", "G", "H"))
+
+        Log.i("Application.kt", "$xlsData")
+
+
         val roomData : List<Course> = mutableListOf()
         for (xd in xlsData) {
             roomData.plus(Course(
@@ -31,7 +43,26 @@ class Application(context: Context) : Application() {
                 courseLongitude = xd[6],
                 courseURL = xd[7]
             ))
+            Log.i("Application.kt", "")
         }
-        db.courseDao().insertAll(roomData)
+
+        Thread {
+            for (i in roomData.indices) {
+//                if (db.courseDao().findByCourseName(rd.courseName) != null) {
+//                    db.courseDao().update(rd)
+//                } else {
+//                    db.courseDao().insertAll(rd)
+//                }
+                db.courseDao().insertAll(roomData[i])
+                Log.i("Application", "${roomData[i]}")
+            }
+
+            Log.i("Application", "=== xlsToRoom - DB All Out Start ===")
+            val dataLog = db.courseDao().getAll()
+            for (DL in dataLog) {
+                Log.i("Application", "$DL")
+            }
+            Log.i("Application", "=== xlsToRoom - DB All Out End ===")
+        }.start()
     }
 }
