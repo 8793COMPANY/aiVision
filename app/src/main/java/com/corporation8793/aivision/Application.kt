@@ -8,6 +8,7 @@ import com.corporation8793.aivision.excel.Excel
 import com.corporation8793.aivision.room.AppDatabase
 import com.corporation8793.aivision.room.Course
 
+
 class Application : Application() {
     lateinit var context: Context
     private lateinit var excel: Excel
