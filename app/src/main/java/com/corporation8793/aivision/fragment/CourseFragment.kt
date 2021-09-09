@@ -103,8 +103,14 @@ class CourseFragment(activity: MainActivity) : Fragment() {
                 id: Long
             ) {
                 when (position) {
-                    0, 1, 2, 3, 4 -> spinnerSelected(application, course_list.selectedItem.toString())
-                    5 -> mActivity.replaceFragment(MyFragment(), 3)
+
+                    0 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
+                    1 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
+                    2 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
+                    3 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
+                    4 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
+                    5 -> mActivity.replaceFragment(MyFragment(mActivity), 3)
+
                 }
             }
 

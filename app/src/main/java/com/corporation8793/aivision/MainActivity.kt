@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         my_btn.setOnClickListener {
-            replaceFragment(MyFragment(), 3)
+            replaceFragment(MyFragment(this), 3)
         }
     }
 
