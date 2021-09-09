@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:name=".Application"
         android:theme="@style/Theme.AiVision">
+
+        <!-- meta for nmap -->
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="3l4bxymvbl" />
+
         <activity android:name=".QuizActivity"></activity>
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".SplashActivity">

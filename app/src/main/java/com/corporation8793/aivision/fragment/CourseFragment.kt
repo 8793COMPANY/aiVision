@@ -12,6 +12,14 @@ import com.corporation8793.aivision.Application
 import com.corporation8793.aivision.MainActivity
 import com.corporation8793.aivision.R
 import com.corporation8793.aivision.room.Course
+import com.naver.maps.geometry.Coord
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.MapFragment
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.NaverMap.LAYER_GROUP_TRANSIT
+import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.overlay.PathOverlay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,6 +39,8 @@ class CourseFragment(activity: MainActivity) : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var nMap : NaverMap? = null
+    var result: List<Course> = listOf()
     val mActivity = activity
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,8 +58,36 @@ class CourseFragment(activity: MainActivity) : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_course, container, false)
         val course_list : Spinner = view.findViewById(R.id.course_list)
-        val myMap : TextView = view.findViewById(R.id.map)
         val application = Application().getInstance(mActivity.applicationContext)
+
+        val fm = childFragmentManager
+        val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
+            ?: MapFragment.newInstance().also {
+                fm.beginTransaction().add(R.id.map, it).commit()
+            }
+
+        mapFragment.getMapAsync {
+            // TODO : 코스 표시후 경로표시
+            // TODO : 스타트 위치로 카메라 이동하기
+            nMap = it
+            it.mapType = NaverMap.MapType.Basic
+            it.setLayerGroupEnabled(LAYER_GROUP_TRANSIT, true)
+
+            val cameraUpdate = CameraUpdate.scrollTo(
+                LatLng(result[0].courseLatitude.toDouble(),
+                    result[0].courseLongitude.toDouble()))
+            it.moveCamera(cameraUpdate)
+
+            val path = PathOverlay()
+            var coords : MutableList<LatLng> = mutableListOf()
+            for (rs in result) {
+                coords.add(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble()))
+            }
+            path.coords = coords
+            path.map = nMap
+
+            Toast.makeText(context,"nMap : Load Complete", Toast.LENGTH_SHORT).show()
+        }
 
         course_list.adapter = ArrayAdapter.createFromResource(
             view.context,
@@ -78,13 +116,11 @@ class CourseFragment(activity: MainActivity) : Fragment() {
     }
 
     fun spinnerSelected(application : Application, name : String) {
-        var result: List<Course>
-
         CoroutineScope(Dispatchers.IO).launch {
             result = application.db.courseDao().getAllByCourseType(name)
 
             for (DL in result.indices) {
-                Log.i("CourseFragment", "${result[DL]}")
+                Log.i("spinnerSelected", "${result[DL]}")
             }
         }
     }

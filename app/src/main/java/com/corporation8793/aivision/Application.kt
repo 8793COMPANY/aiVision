@@ -68,27 +68,5 @@ class Application : Application() {
 
             Log.i("Application", "<<=== xlsToRoom - DB All Out End ===>>")
         }
-/*
-        Thread {
-            for (i in roomData.indices) {
-                if (db.courseDao().findByCourseName(roomData[i].courseName) != null) {
-                    Log.i("Application", "DB Data Already Exist !! -> ${roomData[i].courseName}")
-                } else {
-                    db.courseDao().insertAll(roomData[i])
-                    Log.i("Application", "DB Data Successful Inserted !! -> ${roomData[i]}")
-                }
-            }
-
-            Log.i("Application", "<<=== xlsToRoom - DB All Out Start ===>>")
-
-            val dataLog = db.courseDao().getAll()
-            for (DL in dataLog) {
-                Log.i("Application", "$DL")
-            }
-
-            Log.i("Application", "<<=== xlsToRoom - DB All Out End ===>>")
-        }.start()
-
- */
     }
 }

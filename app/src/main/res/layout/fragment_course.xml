@@ -54,12 +54,10 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <TextView
+    <fragment
         android:id="@+id/map"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="여기에 지도 그리면 돼요\nspinner는 아직 커스텀 하지 않았습니다"
         app:layout_constraintDimensionRatio="720:726"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -67,8 +65,7 @@
         app:layout_constraintWidth_percent="1"
         app:layout_constraintTop_toBottomOf="@+id/actionbar"
         app:layout_constraintVertical_bias="0.0"
-        />
-
+        android:name="com.naver.maps.map.MapFragment" />
 
     <LinearLayout
         android:layout_width="0dp"

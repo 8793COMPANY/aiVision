@@ -18,12 +18,12 @@
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/activity_quiz.xml" value="0.34010416666666665" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/button_ripple.xml" value="0.34010416666666665" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/card_adaptor.xml" value="0.67" />
-        <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/fragment_course.xml" value="0.16473259334006055" />
+        <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/fragment_course.xml" value="0.25" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/fragment_home.xml" value="0.33" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
