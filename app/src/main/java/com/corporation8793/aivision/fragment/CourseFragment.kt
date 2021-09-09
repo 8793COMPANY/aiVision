@@ -11,6 +11,10 @@ import android.widget.*
 import com.corporation8793.aivision.Application
 import com.corporation8793.aivision.MainActivity
 import com.corporation8793.aivision.R
+import com.corporation8793.aivision.room.Course
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.lang.StringBuilder
 
 // TODO: Rename parameter arguments, choose names that match
@@ -47,8 +51,6 @@ class CourseFragment(activity: MainActivity) : Fragment() {
         val myMap : TextView = view.findViewById(R.id.map)
         val application = Application().getInstance(mActivity.applicationContext)
 
-        val result = application.getAllByCourseType("횃불코스")
-
         course_list.adapter = ArrayAdapter.createFromResource(
             view.context,
             R.array.itemList,
@@ -63,11 +65,7 @@ class CourseFragment(activity: MainActivity) : Fragment() {
                 id: Long
             ) {
                 when (position) {
-                    0 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
-                    1 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
-                    2 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
-                    3 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
-                    4 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
+                    0, 1, 2, 3, 4 -> spinnerSelected(application, course_list.selectedItem.toString())
                     5 -> mActivity.replaceFragment(MyFragment(), 3)
                 }
             }
@@ -77,5 +75,17 @@ class CourseFragment(activity: MainActivity) : Fragment() {
         }
 
         return view
+    }
+
+    fun spinnerSelected(application : Application, name : String) {
+        var result: List<Course>
+
+        CoroutineScope(Dispatchers.IO).launch {
+            result = application.db.courseDao().getAllByCourseType(name)
+
+            for (DL in result.indices) {
+                Log.i("CourseFragment", "${result[DL]}")
+            }
+        }
     }
 }

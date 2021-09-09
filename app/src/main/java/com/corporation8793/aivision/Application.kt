@@ -7,12 +7,19 @@ import androidx.room.Room
 import com.corporation8793.aivision.excel.Excel
 import com.corporation8793.aivision.room.AppDatabase
 import com.corporation8793.aivision.room.Course
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
+import kotlin.concurrent.thread
 
 
 class Application : Application() {
     lateinit var context: Context
-    private lateinit var excel: Excel
-    private lateinit var db : AppDatabase
+    lateinit var excel: Excel
+    lateinit var db : AppDatabase
 
     fun getInstance(c: Context) : com.corporation8793.aivision.Application {
         context = c
@@ -42,6 +49,26 @@ class Application : Application() {
             ))
         }
 
+        CoroutineScope(Dispatchers.IO).launch {
+            for (i in roomData.indices) {
+                if (db.courseDao().findByCourseName(roomData[i].courseName) != null) {
+                    Log.i("Application", "DB Data Already Exist !! -> ${roomData[i].courseName}")
+                } else {
+                    db.courseDao().insertAll(roomData[i])
+                    Log.i("Application", "DB Data Successful Inserted !! -> ${roomData[i]}")
+                }
+            }
+
+            Log.i("Application", "<<=== xlsToRoom - DB All Out Start ===>>")
+
+            val dataLog = db.courseDao().getAll()
+            for (DL in dataLog) {
+                Log.i("Application", "$DL")
+            }
+
+            Log.i("Application", "<<=== xlsToRoom - DB All Out End ===>>")
+        }
+/*
         Thread {
             for (i in roomData.indices) {
                 if (db.courseDao().findByCourseName(roomData[i].courseName) != null) {
@@ -61,35 +88,7 @@ class Application : Application() {
 
             Log.i("Application", "<<=== xlsToRoom - DB All Out End ===>>")
         }.start()
-    }
 
-    fun getAllByCourseType(type : String) : List<Course> {
-        var dataLog : List<Course> = mutableListOf()
-
-        Thread {
-            dataLog = db.courseDao().getAllByCourseType(type)
-            Log.i("Application", "<<=== getAllByCourseType ===>>")
-            for (DL in dataLog) {
-                Log.i("Application", "$DL")
-            }
-            Log.i("Application", "<<=== getAllByCourseType ===>>")
-        }.start()
-
-        return dataLog
-    }
-
-    fun findByCourseName(name : String) : List<Course> {
-        var dataLog : List<Course> = mutableListOf()
-
-        Thread {
-            dataLog = db.courseDao().findByCourseName(name)
-            Log.i("Application", "<<=== findByCourseName ===>>")
-            for (DL in dataLog) {
-                Log.i("Application", "$DL")
-            }
-            Log.i("Application", "<<=== findByCourseName ===>>")
-        }.start()
-
-        return dataLog
+ */
     }
 }
