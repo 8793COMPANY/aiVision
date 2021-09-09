@@ -1,14 +1,21 @@
 package com.corporation8793.aivision.fragment
 
-import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.Button
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import com.corporation8793.aivision.Application
+import com.corporation8793.aivision.MainActivity
 import com.corporation8793.aivision.R
+import com.corporation8793.aivision.recyclerview.CourseAdapter
+import com.corporation8793.aivision.recyclerview.RecyclerViewDecoration
+import com.corporation8793.aivision.room.AppDatabase
+import com.corporation8793.aivision.room.Course
 import com.google.android.material.tabs.TabLayout
 
 // TODO: Rename parameter arguments, choose names that match
@@ -21,10 +28,19 @@ private const val ARG_PARAM2 = "param2"
  * Use the [MyFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MyFragment : Fragment() {
+class MyFragment(activity: MainActivity)  : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    lateinit var courseAdapter: CourseAdapter
+    lateinit var allCourseAdapter: CourseAdapter
+
+    val datas = mutableListOf<Course>()
+    val all_datas = mutableListOf<Course>()
+    var check : Boolean = false
+    val mActivity = activity
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +57,21 @@ class MyFragment : Fragment() {
         // Inflate the layout for this fragment
         var view : View = inflater.inflate(R.layout.fragment_my, container, false)
         var tabs : TabLayout = view.findViewById(R.id.course_tab)
-        var linear : LinearLayout = view.findViewById(R.id.edit_linear)
+//        var linear : LinearLayout = view.findViewById(R.id.edit_linear)
+        var recyclerView : RecyclerView = view.findViewById(R.id.recyclerview)
+        var all_course : RecyclerView = view.findViewById(R.id.all_course_list)
+
+        var edit_btn : Button = view.findViewById(R.id.edit_btn)
+        var save_btn : Button = view.findViewById(R.id.save_btn)
+
+        val application = Application().getInstance(mActivity.applicationContext)
+
+
+        //room data 뿌리기
+//        val db = Application().getInstance(mActivity.applicationContext)
+
+
+        //room data 뿌리기
 
         tabs.addTab(tabs.newTab().setText("횃불코스"))
         tabs.addTab(tabs.newTab().setText("희생코스"))
@@ -50,7 +80,46 @@ class MyFragment : Fragment() {
         tabs.addTab(tabs.newTab().setText("영혼코스"))
         tabs.addTab(tabs.newTab().setText("내맘코스"))
 
-        tabs.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+
+        courseAdapter = CourseAdapter()
+        allCourseAdapter = CourseAdapter()
+
+        recyclerView.adapter = courseAdapter
+        recyclerView.addItemDecoration(RecyclerViewDecoration(30))
+
+        all_course.adapter = allCourseAdapter
+        all_course.addItemDecoration(RecyclerViewDecoration(30))
+
+        datas.apply {
+//            add(CourseData(img = R.color.black, item_name = "mary"))
+//            add(CourseData(img = R.color.purple_200, item_name = "jenny"))
+//            add(CourseData(img = R.color.teal_200, item_name = "jhon"))
+//            add(CourseData(img = R.color.design_default_color_error, item_name = "ruby"))
+//            add(CourseData(img = R.color.design_default_color_surface, item_name = "yuna"))
+
+            courseAdapter.datas = datas
+            courseAdapter.notifyDataSetChanged()
+
+        }
+
+        all_datas.apply {
+//                add(CourseData(img = R.drawable.pic_3, item_name = "hi"))
+//                add(CourseData(img = R.color.purple_200, item_name = "jenny"))
+//                add(CourseData(img = R.color.teal_200, item_name = "jhon"))
+//                add(CourseData(img = R.color.design_default_color_error, item_name = "ruby"))
+//                add(CourseData(img = R.color.design_default_color_surface, item_name = "yuna"))
+//            var list : List<Course> = application.findAllData()
+//            Log.e("size check",application.dataSize().toString());
+//                for(i in 0..application.dataSize()) {
+//                    Log.e("in", i.toString())
+//                    add(application.getPositionData(i))
+//                }
+                allCourseAdapter.datas = all_datas
+                allCourseAdapter.notifyDataSetChanged()
+
+            }
+
+        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
 
             }
@@ -60,7 +129,8 @@ class MyFragment : Fragment() {
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                when(tab!!.position){
+                when (tab!!.position) {
+                    0 -> courseAdapter.notifyDataSetChanged()
 //                    0-> text.setText("0")
 //                    1-> text.setText("1")
 //                    2-> text.setText("2")
@@ -73,26 +143,27 @@ class MyFragment : Fragment() {
 
         })
 
+
+
+        edit_btn.setOnClickListener{
+            if (check){
+                edit_btn.setBackgroundResource(R.drawable.my_edit_btn)
+                check = false
+                courseAdapter.editMode()
+            }else{
+                edit_btn.setBackgroundResource(R.drawable.my_finish_btn)
+                check = true
+                courseAdapter.editMode()
+            }
+        }
+
+        save_btn.setOnClickListener{
+            Toast.makeText(context, "저장하였습니다.", Toast.LENGTH_SHORT).show()
+        }
+
+
         return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MyFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MyFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
 }

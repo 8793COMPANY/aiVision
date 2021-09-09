@@ -68,7 +68,7 @@ class CourseFragment(activity: MainActivity) : Fragment() {
                     2 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
                     3 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
                     4 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
-                    5 -> mActivity.replaceFragment(MyFragment(), 3)
+                    5 -> mActivity.replaceFragment(MyFragment(mActivity), 3)
                 }
             }
 

@@ -92,4 +92,25 @@ class Application : Application() {
 
         return dataLog
     }
+
+
+    fun dataSize() : Int {
+        var dataLog : Int = 0
+        Thread {
+            dataLog = db.courseDao().getAll().size
+
+        }.start()
+        return dataLog
+    }
+
+    fun getPositionData(pos : Int) : Course{
+        lateinit var dataLog : Course
+
+        Thread {
+            dataLog = db.courseDao().getAll().get(pos)
+
+        }.start()
+
+        return dataLog;
+    }
 }
