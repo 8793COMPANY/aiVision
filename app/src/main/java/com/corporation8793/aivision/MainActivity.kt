@@ -12,6 +12,12 @@ import androidx.fragment.app.Fragment
 import com.corporation8793.aivision.fragment.CourseFragment
 import com.corporation8793.aivision.fragment.HomeFragment
 import com.corporation8793.aivision.fragment.MyFragment
+import com.corporation8793.aivision.room.Course
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.concurrent.Future
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     lateinit var home_btn: Button
@@ -28,12 +34,6 @@ class MainActivity : AppCompatActivity() {
 
         val application = Application().getInstance(applicationContext)
         application.xlsToRoom()
-        val dataLog = application.getAllByCourseType("횃불코스")
-        Log.i("MainActivity", "$dataLog")
-        for (dl in dataLog) {
-            Log.i("MainActivity", "$dl")
-        }
-        Log.i("MainActivity", "DONE")
 
         replaceFragment(HomeFragment(this), 1)
 
