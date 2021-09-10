@@ -103,19 +103,23 @@ class MyFragment(activity: MainActivity)  : Fragment() {
         }
 
         all_datas.apply {
-//                add(CourseData(img = R.drawable.pic_3, item_name = "hi"))
-//                add(CourseData(img = R.color.purple_200, item_name = "jenny"))
-//                add(CourseData(img = R.color.teal_200, item_name = "jhon"))
-//                add(CourseData(img = R.color.design_default_color_error, item_name = "ruby"))
-//                add(CourseData(img = R.color.design_default_color_surface, item_name = "yuna"))
-//            var list : List<Course> = application.findAllData()
-//            Log.e("size check",application.dataSize().toString());
-//                for(i in 0..application.dataSize()) {
-//                    Log.e("in", i.toString())
-//                    add(application.getPositionData(i))
-//                }
-                allCourseAdapter.datas = all_datas
-                allCourseAdapter.notifyDataSetChanged()
+
+            //이 부분 확인해주세요
+            Thread {
+                Log.e("size check", application.db.courseDao().getAll().size.toString());
+                if (application.db.courseDao().getAll().size != 0) {
+                    for (i in 0..application.db.courseDao().getAll().size) {
+                        Log.e("in", i.toString())
+                        add(application.db.courseDao().findPosData(i))
+                    }
+
+                    allCourseAdapter.datas = all_datas
+                    allCourseAdapter.notifyDataSetChanged()
+
+                }
+
+                }.start()
+
 
             }
 

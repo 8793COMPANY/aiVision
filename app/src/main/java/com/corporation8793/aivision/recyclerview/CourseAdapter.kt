@@ -41,6 +41,7 @@ class CourseAdapter  : RecyclerView.Adapter<CourseAdapter.ViewHolder>(){
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(datas[position])
+        Log.e("datas",datas[position].courseName)
 
 //        val layoutParams = holder.itemView.layoutParams
 //        layoutParams.width = 170
