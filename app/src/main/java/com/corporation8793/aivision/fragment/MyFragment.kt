@@ -18,6 +18,7 @@ import com.corporation8793.aivision.room.AppDatabase
 import com.corporation8793.aivision.room.Course
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

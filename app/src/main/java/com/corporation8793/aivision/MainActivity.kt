@@ -16,6 +16,7 @@ import com.corporation8793.aivision.room.Course
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.Future
 import kotlin.concurrent.thread
 
