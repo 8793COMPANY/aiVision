@@ -19,6 +19,7 @@ import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.NaverMap.LAYER_GROUP_TRANSIT
 import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.PathOverlay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -80,9 +81,16 @@ class CourseFragment(activity: MainActivity) : Fragment() {
 
             val path = PathOverlay()
             var coords : MutableList<LatLng> = mutableListOf()
+            val markers : MutableList<Marker> = mutableListOf()
             for (rs in result) {
                 coords.add(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble()))
+                markers.add(Marker(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble())))
             }
+
+            for (mk in markers) {
+                mk.map = nMap
+            }
+
             path.coords = coords
             path.map = nMap
 
@@ -103,14 +111,8 @@ class CourseFragment(activity: MainActivity) : Fragment() {
                 id: Long
             ) {
                 when (position) {
-
-                    0 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
-                    1 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
-                    2 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
-                    3 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
-                    4 -> Toast.makeText(context, "${course_list.selectedItem}", Toast.LENGTH_SHORT).show()
+                    0, 1, 2, 3, 4 -> spinnerSelected(application, course_list.selectedItem.toString())
                     5 -> mActivity.replaceFragment(MyFragment(mActivity), 3)
-
                 }
             }
 
