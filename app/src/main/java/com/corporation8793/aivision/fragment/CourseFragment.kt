@@ -36,19 +36,38 @@ private const val ARG_PARAM2 = "param2"
  * Use the [CourseFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CourseFragment(activity: MainActivity) : Fragment() {
+class CourseFragment(activity: MainActivity, courseFlag: Int = 0) : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     var nMap : NaverMap? = null
     var result: List<Course> = listOf()
     val mActivity = activity
+    val application = Application().getInstance(mActivity.applicationContext)
+    val mCourseFlag = courseFlag
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            var name = "횃불코스"
+            when (mCourseFlag) {
+                0 -> name = "횃불코스"
+                1 -> name = "희생코스"
+                2 -> name = "열정코스"
+                3 -> name = "영혼코스"
+                4 -> name = "광장코스"
+            }
+
+            result = application.db.courseDao().getAllByCourseType(name)
+
+            for (DL in result.indices) {
+                Log.i("spinnerSelected", "${result[DL]}")
+            }
         }
     }
 
@@ -59,7 +78,6 @@ class CourseFragment(activity: MainActivity) : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_course, container, false)
         val course_list : Spinner = view.findViewById(R.id.course_list)
-        val application = Application().getInstance(mActivity.applicationContext)
 
         val fm = childFragmentManager
         val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
@@ -68,8 +86,6 @@ class CourseFragment(activity: MainActivity) : Fragment() {
             }
 
         mapFragment.getMapAsync {
-            // TODO : 코스 표시후 경로표시
-            // TODO : 스타트 위치로 카메라 이동하기
             nMap = it
             it.mapType = NaverMap.MapType.Basic
             it.setLayerGroupEnabled(LAYER_GROUP_TRANSIT, true)
@@ -131,5 +147,30 @@ class CourseFragment(activity: MainActivity) : Fragment() {
                 Log.i("spinnerSelected", "${result[DL]}")
             }
         }
+    }
+
+    fun refreshMap() {
+        //nMap.mapType = NaverMap.MapType.Basic
+        //nMap.setLayerGroupEnabled(LAYER_GROUP_TRANSIT, true)
+
+        val cameraUpdate = CameraUpdate.scrollTo(
+            LatLng(result[0].courseLatitude.toDouble(),
+                result[0].courseLongitude.toDouble()))
+        //nMap.moveCamera(cameraUpdate)
+
+        val path = PathOverlay()
+        var coords : MutableList<LatLng> = mutableListOf()
+        val markers : MutableList<Marker> = mutableListOf()
+        for (rs in result) {
+            coords.add(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble()))
+            markers.add(Marker(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble())))
+        }
+
+        for (mk in markers) {
+            mk.map = nMap
+        }
+
+        path.coords = coords
+        path.map = nMap
     }
 }

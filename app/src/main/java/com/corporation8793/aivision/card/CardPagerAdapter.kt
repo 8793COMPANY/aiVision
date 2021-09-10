@@ -48,7 +48,7 @@ class CardPagerAdapter(val context: Context, val activity: MainActivity): CardAd
 
             binding.courseStartBtn.setOnClickListener {
                 // TODO : 시작하기 클릭 처리 리스너
-                activity.replaceFragment(CourseFragment(this.activity), 2)
+                activity.replaceFragment(CourseFragment(this.activity, position), 2)
             }
 
             binding.cardCourseStarSelector.setOnClickListener {

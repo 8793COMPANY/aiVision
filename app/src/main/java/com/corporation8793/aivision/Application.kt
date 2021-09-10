@@ -7,10 +7,7 @@ import androidx.room.Room
 import com.corporation8793.aivision.excel.Excel
 import com.corporation8793.aivision.room.AppDatabase
 import com.corporation8793.aivision.room.Course
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import kotlin.concurrent.thread
@@ -49,7 +46,7 @@ class Application : Application() {
             ))
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.IO).async {
             for (i in roomData.indices) {
                 if (db.courseDao().findByCourseName(roomData[i].courseName) != null) {
                     Log.i("Application", "DB Data Already Exist !! -> ${roomData[i].courseName}")
