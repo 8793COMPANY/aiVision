@@ -17,6 +17,9 @@ import com.corporation8793.aivision.recyclerview.RecyclerViewDecoration
 import com.corporation8793.aivision.room.AppDatabase
 import com.corporation8793.aivision.room.Course
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -103,9 +106,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
         }
 
         all_datas.apply {
-
-            //이 부분 확인해주세요
-            Thread {
+            CoroutineScope(Dispatchers.IO).launch {
                 Log.e("size check", application.db.courseDao().getAll().size.toString());
                 if (application.db.courseDao().getAll().size != 0) {
                     for (i in 0..application.db.courseDao().getAll().size) {
@@ -115,13 +116,9 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 
                     allCourseAdapter.datas = all_datas
                     allCourseAdapter.notifyDataSetChanged()
-
                 }
-
-                }.start()
-
-
             }
+        }
 
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
