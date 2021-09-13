@@ -50,7 +50,9 @@ class Application : Application() {
             for (i in roomData.indices) {
                 if (db.courseDao().findByCourseName(roomData[i].courseName) != null) {
                     Log.i("Application", "DB Data Already Exist !! -> ${roomData[i].courseName}")
+
                 } else {
+                    // 이 부분만 사용하시면 될 거 같아요
                     db.courseDao().insertAll(roomData[i])
                     Log.i("Application", "DB Data Successful Inserted !! -> ${roomData[i]}")
                 }

@@ -43,6 +43,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
     val all_datas = mutableListOf<Course>()
     var check : Boolean = false
     val mActivity = activity
+    lateinit var application: Application
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +52,11 @@ class MyFragment(activity: MainActivity)  : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+         application= Application().getInstance(mActivity.applicationContext)
+
+
+
+
     }
 
     override fun onCreateView(
@@ -67,7 +73,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
         var edit_btn : Button = view.findViewById(R.id.edit_btn)
         var save_btn : Button = view.findViewById(R.id.save_btn)
 
-        val application = Application().getInstance(mActivity.applicationContext)
+
 
 
         //room data 뿌리기
@@ -105,20 +111,26 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 
         }
 
+
         all_datas.apply {
             CoroutineScope(Dispatchers.IO).launch {
+
                 Log.e("size check", application.db.courseDao().getAll().size.toString());
                 if (application.db.courseDao().getAll().size != 0) {
                     for (i in 0..application.db.courseDao().getAll().size) {
                         Log.e("in", i.toString())
-                        add(application.db.courseDao().findPosData(i))
+//                        Log.e("hi",application.db.courseDao().findPosData(i).courseURL)
+//                        add(application.db.courseDao().findPosData(i))
                     }
 
-                    allCourseAdapter.datas = all_datas
-                    allCourseAdapter.notifyDataSetChanged()
+
                 }
             }
+            allCourseAdapter.datas = all_datas
+            allCourseAdapter.notifyDataSetChanged()
         }
+
+
 
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
