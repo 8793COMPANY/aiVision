@@ -44,6 +44,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int = 0) : Fragment() {
     var result: List<Course> = listOf()
     val mActivity = activity
     val application = Application().getInstance(mActivity.applicationContext)
+    var path = PathOverlay()
+    var markers : MutableList<Marker> = mutableListOf()
     val mCourseFlag = courseFlag
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,23 +53,6 @@ class CourseFragment(activity: MainActivity, courseFlag: Int = 0) : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
-        }
-
-        CoroutineScope(Dispatchers.IO).launch {
-            var name = "횃불코스"
-            when (mCourseFlag) {
-                0 -> name = "횃불코스"
-                1 -> name = "희생코스"
-                2 -> name = "열정코스"
-                3 -> name = "영혼코스"
-                4 -> name = "광장코스"
-            }
-
-            result = application.db.courseDao().getAllByCourseType(name)
-
-            for (DL in result.indices) {
-                Log.i("spinnerSelected", "${result[DL]}")
-            }
         }
     }
 
@@ -85,6 +70,19 @@ class CourseFragment(activity: MainActivity, courseFlag: Int = 0) : Fragment() {
                 fm.beginTransaction().add(R.id.map, it).commit()
             }
 
+        CoroutineScope(Dispatchers.IO).launch {
+            var name = "횃불코스"
+            when (mCourseFlag) {
+                0 -> name = "횃불코스"
+                1 -> name = "희생코스"
+                2 -> name = "열정코스"
+                3 -> name = "영혼코스"
+                4 -> name = "광장코스"
+            }
+
+            result = application.db.courseDao().getAllByCourseType(name)
+        }
+
         mapFragment.getMapAsync {
             nMap = it
             it.mapType = NaverMap.MapType.Basic
@@ -95,9 +93,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int = 0) : Fragment() {
                     result[0].courseLongitude.toDouble()))
             it.moveCamera(cameraUpdate)
 
-            val path = PathOverlay()
             var coords : MutableList<LatLng> = mutableListOf()
-            val markers : MutableList<Marker> = mutableListOf()
             for (rs in result) {
                 coords.add(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble()))
                 markers.add(Marker(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble())))
@@ -147,20 +143,29 @@ class CourseFragment(activity: MainActivity, courseFlag: Int = 0) : Fragment() {
                 Log.i("spinnerSelected", "${result[DL]}")
             }
         }
+
+        refreshMap()
     }
 
     fun refreshMap() {
-        //nMap.mapType = NaverMap.MapType.Basic
-        //nMap.setLayerGroupEnabled(LAYER_GROUP_TRANSIT, true)
+        // 오버레이 초기화
+        path.map = null
+        for (mk in markers) {
+            mk.map = null
+        }
+
+        nMap?.mapType = NaverMap.MapType.Basic
+        nMap?.setLayerGroupEnabled(LAYER_GROUP_TRANSIT, true)
 
         val cameraUpdate = CameraUpdate.scrollTo(
             LatLng(result[0].courseLatitude.toDouble(),
                 result[0].courseLongitude.toDouble()))
-        //nMap.moveCamera(cameraUpdate)
+        nMap?.moveCamera(cameraUpdate)
 
-        val path = PathOverlay()
+        path = PathOverlay()
+        markers = mutableListOf()
         var coords : MutableList<LatLng> = mutableListOf()
-        val markers : MutableList<Marker> = mutableListOf()
+
         for (rs in result) {
             coords.add(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble()))
             markers.add(Marker(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble())))

@@ -2,6 +2,7 @@ package com.corporation8793.aivision.room
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import androidx.room.Update
 
@@ -19,7 +20,7 @@ interface CourseDao {
     @Query("SELECT * FROM course WHERE uid == :position")
     fun findPosData(position: Int) : Course
 
-    @Insert
+    @Insert(onConflict = REPLACE)
     fun insertAll(vararg course: Course)
 
     @Update

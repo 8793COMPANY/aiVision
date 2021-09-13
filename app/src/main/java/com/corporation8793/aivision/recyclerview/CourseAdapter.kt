@@ -1,6 +1,7 @@
 package com.corporation8793.aivision.recyclerview
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.recyclerview.widget.RecyclerView
 import com.corporation8793.aivision.R
 import com.corporation8793.aivision.room.Course
@@ -20,9 +20,14 @@ class CourseAdapter  : RecyclerView.Adapter<CourseAdapter.ViewHolder>(){
     var check : Boolean = false
     lateinit var context : Context
     lateinit var drawable : GradientDrawable
+    var pos : Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_item,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(
+            R.layout.recyclerview_item,
+            parent,
+            false
+        )
         context = parent.context
         return ViewHolder(view)
     }
@@ -35,14 +40,22 @@ class CourseAdapter  : RecyclerView.Adapter<CourseAdapter.ViewHolder>(){
         notifyDataSetChanged()
     }
 
+    fun removeItem(position: Int){
+        datas.removeAt(position)
+        notifyDataSetChanged()
+    }
+
+    fun setPosition(position: Int){
+        pos = position
+    }
+
 
 
     override fun getItemCount(): Int = datas.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(datas[position])
-        Log.e("datas",datas[position].courseName)
-
+        Log.e("datas", datas[position].courseName)
 //        val layoutParams = holder.itemView.layoutParams
 //        layoutParams.width = 170
 //        holder.itemView.requestLayout()
@@ -66,13 +79,35 @@ class CourseAdapter  : RecyclerView.Adapter<CourseAdapter.ViewHolder>(){
                 cancel_btn.visibility = View.VISIBLE
             else
                 cancel_btn.visibility = View.INVISIBLE
-
-            drawable = context.getDrawable(R.drawable.background_rounding) as GradientDrawable
-            course_img.setBackground(drawable);
+//
+//            drawable = context.getDrawable(R.drawable.background_rounding) as GradientDrawable
+//            course_img.setBackground(drawable);
+            course_img.background = context.getDrawable(R.drawable.background_rounding)
             course_img.setClipToOutline(true);
 
+            cancel_btn.setOnClickListener{
+                removeItem(adapterPosition)
+                Log.e("in!",adapterPosition.toString())
+            }
+
+
+            if (!item.courseImgName.equals("")) {
+                val resId: Int = context.getResources().getIdentifier(
+                    item.courseImgName, "drawable",
+                    "com.corporation8793.aivision"
+                )
+
+                course_img.setImageResource(resId)
+            }else{
+                course_img.setImageResource(R.color.black)
+                Log.e("in","하라고")
+            }
+
+
+
+
 //            course_img.setImageResource(item.img)
-            Log.e("hi","bind");
+            Log.e("hi", "bind");
 //            Glide.with(itemView).load(item.img).into(course_img)
 
         }

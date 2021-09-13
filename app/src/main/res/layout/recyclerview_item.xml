@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="225"
-                android:background="#000000"
+                android:background="@drawable/background_rounding"
                 android:scaleType="centerCrop"></ImageView>
 
             <View

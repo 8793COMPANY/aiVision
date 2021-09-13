@@ -8,9 +8,6 @@ import com.corporation8793.aivision.excel.Excel
 import com.corporation8793.aivision.room.AppDatabase
 import com.corporation8793.aivision.room.Course
 import kotlinx.coroutines.*
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
-import kotlin.concurrent.thread
 
 
 class Application : Application() {
@@ -46,26 +43,20 @@ class Application : Application() {
             ))
         }
 
-        CoroutineScope(Dispatchers.IO).async {
-            for (i in roomData.indices) {
-                if (db.courseDao().findByCourseName(roomData[i].courseName) != null) {
-                    Log.i("Application", "DB Data Already Exist !! -> ${roomData[i].courseName}")
 
-                } else {
-                    // 이 부분만 사용하시면 될 거 같아요
+        CoroutineScope(Dispatchers.IO).launch {
+            if (db.courseDao().getAll().isNullOrEmpty()) {
+                Log.i("Application", "DB Data is Empty !! X_X")
+                for (i in roomData.indices) {
                     db.courseDao().insertAll(roomData[i])
                     Log.i("Application", "DB Data Successful Inserted !! -> ${roomData[i]}")
                 }
+            } else {
+                Log.i("Application", "DB Data is Already Exist !! O_O")
+                for (i in roomData.indices) {
+                    Log.i("Application", "DB Data Already Exist !! -> ${roomData[i].courseName}")
+                }
             }
-
-            Log.i("Application", "<<=== xlsToRoom - DB All Out Start ===>>")
-
-            val dataLog = db.courseDao().getAll()
-            for (DL in dataLog) {
-                Log.i("Application", "$DL")
-            }
-
-            Log.i("Application", "<<=== xlsToRoom - DB All Out End ===>>")
         }
     }
 
