@@ -1,4 +1,5 @@
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,12 +48,12 @@ class CardPagerAdapter(val context: Context, val activity: MainActivity): CardAd
             binding.mySpotText.visibility = View.INVISIBLE
 
             binding.courseStartBtn.setOnClickListener {
-                // TODO : 시작하기 클릭 처리 리스너
+                //  : 시작하기 클릭 처리 리스너
                 activity.replaceFragment(CourseFragment(this.activity, position), 2)
             }
 
             binding.cardCourseStarSelector.setOnClickListener {
-                // TODO : 별 클릭 처리 리스너
+                //  : 별 클릭 처리 리스너
                 getCardViewAt(position).isSelected = !getCardViewAt(position).isSelected
             }
         } else {
@@ -70,12 +71,12 @@ class CardPagerAdapter(val context: Context, val activity: MainActivity): CardAd
             binding.mySpotText.visibility = View.VISIBLE
 
             binding.courseStartBtn.setOnClickListener {
-                // TODO : 시작하기 클릭 처리 리스너
+                //  : 시작하기 클릭 처리 리스너
                 activity.replaceFragment(MyFragment(activity), 3)
             }
 
             binding.cardCourseStarSelector.setOnClickListener {
-                // TODO : 별 클릭 처리 리스너
+                //  : 별 클릭 처리 리스너
                 getCardViewAt(position).isSelected = !getCardViewAt(position).isSelected
             }
         }

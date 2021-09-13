@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         course_btn.setOnClickListener {
-            replaceFragment(CourseFragment(this), 2)
+            replaceFragment(CourseFragment(this, 0), 2)
         }
 
         my_btn.setOnClickListener {

@@ -8,9 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.corporation8793.aivision.Application
 import com.corporation8793.aivision.MainActivity
 import com.corporation8793.aivision.R
+import com.corporation8793.aivision.recyclerview.course_fragment.CoursePagerAdapter
 import com.corporation8793.aivision.room.Course
 import com.naver.maps.geometry.Coord
 import com.naver.maps.geometry.LatLng
@@ -22,11 +25,12 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.PathOverlay
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.StringBuilder
 
-// TODO: Rename parameter arguments, choose names that match
+// : Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -36,11 +40,13 @@ private const val ARG_PARAM2 = "param2"
  * Use the [CourseFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CourseFragment(activity: MainActivity, courseFlag: Int = 0) : Fragment() {
-    // TODO: Rename and change types of parameters
+class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
+    // : Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     var nMap : NaverMap? = null
+    var course_list_view : RecyclerView? = null
+    var course_list_view_adaptor : CoursePagerAdapter? = null
     var result: List<Course> = listOf()
     val mActivity = activity
     val application = Application().getInstance(mActivity.applicationContext)
@@ -70,17 +76,24 @@ class CourseFragment(activity: MainActivity, courseFlag: Int = 0) : Fragment() {
                 fm.beginTransaction().add(R.id.map, it).commit()
             }
 
+        course_list_view = view.findViewById(R.id.course_list_view)
+        course_list_view?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
         CoroutineScope(Dispatchers.IO).launch {
-            var name = "횃불코스"
+            var name = ""
             when (mCourseFlag) {
                 0 -> name = "횃불코스"
                 1 -> name = "희생코스"
-                2 -> name = "열정코스"
-                3 -> name = "영혼코스"
-                4 -> name = "광장코스"
+                2 -> name = "광장코스"
+                3 -> name = "열정코스"
+                4 -> name = "영혼코스"
             }
 
             result = application.db.courseDao().getAllByCourseType(name)
+
+            CoroutineScope(Dispatchers.Main).launch {
+                refreshCourseListView()
+            }
         }
 
         mapFragment.getMapAsync {
@@ -115,6 +128,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int = 0) : Fragment() {
             android.R.layout.simple_spinner_item
         )
 
+        course_list.setSelection(mCourseFlag)
+
         course_list.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -122,9 +137,14 @@ class CourseFragment(activity: MainActivity, courseFlag: Int = 0) : Fragment() {
                 position: Int,
                 id: Long
             ) {
+                var command = ""
                 when (position) {
-                    0, 1, 2, 3, 4 -> spinnerSelected(application, course_list.selectedItem.toString())
+                    0, 1, 2, 3, 4 -> command = course_list.selectedItem.toString()
                     5 -> mActivity.replaceFragment(MyFragment(mActivity), 3)
+                }
+
+                if (position != 5) {
+                    spinnerSelected(application, command)
                 }
             }
 
@@ -139,12 +159,11 @@ class CourseFragment(activity: MainActivity, courseFlag: Int = 0) : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             result = application.db.courseDao().getAllByCourseType(name)
 
-            for (DL in result.indices) {
-                Log.i("spinnerSelected", "${result[DL]}")
+            CoroutineScope(Dispatchers.Main).launch {
+                refreshMap()
+                refreshCourseListView()
             }
         }
-
-        refreshMap()
     }
 
     fun refreshMap() {
@@ -177,5 +196,11 @@ class CourseFragment(activity: MainActivity, courseFlag: Int = 0) : Fragment() {
 
         path.coords = coords
         path.map = nMap
+    }
+
+    fun refreshCourseListView() {
+        course_list_view_adaptor = CoursePagerAdapter(mActivity.applicationContext, mActivity, result)
+        course_list_view?.adapter = course_list_view_adaptor
+        course_list_view_adaptor!!.notifyDataSetChanged()
     }
 }
