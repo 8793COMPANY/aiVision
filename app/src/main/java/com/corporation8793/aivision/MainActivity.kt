@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Switch
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var home_btn: Button
     lateinit var course_btn: Button
     lateinit var my_btn: Button
+    lateinit var linear: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         home_btn = findViewById(R.id.home_btn)
         course_btn = findViewById(R.id.course_btn)
         my_btn = findViewById(R.id.my_btn)
+        linear = findViewById(R.id.linear)
 
         val application = Application().getInstance(applicationContext)
         application.xlsToRoom()

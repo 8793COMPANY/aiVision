@@ -68,8 +68,8 @@
         android:visibility="visible"
         android:name="com.naver.maps.map.MapFragment" />
 
-    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-        android:id="@+id/youtube_player_view"
+    <LinearLayout
+        android:id="@+id/ypv_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="720:726"
@@ -78,11 +78,24 @@
         app:layout_constraintWidth_default="percent"
         app:layout_constraintWidth_percent="1"
         app:layout_constraintTop_toBottomOf="@+id/actionbar"
-        app:layout_constraintVertical_bias="0.0"
-        android:visibility="invisible"
-        app:enableAutomaticInitialization="false"/>
+        app:layout_constraintVertical_bias="0.0">
+
+        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+            android:id="@+id/youtube_player_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:autoPlay="false"
+            app:showSeekBar="false"
+            app:showFullScreenButton="false"
+            app:showVideoCurrentTime="false"
+            app:showYouTubeButton="false"
+            app:showVideoDuration="false"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/course_list_view_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"

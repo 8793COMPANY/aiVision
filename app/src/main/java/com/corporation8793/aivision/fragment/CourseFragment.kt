@@ -1,13 +1,20 @@
 package com.corporation8793.aivision.fragment
 
 import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
+import android.util.Xml
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.FILL_PARENT
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +36,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerCallback
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerFullScreenListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.loadOrCueVideo
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import kotlinx.coroutines.CoroutineScope
@@ -59,6 +67,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     lateinit var map : View
     lateinit var ypv : YouTubePlayerView
     lateinit var ypv_temp : YouTubePlayerView
+    lateinit var course_list_view_container : LinearLayout
+    lateinit var actionbar : ConstraintLayout
+    lateinit var ypv_container : LinearLayout
     var ypv_flag : Boolean = false
     val mFragment = this
     val application = Application().getInstance(mActivity.applicationContext)
@@ -81,6 +92,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_course, container, false)
         val course_list : Spinner = view.findViewById(R.id.course_list)
+        actionbar = view.findViewById(R.id.actionbar)
+        course_list_view_container = view.findViewById(R.id.course_list_view_container)
+        ypv_container = view.findViewById(R.id.ypv_container)
         map = view.findViewById(R.id.map)
         ypv = view.findViewById(R.id.youtube_player_view)
         lifecycle.addObserver(ypv)
@@ -241,6 +255,23 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         ypv_temp = YouTubePlayerView(mActivity.applicationContext)
         ypv_temp.enableAutomaticInitialization = false
         ypv_temp.enableBackgroundPlayback(false)
+
+        ypv_temp.addFullScreenListener(object : YouTubePlayerFullScreenListener{
+            override fun onYouTubePlayerEnterFullScreen() {
+                mActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                mActivity.linear.visibility = View.GONE
+                course_list_view_container.visibility = View.GONE
+                actionbar.visibility = View.GONE
+                mActivity.window.decorView.apply {
+                    systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
+                }
+            }
+
+            override fun onYouTubePlayerExitFullScreen() {
+                ypv_temp.toggleFullScreen()
+            }
+
+        })
         ypv_temp.initialize(object : AbstractYouTubePlayerListener() {
             override fun onVideoId(youTubePlayer: YouTubePlayer, videoId: String) {
                 super.onVideoId(youTubePlayer, videoId)
@@ -256,6 +287,13 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                     }
                     PlayerConstants.PlayerState.PAUSED -> {
                         course_list_view_adaptor?.listDataSet?.get(position)?.course_progress = false
+                        mActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                        mActivity.linear.visibility = View.VISIBLE
+                        course_list_view_container.visibility = View.VISIBLE
+                        actionbar.visibility = View.VISIBLE
+                        mActivity.window.decorView.apply {
+                            systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        }
                     }
                     PlayerConstants.PlayerState.ENDED -> {
                         course_list_view_adaptor?.listDataSet?.get(position)?.course_progress = false

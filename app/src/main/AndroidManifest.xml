@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:name=".Application"
         android:theme="@style/Theme.AiVision"
+        android:screenOrientation="portrait"
         android:largeHeap="true"
         android:hardwareAccelerated="true">
 
@@ -21,8 +22,13 @@
             android:value="3l4bxymvbl" />
 
         <activity android:name=".QuizActivity"></activity>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".SplashActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"></activity>
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
