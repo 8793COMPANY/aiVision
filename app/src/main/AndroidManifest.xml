@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:name=".Application"
         android:theme="@style/Theme.AiVision"
-        android:largeHeap="true">
+        android:largeHeap="true"
+        android:hardwareAccelerated="true">
 
         <!-- meta for nmap -->
         <meta-data

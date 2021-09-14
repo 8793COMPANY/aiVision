@@ -17,8 +17,8 @@ interface CourseDao {
     @Query("SELECT * FROM course WHERE courseName == :courseName")
     fun findByCourseName(courseName: String) : List<Course>
 
-    @Query("SELECT * FROM course WHERE uid == :position")
-    fun findPosData(position: Int) : Course
+    @Query("SELECT * FROM course WHERE courseName == :courseName")
+    fun findCourseData(courseName: String) : Course
 
     @Insert(onConflict = REPLACE)
     fun insertAll(vararg course: Course)

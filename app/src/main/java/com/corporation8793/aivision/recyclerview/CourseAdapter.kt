@@ -22,6 +22,14 @@ class CourseAdapter  : RecyclerView.Adapter<CourseAdapter.ViewHolder>(){
     lateinit var drawable : GradientDrawable
     var pos : Int = 0
 
+    interface OnItemClickListener{
+        fun onItemClick(v:View, data: Course, pos : Int, courseName : String)
+    }
+    private var listener : OnItemClickListener? = null
+    fun setOnItemClickListener(listener : OnItemClickListener) {
+        this.listener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
             R.layout.recyclerview_item,
@@ -35,6 +43,7 @@ class CourseAdapter  : RecyclerView.Adapter<CourseAdapter.ViewHolder>(){
     fun editMode(){
         if (check)
             check = false
+
         else
             check = true
         notifyDataSetChanged()
@@ -45,9 +54,6 @@ class CourseAdapter  : RecyclerView.Adapter<CourseAdapter.ViewHolder>(){
         notifyDataSetChanged()
     }
 
-    fun setPosition(position: Int){
-        pos = position
-    }
 
 
 
@@ -71,44 +77,43 @@ class CourseAdapter  : RecyclerView.Adapter<CourseAdapter.ViewHolder>(){
 
         fun bind(item: Course) {
 
+//            if (!(check and item.courseImgName.equals("last_item_image"))) {
 
 
-            course_name.text = item.courseName
+                course_name.text = item.courseName
 //            course_img.setBackgroundResource(item.img)
-            if (check)
-                cancel_btn.visibility = View.VISIBLE
-            else
-                cancel_btn.visibility = View.INVISIBLE
+                if (check)
+                    cancel_btn.visibility = View.VISIBLE
+                else
+                    cancel_btn.visibility = View.INVISIBLE
 //
 //            drawable = context.getDrawable(R.drawable.background_rounding) as GradientDrawable
 //            course_img.setBackground(drawable);
-            course_img.background = context.getDrawable(R.drawable.background_rounding)
-            course_img.setClipToOutline(true);
+                course_img.background = context.getDrawable(R.drawable.background_rounding)
+                course_img.setClipToOutline(true);
 
-            cancel_btn.setOnClickListener{
-                removeItem(adapterPosition)
-                Log.e("in!",adapterPosition.toString())
-            }
-
-
-            if (!item.courseImgName.equals("")) {
-                val resId: Int = context.getResources().getIdentifier(
-                    item.courseImgName, "drawable",
-                    "com.corporation8793.aivision"
-                )
-
-                course_img.setImageResource(resId)
-            }else{
-                course_img.setImageResource(R.color.black)
-                Log.e("in","하라고")
-            }
+                cancel_btn.setOnClickListener {
+                    removeItem(adapterPosition)
+                    Log.e("in!", adapterPosition.toString())
+                }
 
 
+                if (!item.courseImgName.equals("")) {
+                    val resId: Int = context.getResources().getIdentifier(
+                        item.courseImgName, "drawable",
+                        "com.corporation8793.aivision"
+                    )
 
+                    course_img.setImageResource(resId)
+                } else {
+                    course_img.setImageResource(R.color.black)
+                }
 
-//            course_img.setImageResource(item.img)
-            Log.e("hi", "bind");
-//            Glide.with(itemView).load(item.img).into(course_img)
+                if (pos != RecyclerView.NO_POSITION) {
+                    itemView.setOnClickListener {
+                        listener?.onItemClick(itemView, item, adapterPosition, item.courseName)
+                    }
+                }
 
         }
     }

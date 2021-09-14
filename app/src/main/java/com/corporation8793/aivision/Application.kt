@@ -2,6 +2,7 @@ package com.corporation8793.aivision
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.room.Room
 import com.corporation8793.aivision.excel.Excel
@@ -14,6 +15,11 @@ class Application : Application() {
     lateinit var context: Context
     lateinit var excel: Excel
     lateinit var db : AppDatabase
+
+    companion object {
+        lateinit var prefs : MySharedPreferences
+    }
+
 
     fun getInstance(c: Context) : com.corporation8793.aivision.Application {
         context = c
@@ -60,24 +66,10 @@ class Application : Application() {
         }
     }
 
-
-    fun dataSize() : Int {
-        var dataLog : Int = 0
-        Thread {
-            dataLog = db.courseDao().getAll().size
-
-        }.start()
-        return dataLog
+    override fun onCreate() {
+        super.onCreate()
+        prefs =MySharedPreferences(applicationContext)
     }
 
-    fun getPositionData(pos : Int) : Course{
-        lateinit var dataLog : Course
 
-        Thread {
-            dataLog = db.courseDao().getAll().get(pos)
-
-        }.start()
-
-        return dataLog;
-    }
 }
