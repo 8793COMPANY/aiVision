@@ -43,6 +43,7 @@ class Application : Application() {
             ))
         }
 
+
         CoroutineScope(Dispatchers.IO).launch {
             if (db.courseDao().getAll().isNullOrEmpty()) {
                 Log.i("Application", "DB Data is Empty !! X_X")

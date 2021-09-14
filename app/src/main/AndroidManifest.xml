@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:name=".Application"
-        android:theme="@style/Theme.AiVision">
+        android:theme="@style/Theme.AiVision"
+        android:largeHeap="true">
 
         <!-- meta for nmap -->
         <meta-data

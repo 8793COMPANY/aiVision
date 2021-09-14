@@ -1,6 +1,8 @@
 package com.corporation8793.aivision.fragment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -44,6 +46,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
     val all_datas = mutableListOf<Course>()
     var check : Boolean = false
     val mActivity = activity
+    lateinit var application: Application
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,37 +55,31 @@ class MyFragment(activity: MainActivity)  : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+         application= Application().getInstance(mActivity.applicationContext)
+
+
+
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         var view : View = inflater.inflate(R.layout.fragment_my, container, false)
         var tabs : TabLayout = view.findViewById(R.id.course_tab)
-//        var linear : LinearLayout = view.findViewById(R.id.edit_linear)
         var recyclerView : RecyclerView = view.findViewById(R.id.recyclerview)
         var all_course : RecyclerView = view.findViewById(R.id.all_course_list)
 
         var edit_btn : Button = view.findViewById(R.id.edit_btn)
         var save_btn : Button = view.findViewById(R.id.save_btn)
 
-        val application = Application().getInstance(mActivity.applicationContext)
-
-
-        //room data 뿌리기
-//        val db = Application().getInstance(mActivity.applicationContext)
-
-
-        //room data 뿌리기
 
         tabs.addTab(tabs.newTab().setText("횃불코스"))
         tabs.addTab(tabs.newTab().setText("희생코스"))
         tabs.addTab(tabs.newTab().setText("광장코스"))
         tabs.addTab(tabs.newTab().setText("열정코스"))
         tabs.addTab(tabs.newTab().setText("영혼코스"))
-        tabs.addTab(tabs.newTab().setText("내맘코스"))
 
 
         courseAdapter = CourseAdapter()
@@ -94,32 +91,26 @@ class MyFragment(activity: MainActivity)  : Fragment() {
         all_course.adapter = allCourseAdapter
         all_course.addItemDecoration(RecyclerViewDecoration(30))
 
-        datas.apply {
-//            add(CourseData(img = R.color.black, item_name = "mary"))
-//            add(CourseData(img = R.color.purple_200, item_name = "jenny"))
-//            add(CourseData(img = R.color.teal_200, item_name = "jhon"))
-//            add(CourseData(img = R.color.design_default_color_error, item_name = "ruby"))
-//            add(CourseData(img = R.color.design_default_color_surface, item_name = "yuna"))
+        notifyItem("횃불코스")
 
-            courseAdapter.datas = datas
-            courseAdapter.notifyDataSetChanged()
-
-        }
 
         all_datas.apply {
             CoroutineScope(Dispatchers.IO).launch {
                 Log.e("size check", application.db.courseDao().getAll().size.toString());
                 if (application.db.courseDao().getAll().size != 0) {
-                    for (i in 0..application.db.courseDao().getAll().size) {
+                    for (i in 0..application.db.courseDao().getAll().size-1) {
                         Log.e("in", i.toString())
-                        add(application.db.courseDao().findPosData(i))
+                        add(application.db.courseDao().getAll().get(i))
                     }
-
+                }
+                Handler(Looper.getMainLooper()).postDelayed({
                     allCourseAdapter.datas = all_datas
                     allCourseAdapter.notifyDataSetChanged()
-                }
+                }, 0)
             }
         }
+
+
 
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -132,13 +123,11 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab!!.position) {
-                    0 -> courseAdapter.notifyDataSetChanged()
-//                    0-> text.setText("0")
-//                    1-> text.setText("1")
-//                    2-> text.setText("2")
-//                    3-> text.setText("3")
-//                    4-> text.setText("4")
-//                    5->text.setText("5")
+                    0-> notifyItem("횃불코스")
+                    1-> notifyItem("희생코스")
+                    2-> notifyItem("광장코스")
+                    3-> notifyItem("열정코스")
+                    4-> notifyItem("영혼코스")
 
                 }
             }
@@ -165,6 +154,35 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 
 
         return view
+    }
+
+    fun notifyItem(courseType : String){
+        datas.clear()
+        datas.apply {
+//            add(CourseData(img = R.color.black, item_name = "mary"))
+//            add(CourseData(img = R.color.purple_200, item_name = "jenny"))
+//            add(CourseData(img = R.color.teal_200, item_name = "jhon"))
+//            add(CourseData(img = R.color.design_default_color_error, item_name = "ruby"))
+//            add(CourseData(img = R.color.design_default_color_surface, item_name = "yuna"))
+            Log.e("in","notifyItem")
+            CoroutineScope(Dispatchers.IO).launch {
+                val list : List<Course> = application.db.courseDao().getAllByCourseType(courseType)
+                for (i in list){
+                    add(i)
+                }
+
+                add(Course(list.size,"","","last_item_image","","","","",""))
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    courseAdapter.datas = datas
+                    courseAdapter.notifyDataSetChanged()
+                }, 0)
+
+            }
+
+
+
+        }
     }
 
 
