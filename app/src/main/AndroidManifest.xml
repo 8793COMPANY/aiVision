@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:name=".Application"
         android:theme="@style/Theme.AiVision"
+        android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
         android:largeHeap="true">
 
         <!-- meta for nmap -->
@@ -20,7 +21,9 @@
             android:value="3l4bxymvbl" />
 
         <activity android:name=".QuizActivity"></activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"></activity>
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

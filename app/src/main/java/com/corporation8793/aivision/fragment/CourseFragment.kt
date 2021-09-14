@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.corporation8793.aivision.Application
@@ -24,6 +25,12 @@ import com.naver.maps.map.NaverMap.LAYER_GROUP_TRANSIT
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.PathOverlay
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerCallback
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.loadOrCueVideo
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
@@ -49,6 +56,11 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     var course_list_view_adaptor : CoursePagerAdapter? = null
     var result: List<Course> = listOf()
     val mActivity = activity
+    lateinit var map : View
+    lateinit var ypv : YouTubePlayerView
+    lateinit var ypv_temp : YouTubePlayerView
+    var ypv_flag : Boolean = false
+    val mFragment = this
     val application = Application().getInstance(mActivity.applicationContext)
     var path = PathOverlay()
     var markers : MutableList<Marker> = mutableListOf()
@@ -69,6 +81,10 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_course, container, false)
         val course_list : Spinner = view.findViewById(R.id.course_list)
+        map = view.findViewById(R.id.map)
+        ypv = view.findViewById(R.id.youtube_player_view)
+        lifecycle.addObserver(ypv)
+        ypv_flag = false
 
         val fm = childFragmentManager
         val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
@@ -155,6 +171,12 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         return view
     }
 
+    override fun onDestroy() {
+        ypv.release()
+        ypv_temp.release()
+        super.onDestroy()
+    }
+
     fun spinnerSelected(application : Application, name : String) {
         CoroutineScope(Dispatchers.IO).launch {
             result = application.db.courseDao().getAllByCourseType(name)
@@ -168,6 +190,13 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
     fun refreshMap() {
         // 오버레이 초기화
+        if (ypv_flag) {
+            ypv_temp.release()
+            map.visibility = View.VISIBLE
+            ypv.visibility = View.INVISIBLE
+            ypv_flag = !ypv_flag
+        }
+
         path.map = null
         for (mk in markers) {
             mk.map = null
@@ -199,8 +228,58 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     }
 
     fun refreshCourseListView() {
-        course_list_view_adaptor = CoursePagerAdapter(mActivity.applicationContext, mActivity, result)
+        course_list_view_adaptor = CoursePagerAdapter(mActivity.applicationContext, mFragment, result)
         course_list_view?.adapter = course_list_view_adaptor
         course_list_view_adaptor!!.notifyDataSetChanged()
+    }
+
+    fun playVR(dataSet : List<Course>, position : Int) {
+        map.visibility = View.INVISIBLE
+        ypv.visibility = View.VISIBLE
+
+        ypv.removeView(ypv)
+        ypv.release()
+        Log.e("playVR", "onVideoposition: $position")
+
+        ypv_temp = YouTubePlayerView(mActivity.applicationContext)
+        ypv_temp.enableAutomaticInitialization = false
+        ypv_temp.enableBackgroundPlayback(false)
+        ypv_temp.initialize(object : AbstractYouTubePlayerListener() {
+            override fun onVideoId(youTubePlayer: YouTubePlayer, videoId: String) {
+                super.onVideoId(youTubePlayer, videoId)
+                Log.e("ypv_temp", "onVideoId: $videoId")
+            }
+
+            override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
+                super.onStateChange(youTubePlayer, state)
+                Log.e("onStateChange", "onStateChange: $state" )
+                when (state) {
+                    PlayerConstants.PlayerState.PLAYING -> {
+                        course_list_view_adaptor?.listDataSet?.get(position)?.course_progress = true
+                    }
+                    PlayerConstants.PlayerState.PAUSED -> {
+                        course_list_view_adaptor?.listDataSet?.get(position)?.course_progress = false
+                    }
+                    PlayerConstants.PlayerState.ENDED -> {
+                        course_list_view_adaptor?.listDataSet?.get(position)?.course_progress = false
+                        course_list_view_adaptor?.listDataSet?.get(position)?.course_visit_chk = true
+                    }
+                }
+                course_list_view_adaptor?.notifyDataSetChanged()
+            }
+
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    youTubePlayer.loadVideo(dataSet[position].courseURL.replace("https://youtu.be/", ""),0F)
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        youTubePlayer.play()
+                    }
+                }
+            }
+        })
+        ypv_flag = true
+        ypv.addView(ypv_temp)
+        lifecycle.addObserver(ypv_temp)
     }
 }

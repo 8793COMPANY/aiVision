@@ -65,7 +65,22 @@
         app:layout_constraintWidth_percent="1"
         app:layout_constraintTop_toBottomOf="@+id/actionbar"
         app:layout_constraintVertical_bias="0.0"
+        android:visibility="visible"
         android:name="com.naver.maps.map.MapFragment" />
+
+    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+        android:id="@+id/youtube_player_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="720:726"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="1"
+        app:layout_constraintTop_toBottomOf="@+id/actionbar"
+        app:layout_constraintVertical_bias="0.0"
+        android:visibility="invisible"
+        app:enableAutomaticInitialization="false"/>
 
     <LinearLayout
         android:layout_width="0dp"
