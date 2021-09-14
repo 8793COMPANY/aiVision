@@ -1,5 +1,6 @@
 package com.corporation8793.aivision.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -48,7 +49,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
     val mActivity = activity
     lateinit var application: Application
 
-
+    var courseType: String = "횃불코스"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -92,6 +93,16 @@ class MyFragment(activity: MainActivity)  : Fragment() {
         all_course.addItemDecoration(RecyclerViewDecoration(30))
 
         notifyItem("횃불코스")
+
+
+
+        allCourseAdapter.setOnItemClickListener(object : CourseAdapter.OnItemClickListener{
+            override fun onItemClick(v: View, data: Course, pos : Int, courseName : String) {
+                if (check)
+                    addItem(courseName)
+                    recyclerView.scrollToPosition(datas.size)
+                }
+            })
 
 
         all_datas.apply {
@@ -141,15 +152,29 @@ class MyFragment(activity: MainActivity)  : Fragment() {
                 edit_btn.setBackgroundResource(R.drawable.my_edit_btn)
                 check = false
                 courseAdapter.editMode()
+                datas.apply {
+                    add(Course(datas.size,"","","last_item_image","","","","",""))
+                    courseAdapter.datas = datas
+                    courseAdapter.notifyDataSetChanged()
+                    recyclerView.scrollToPosition(courseAdapter.itemCount-1)
+                }
             }else{
                 edit_btn.setBackgroundResource(R.drawable.my_finish_btn)
                 check = true
                 courseAdapter.editMode()
+                datas.removeAt(datas.size-1)
             }
         }
 
         save_btn.setOnClickListener{
             Toast.makeText(context, "저장하였습니다.", Toast.LENGTH_SHORT).show()
+            var str : String = ""
+            for (i in courseAdapter.datas){
+                str += i.courseName+","
+            }
+            Log.e(courseType,str.substring(0,str.length-2))
+
+            Application.prefs.setString(courseType,str.substring(0,str.length-2))
         }
 
 
@@ -157,25 +182,73 @@ class MyFragment(activity: MainActivity)  : Fragment() {
     }
 
     fun notifyItem(courseType : String){
-        datas.clear()
-        datas.apply {
+
+            this.courseType = courseType
+            datas.clear()
+            datas.apply {
 //            add(CourseData(img = R.color.black, item_name = "mary"))
 //            add(CourseData(img = R.color.purple_200, item_name = "jenny"))
 //            add(CourseData(img = R.color.teal_200, item_name = "jhon"))
 //            add(CourseData(img = R.color.design_default_color_error, item_name = "ruby"))
 //            add(CourseData(img = R.color.design_default_color_surface, item_name = "yuna"))
+                Log.e("in", "notifyItem")
+                CoroutineScope(Dispatchers.IO).launch {
+
+                    lateinit var list: List<Course>
+                    var listsize: Int = 0
+                    if (Application.prefs.getString(courseType,"none").equals("none")) {
+                        Log.e("in","dao")
+                          list =   application.db.courseDao().getAllByCourseType(courseType)
+                            for (i in list) {
+                                add(i)
+                            }
+                        listsize = list.size
+                    }else{
+                        Log.e("in","pref")
+                        var arrays : List<String> = Application.prefs.getString(courseType,"none").split(",")
+                        for(i in arrays){
+                            if (application.db.courseDao().findCourseData(i) != null) {
+                                add(application.db.courseDao().findCourseData(i))
+                            }
+                        }
+                        listsize = arrays.size
+                    }
+
+
+                    add(Course(listsize, "", "", "last_item_image", "", "", "", "", ""))
+
+
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        courseAdapter.datas = datas
+                        courseAdapter.notifyDataSetChanged()
+                    }, 0)
+
+                }
+
+
+            }
+        }
+
+
+
+    fun addItem(courseName : String){
+        datas.apply {
+
             Log.e("in","notifyItem")
             CoroutineScope(Dispatchers.IO).launch {
-                val list : List<Course> = application.db.courseDao().getAllByCourseType(courseType)
+                val list : List<Course> = application.db.courseDao().findByCourseName(courseName)
                 for (i in list){
+//                    Log.e("list",list.toString())
                     add(i)
                 }
 
-                add(Course(list.size,"","","last_item_image","","","","",""))
+
+//                add(Course(list.size,"","","last_item_image","","","","",""))
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     courseAdapter.datas = datas
                     courseAdapter.notifyDataSetChanged()
+
                 }, 0)
 
             }
