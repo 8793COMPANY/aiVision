@@ -134,8 +134,6 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
             path.coords = coords
             path.map = nMap
-
-            Toast.makeText(context,"nMap : Load Complete", Toast.LENGTH_SHORT).show()
         }
 
         course_list.adapter = ArrayAdapter.createFromResource(
@@ -173,7 +171,6 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
     override fun onDestroy() {
         ypv.release()
-        ypv_temp.release()
         super.onDestroy()
     }
 
