@@ -12,16 +12,14 @@
         android:layout_height="0dp"
         android:background="@color/white"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="720:110"
+        app:layout_constraintBottom_toTopOf="@+id/edit_linear"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_default="percent"
-        app:layout_constraintWidth_percent="1"
-        android:elevation="5dp">
+        android:elevation="5dp"
+        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintVertical_weight="0.09">
 
         <TextView
             android:layout_width="0dp"
@@ -65,15 +63,15 @@
         android:id="@+id/edit_linear"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="720:502"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/actionbar"
+        app:layout_constraintBottom_toTopOf="@+id/course_tab_back"
         app:layout_constraintWidth_percent="1"
         android:background="@drawable/my_course_select_background"
         android:orientation="vertical"
-        android:weightSum="502">
+        android:weightSum="502"
+        app:layout_constraintVertical_weight="0.46">
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -128,15 +126,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintDimensionRatio="720:98"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_linear"
-        app:layout_constraintWidth_percent="1"
+        app:layout_constraintBottom_toTopOf="@+id/all_course_linear"
         android:elevation="3dp"
         android:background="@color/white"
-        android:weightSum="98">
+        android:weightSum="98"
+        app:layout_constraintVertical_weight="0.08">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/course_tab"
@@ -160,17 +157,18 @@
 
 
     <LinearLayout
+        android:id="@+id/all_course_linear"
         android:background="#f7f7f7"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/course_tab_back"
         app:layout_constraintWidth_percent="1"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:weightSum="408">
+        android:weightSum="408"
+        app:layout_constraintVertical_weight="0.37">
 
         <View
             android:layout_width="match_parent"

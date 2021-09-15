@@ -134,11 +134,31 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab!!.position) {
-                    0-> notifyItem("횃불코스")
-                    1-> notifyItem("희생코스")
-                    2-> notifyItem("광장코스")
-                    3-> notifyItem("열정코스")
-                    4-> notifyItem("영혼코스")
+                    0-> {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            notifyItem("횃불코스")
+                        }, 200)
+                    }
+                    1-> {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            notifyItem("희생코스")
+                        }, 200)
+                    }
+                    2-> {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            notifyItem("광장코스")
+                        }, 200)
+                    }
+                    3-> {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            notifyItem("열정코스")
+                        }, 200)
+                    }
+                    4->{
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        notifyItem("영혼코스")
+                    }, 200)
+                    }
 
                 }
             }
