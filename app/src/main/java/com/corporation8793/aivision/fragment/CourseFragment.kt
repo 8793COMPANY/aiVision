@@ -109,6 +109,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         ypv.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 yp = youTubePlayer
+                yp!!.cueVideo("", 0F)
             }
         })
         lifecycle.addObserver(ypv)
@@ -216,7 +217,6 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     fun refreshMap() {
         // 오버레이 초기화
         if (ypv_flag) {
-            ypv_temp.release()
             map.visibility = View.VISIBLE
             ypv.visibility = View.INVISIBLE
             ypv_flag = !ypv_flag
