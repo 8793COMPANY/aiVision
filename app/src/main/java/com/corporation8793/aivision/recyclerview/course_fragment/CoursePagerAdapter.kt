@@ -66,7 +66,11 @@ class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, p
         }
 
         holder.course_vr_start_btn.setOnClickListener {
-            mFragment.playVR(dataSet, position)
+            if (mFragment.ypv_object != null) {
+                mFragment.course_list_view_adaptor?.listDataSet?.get(mFragment.prev_position)?.course_progress = false
+                mFragment.ypv.removeYouTubePlayerListener(mFragment.ypv_object!!)
+            }
+            mFragment.playVR_ver2(dataSet, position)
         }
     }
 
