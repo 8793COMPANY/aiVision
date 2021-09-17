@@ -26,7 +26,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.coroutines.coroutineContext
 
-class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, private val dataSet:List<Course>) : RecyclerView.Adapter<CoursePagerAdapter.Holder>() {
+class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, private val dataSet:List<Course>,
+                         val listDataSet : MutableList<listData> = mutableListOf()) : RecyclerView.Adapter<CoursePagerAdapter.Holder>() {
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var mCourseName : TextView = itemView.findViewById(R.id.mCourseName)
         var dash_line_before : ImageView = itemView.findViewById(R.id.dash_line_before)
@@ -35,8 +36,6 @@ class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, p
         var course_visit_chk : ImageView = itemView.findViewById(R.id.course_visit_chk)
         var course_vr_start_btn : Button = itemView.findViewById(R.id.course_vr_start_btn)
     }
-
-    val listDataSet : MutableList<listData> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context)
