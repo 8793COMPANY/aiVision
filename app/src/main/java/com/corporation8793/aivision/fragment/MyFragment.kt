@@ -92,10 +92,9 @@ class MyFragment(activity: MainActivity)  : Fragment() {
         all_course.adapter = allCourseAdapter
         all_course.addItemDecoration(RecyclerViewDecoration(30))
 
-        notifyItem("횃불코스")
+        notifyItem()
 
-        allCourseList("횃불코스")
-
+        changeCourseItem("횃불코스")
 
 
         allCourseAdapter.setOnItemClickListener(object : CourseAdapter.OnItemClickListener{
@@ -120,33 +119,28 @@ class MyFragment(activity: MainActivity)  : Fragment() {
                 when (tab!!.position) {
                     0-> {
                         Handler(Looper.getMainLooper()).postDelayed({
-                            notifyItem("횃불코스")
-                            allCourseList("횃불코스")
+                            changeCourseItem("횃불코스")
                         }, 200)
                     }
                     1-> {
                         Handler(Looper.getMainLooper()).postDelayed({
-                            notifyItem("희생코스")
-                            allCourseList("희생코스")
+                            changeCourseItem("희생코스")
                         }, 200)
 
                     }
                     2-> {
                         Handler(Looper.getMainLooper()).postDelayed({
-                            notifyItem("광장코스")
-                            allCourseList("광장코스")
+                            changeCourseItem("광장코스")
                         }, 200)
                     }
                     3-> {
                         Handler(Looper.getMainLooper()).postDelayed({
-                            notifyItem("열정코스")
-                            allCourseList("열정코스")
+                            changeCourseItem("열정코스")
                         }, 200)
                     }
                     4->{
                     Handler(Looper.getMainLooper()).postDelayed({
-                        notifyItem("영혼코스")
-                        allCourseList("영혼코스")
+                        changeCourseItem("영혼코스")
                     }, 200)
                     }
 
@@ -185,33 +179,24 @@ class MyFragment(activity: MainActivity)  : Fragment() {
             Log.e(courseType,str.substring(0,str.length-2))
 
 
-            Application.prefs.setString(courseType,str.substring(0,str.length-2))
+            Application.prefs.setString("my_course",str.substring(0,str.length-2))
         }
 
 
         return view
     }
 
-    fun notifyItem(courseType : String){
+    fun notifyItem(){
 
-            this.courseType = courseType
             datas.clear()
             datas.apply {
                 Log.e("in", "notifyItem")
                 CoroutineScope(Dispatchers.IO).launch {
 
-                    lateinit var list: List<Course>
                     var listsize: Int = 0
-                    if (Application.prefs.getString(courseType,"none").equals("none")) {
-                        Log.e("in","dao")
-                          list =   application.db.courseDao().getAllByCourseType(courseType)
-                            for (i in list) {
-                                add(i)
-                            }
-                        listsize = list.size
-                    }else{
+                    if (!Application.prefs.getString("my_course","none").equals("none")) {
                         Log.e("in","pref")
-                        var arrays : List<String> = Application.prefs.getString(courseType,"none").split(",")
+                        var arrays : List<String> = Application.prefs.getString("my_course","none").split(",")
                         for(i in arrays){
                             if (application.db.courseDao().findCourseData(i) != null) {
                                 add(application.db.courseDao().findCourseData(i))
@@ -234,6 +219,28 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 
             }
         }
+
+
+    fun changeCourseItem(courseType : String){
+
+        this.courseType = courseType
+        all_datas.clear()
+        all_datas.apply {
+            Log.e("in", "notifyItem")
+            CoroutineScope(Dispatchers.IO).launch {
+
+               addAll(application.db.courseDao().getAllByCourseType(courseType))
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    allCourseAdapter.datas = all_datas
+                    allCourseAdapter.notifyDataSetChanged()
+                }, 0)
+
+            }
+
+
+        }
+    }
 
 
 
