@@ -20,6 +20,10 @@ interface CourseDao {
     @Query("SELECT * FROM course WHERE courseName == :courseName")
     fun findCourseData(courseName: String) : Course
 
+
+    @Query("SELECT * FROM course WHERE courseType != :courseName")
+    fun withoutCourseType(courseName: String) : List<Course>
+
     @Insert(onConflict = REPLACE)
     fun insertAll(vararg course: Course)
 

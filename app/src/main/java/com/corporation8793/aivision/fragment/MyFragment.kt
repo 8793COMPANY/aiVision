@@ -94,6 +94,8 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 
         notifyItem("횃불코스")
 
+        allCourseList("횃불코스")
+
 
 
         allCourseAdapter.setOnItemClickListener(object : CourseAdapter.OnItemClickListener{
@@ -103,24 +105,6 @@ class MyFragment(activity: MainActivity)  : Fragment() {
                     recyclerView.scrollToPosition(datas.size)
                 }
             })
-
-
-        all_datas.apply {
-            CoroutineScope(Dispatchers.IO).launch {
-                Log.e("size check", application.db.courseDao().getAll().size.toString());
-                if (application.db.courseDao().getAll().size != 0) {
-                    for (i in 0..application.db.courseDao().getAll().size-1) {
-                        Log.e("in", i.toString())
-                        add(application.db.courseDao().getAll().get(i))
-                    }
-                }
-                Handler(Looper.getMainLooper()).postDelayed({
-                    allCourseAdapter.datas = all_datas
-                    allCourseAdapter.notifyDataSetChanged()
-                }, 0)
-            }
-        }
-
 
 
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -137,26 +121,32 @@ class MyFragment(activity: MainActivity)  : Fragment() {
                     0-> {
                         Handler(Looper.getMainLooper()).postDelayed({
                             notifyItem("횃불코스")
+                            allCourseList("횃불코스")
                         }, 200)
                     }
                     1-> {
                         Handler(Looper.getMainLooper()).postDelayed({
                             notifyItem("희생코스")
+                            allCourseList("희생코스")
                         }, 200)
+
                     }
                     2-> {
                         Handler(Looper.getMainLooper()).postDelayed({
                             notifyItem("광장코스")
+                            allCourseList("광장코스")
                         }, 200)
                     }
                     3-> {
                         Handler(Looper.getMainLooper()).postDelayed({
                             notifyItem("열정코스")
+                            allCourseList("열정코스")
                         }, 200)
                     }
                     4->{
                     Handler(Looper.getMainLooper()).postDelayed({
                         notifyItem("영혼코스")
+                        allCourseList("영혼코스")
                     }, 200)
                     }
 
@@ -194,6 +184,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
             }
             Log.e(courseType,str.substring(0,str.length-2))
 
+
             Application.prefs.setString(courseType,str.substring(0,str.length-2))
         }
 
@@ -206,11 +197,6 @@ class MyFragment(activity: MainActivity)  : Fragment() {
             this.courseType = courseType
             datas.clear()
             datas.apply {
-//            add(CourseData(img = R.color.black, item_name = "mary"))
-//            add(CourseData(img = R.color.purple_200, item_name = "jenny"))
-//            add(CourseData(img = R.color.teal_200, item_name = "jhon"))
-//            add(CourseData(img = R.color.design_default_color_error, item_name = "ruby"))
-//            add(CourseData(img = R.color.design_default_color_surface, item_name = "yuna"))
                 Log.e("in", "notifyItem")
                 CoroutineScope(Dispatchers.IO).launch {
 
@@ -257,13 +243,8 @@ class MyFragment(activity: MainActivity)  : Fragment() {
             Log.e("in","notifyItem")
             CoroutineScope(Dispatchers.IO).launch {
                 val list : List<Course> = application.db.courseDao().findByCourseName(courseName)
-                for (i in list){
-//                    Log.e("list",list.toString())
-                    add(i)
-                }
+                addAll(list)
 
-
-//                add(Course(list.size,"","","last_item_image","","","","",""))
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     courseAdapter.datas = datas
@@ -278,5 +259,42 @@ class MyFragment(activity: MainActivity)  : Fragment() {
         }
     }
 
+    fun allCourseList(courseName: String){
+        all_datas.clear()
+        all_datas.apply {
+            CoroutineScope(Dispatchers.IO).launch {
+
+                if (Application.prefs.getString(courseType,"none").equals("none")) {
+                    Log.e("in","dao")
+
+//                    for (i in 0..application.db.courseDao().withoutCourseType(courseName).size-1) {
+//                        Log.e("in", i.toString())
+//                        add(.get(i))
+//                        Log.e("all data", application.db.courseDao().withoutCourseType(courseName).get(i).courseName)
+//                    }
+                    addAll(application.db.courseDao().withoutCourseType(courseName))
+                }else{
+                    Log.e("in","pref")
+                    var arrays : List<String> = Application.prefs.getString(courseType,"none").split(",")
+
+                    for (i in 0..application.db.courseDao().getAll().size-1) {
+                        if (application.db.courseDao().getAll().get(i).courseName in arrays){
+                            Log.e("이미 있음 !", "넘어감")
+                        }else{
+                            add(application.db.courseDao().getAll().get(i))
+                        }
+                    }
+
+
+                }
+
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    allCourseAdapter.datas = all_datas
+                    allCourseAdapter.notifyDataSetChanged()
+                }, 0)
+            }
+        }
+    }
 
 }
