@@ -82,11 +82,16 @@ class CourseAdapter  : RecyclerView.Adapter<CourseAdapter.ViewHolder>(){
 
 
                 course_name.text = item.courseName
-//            course_img.setBackgroundResource(item.img)
+
+            if (adapterPosition == getItemCount()-1){
+                cancel_btn.visibility = View.INVISIBLE
+            }else{
                 if (check)
                     cancel_btn.visibility = View.VISIBLE
                 else
                     cancel_btn.visibility = View.INVISIBLE
+            }
+
 //
 //            drawable = context.getDrawable(R.drawable.background_rounding) as GradientDrawable
 //            course_img.setBackground(drawable);

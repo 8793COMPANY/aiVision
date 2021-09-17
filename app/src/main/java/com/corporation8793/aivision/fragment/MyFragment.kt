@@ -159,6 +159,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
                 datas.apply {
                     add(Course(datas.size,"","","last_item_image","","","","",""))
                     courseAdapter.datas = datas
+                    datas.removeAt(datas.size-1)
                     courseAdapter.notifyDataSetChanged()
                     recyclerView.scrollToPosition(courseAdapter.itemCount-1)
                 }
@@ -166,7 +167,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
                 edit_btn.setBackgroundResource(R.drawable.my_finish_btn)
                 check = true
                 courseAdapter.editMode()
-                datas.removeAt(datas.size-1)
+//
             }
         }
 
@@ -176,10 +177,15 @@ class MyFragment(activity: MainActivity)  : Fragment() {
             for (i in courseAdapter.datas){
                 str += i.courseName+","
             }
-            Log.e(courseType,str.substring(0,str.length-2))
+            if (!str.trim().equals("")){
+                Log.e(courseType,str.substring(0,str.length-1))
 
 
-            Application.prefs.setString("my_course",str.substring(0,str.length-2))
+                Application.prefs.setString("my_course",str.substring(0,str.length-1))
+            }else{
+                Application.prefs.setString("my_course",str.substring(0,str.length))
+            }
+
         }
 
 
@@ -198,6 +204,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
                         Log.e("in","pref")
                         var arrays : List<String> = Application.prefs.getString("my_course","none").split(",")
                         for(i in arrays){
+                            Log.e("i확인",i)
                             if (application.db.courseDao().findCourseData(i) != null) {
                                 add(application.db.courseDao().findCourseData(i))
                             }
@@ -250,7 +257,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
             Log.e("in","notifyItem")
             CoroutineScope(Dispatchers.IO).launch {
                 val list : List<Course> = application.db.courseDao().findByCourseName(courseName)
-                addAll(list)
+                addAll(datas.size-1,list)
 
 
                 Handler(Looper.getMainLooper()).postDelayed({
