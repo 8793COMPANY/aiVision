@@ -3,6 +3,7 @@ package com.corporation8793.aivision.fragment
 import android.app.Activity
 import android.content.Context
 import android.content.pm.ActivityInfo
+import android.graphics.Color
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
@@ -16,6 +17,7 @@ import android.view.ViewGroup.LayoutParams.FILL_PARENT
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +36,7 @@ import com.naver.maps.map.NaverMap.LAYER_GROUP_TRANSIT
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.PathOverlay
+import com.naver.maps.map.util.MarkerIcons
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -67,9 +70,11 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     var course_list_view_adaptor : CoursePagerAdapter? = null
     var result: List<Course> = listOf()
     val mActivity = activity
+    lateinit var finish_btn : AppCompatButton
     lateinit var map : View
     lateinit var ypv : YouTubePlayerView
     lateinit var ypv_temp : YouTubePlayerView
+    var listDataSet : MutableList<CoursePagerAdapter.listData> = mutableListOf()
     var ypv_object : YouTubePlayerListener? = null
     var prev_position : Int = 0
     var yp : YouTubePlayer? = null
@@ -77,6 +82,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     lateinit var actionbar : ConstraintLayout
     lateinit var ypv_container : LinearLayout
     lateinit var callback: OnBackPressedCallback
+    var command = ""
     var ypv_flag : Boolean = false
     val mFragment = this
     val application = Application().getInstance(mActivity.applicationContext)
@@ -101,10 +107,15 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         val course_list : Spinner = view.findViewById(R.id.course_list)
         actionbar = view.findViewById(R.id.actionbar)
         course_list_view_container = view.findViewById(R.id.course_list_view_container)
+        finish_btn = view.findViewById(R.id.finish_btn)
         ypv_container = view.findViewById(R.id.ypv_container)
         map = view.findViewById(R.id.map)
         ypv = view.findViewById(R.id.youtube_player_view)
         ypv_temp = view.findViewById(R.id.youtube_player_view)
+
+        finish_btn.setOnClickListener {
+            mActivity.replaceFragment(HomeFragment(mActivity), 1)
+        }
 
         ypv.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
@@ -135,6 +146,12 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             }
 
             result = application.db.courseDao().getAllByCourseType(name)
+
+            val lds : MutableList<CoursePagerAdapter.listData> = mutableListOf()
+            for (rs in result) {
+                lds.add(CoursePagerAdapter.listData(false, false))
+            }
+            listDataSet = lds
 
             CoroutineScope(Dispatchers.Main).launch {
                 refreshCourseListView()
@@ -180,14 +197,13 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                var command = ""
                 when (position) {
                     0, 1, 2, 3, 4 -> command = course_list.selectedItem.toString()
                     5 -> mActivity.replaceFragment(MyFragment(mActivity), 3)
                 }
 
                 if (position != 5) {
-                    spinnerSelected(application, command)
+                    spinnerSelected(application, command, 1)
                 }
             }
 
@@ -203,9 +219,18 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         super.onDestroy()
     }
 
-    fun spinnerSelected(application : Application, name : String) {
+    fun spinnerSelected(application : Application, name : String, flag : Int = 0) {
         CoroutineScope(Dispatchers.IO).launch {
             result = application.db.courseDao().getAllByCourseType(name)
+            when (flag) {
+                1 -> {
+                    val lds : MutableList<CoursePagerAdapter.listData> = mutableListOf()
+                    for (rs in result) {
+                        lds.add(CoursePagerAdapter.listData(false, false))
+                    }
+                    listDataSet = lds
+                }
+            }
 
             CoroutineScope(Dispatchers.Main).launch {
                 refreshMap()
@@ -239,9 +264,18 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         markers = mutableListOf()
         var coords : MutableList<LatLng> = mutableListOf()
 
-        for (rs in result) {
+        for ((index, rs) in result.withIndex()) {
             coords.add(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble()))
-            markers.add(Marker(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble())))
+
+            if (listDataSet[index].course_visit_chk) {
+                var m = Marker(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble()))
+                    m.icon = MarkerIcons.BLACK
+                    m.iconTintColor = Color.RED
+
+                markers.add(m)
+            } else {
+                markers.add(Marker(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble())))
+            }
         }
 
         for (mk in markers) {
@@ -250,10 +284,14 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
         path.coords = coords
         path.map = nMap
+
+        finish_btn.setOnClickListener {
+            mActivity.replaceFragment(HomeFragment(mActivity), 1)
+        }
     }
 
     fun refreshCourseListView() {
-        course_list_view_adaptor = CoursePagerAdapter(mActivity.applicationContext, mFragment, result)
+        course_list_view_adaptor = CoursePagerAdapter(mActivity.applicationContext, mFragment, result, listDataSet)
         course_list_view?.adapter = course_list_view_adaptor
         course_list_view_adaptor!!.notifyDataSetChanged()
     }
@@ -308,6 +346,14 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
                         ypv_container.layoutParams.height = 0
                         ypv_container.requestLayout()
+
+                        finish_btn.setOnClickListener {
+                            if (command != "5") {
+                                spinnerSelected(application, command)
+                            }
+                        }
+
+                        listDataSet = course_list_view_adaptor?.listDataSet!!
                     }
                 }
                 course_list_view_adaptor?.notifyDataSetChanged()
