@@ -203,7 +203,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                 }
 
                 if (position != 5) {
-                    spinnerSelected(application, command)
+                    spinnerSelected(application, command, 1)
                 }
             }
 
@@ -219,9 +219,18 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         super.onDestroy()
     }
 
-    fun spinnerSelected(application : Application, name : String) {
+    fun spinnerSelected(application : Application, name : String, flag : Int = 0) {
         CoroutineScope(Dispatchers.IO).launch {
             result = application.db.courseDao().getAllByCourseType(name)
+            when (flag) {
+                1 -> {
+                    val lds : MutableList<CoursePagerAdapter.listData> = mutableListOf()
+                    for (rs in result) {
+                        lds.add(CoursePagerAdapter.listData(false, false))
+                    }
+                    listDataSet = lds
+                }
+            }
 
             CoroutineScope(Dispatchers.Main).launch {
                 refreshMap()
