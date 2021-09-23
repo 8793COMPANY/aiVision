@@ -160,26 +160,30 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
         mapFragment.getMapAsync {
             nMap = it
-            it.mapType = NaverMap.MapType.Basic
-            it.setLayerGroupEnabled(LAYER_GROUP_TRANSIT, true)
-
-            val cameraUpdate = CameraUpdate.scrollTo(
-                LatLng(result[0].courseLatitude.toDouble(),
-                    result[0].courseLongitude.toDouble()))
-            it.moveCamera(cameraUpdate)
+            it.apply {
+                mapType = NaverMap.MapType.Basic
+                setLayerGroupEnabled(LAYER_GROUP_TRANSIT, true)
+                moveCamera(CameraUpdate.scrollTo(
+                        LatLng(result[0].courseLatitude.toDouble(),
+                                result[0].courseLongitude.toDouble())))
+            }
 
             var coords : MutableList<LatLng> = mutableListOf()
+
             for (rs in result) {
-                coords.add(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble()))
-                markers.add(Marker(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble())))
+                val coordinateInScope = LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble())
+                coords.add(coordinateInScope)
+                markers.add(Marker(coordinateInScope))
             }
 
             for (mk in markers) {
                 mk.map = nMap
             }
 
-            path.coords = coords
-            path.map = nMap
+            path.apply {
+                this.coords = coords
+                map = nMap
+            }
         }
 
         course_list.adapter = ArrayAdapter.createFromResource(
@@ -252,29 +256,36 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             mk.map = null
         }
 
-        nMap?.mapType = NaverMap.MapType.Basic
-        nMap?.setLayerGroupEnabled(LAYER_GROUP_TRANSIT, true)
-
-        val cameraUpdate = CameraUpdate.scrollTo(
-            LatLng(result[0].courseLatitude.toDouble(),
-                result[0].courseLongitude.toDouble()))
-        nMap?.moveCamera(cameraUpdate)
+        nMap?.apply {
+            mapType = NaverMap.MapType.Basic
+            setLayerGroupEnabled(LAYER_GROUP_TRANSIT, true)
+            moveCamera(
+                    CameraUpdate.scrollTo(
+                    LatLng(result[0].courseLatitude.toDouble(),
+                            result[0].courseLongitude.toDouble()
+                            )
+                        )
+                    )
+        }
 
         path = PathOverlay()
         markers = mutableListOf()
         var coords : MutableList<LatLng> = mutableListOf()
 
         for ((index, rs) in result.withIndex()) {
-            coords.add(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble()))
+            val coordinateInScope = LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble())
+            coords.add(coordinateInScope)
 
             if (listDataSet[index].course_visit_chk) {
-                var m = Marker(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble()))
-                    m.icon = MarkerIcons.BLACK
-                    m.iconTintColor = Color.RED
+                var m = Marker(coordinateInScope)
+                m.apply {
+                    icon = MarkerIcons.BLACK
+                    iconTintColor = Color.RED
+                }
 
                 markers.add(m)
             } else {
-                markers.add(Marker(LatLng(rs.courseLatitude.toDouble(), rs.courseLongitude.toDouble())))
+                markers.add(Marker(coordinateInScope))
             }
         }
 
@@ -282,8 +293,10 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             mk.map = nMap
         }
 
-        path.coords = coords
-        path.map = nMap
+        path.apply {
+            this.coords = coords
+            map = nMap
+        }
 
         finish_btn.setOnClickListener {
             mActivity.replaceFragment(HomeFragment(mActivity), 1)
@@ -293,7 +306,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     fun refreshCourseListView() {
         course_list_view_adaptor = CoursePagerAdapter(mActivity.applicationContext, mFragment, result, listDataSet)
         course_list_view?.adapter = course_list_view_adaptor
-        course_list_view_adaptor!!.notifyDataSetChanged()
+        course_list_view?.adapter?.notifyDataSetChanged()
     }
 
     fun playVR_ver2(dataSet : List<Course>, position : Int) {
