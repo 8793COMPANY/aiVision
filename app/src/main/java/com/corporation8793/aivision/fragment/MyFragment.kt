@@ -1,6 +1,7 @@
 package com.corporation8793.aivision.fragment
 
 import android.content.Intent
+import android.graphics.Point
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -75,6 +77,12 @@ class MyFragment(activity: MainActivity)  : Fragment() {
         var edit_btn : Button = view.findViewById(R.id.edit_btn)
         var save_btn : Button = view.findViewById(R.id.save_btn)
 
+        val display = mActivity.windowManager.defaultDisplay// in case of Activity
+/* val display = activity!!.windowManaver.defaultDisplay */ // in case of Fragment
+        val size = Point()
+        display.getRealSize(size) // or getSize(size)
+        val width : Int = ((size.x / 720.0) * 170).toInt()
+
 
         tabs.addTab(tabs.newTab().setText("횃불코스"))
         tabs.addTab(tabs.newTab().setText("희생코스"))
@@ -83,8 +91,8 @@ class MyFragment(activity: MainActivity)  : Fragment() {
         tabs.addTab(tabs.newTab().setText("영혼코스"))
 
 
-        courseAdapter = CourseAdapter()
-        allCourseAdapter = CourseAdapter()
+        courseAdapter = CourseAdapter(width)
+        allCourseAdapter = CourseAdapter(width)
 
         recyclerView.adapter = courseAdapter
         recyclerView.addItemDecoration(RecyclerViewDecoration(30))

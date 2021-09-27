@@ -14,10 +14,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.corporation8793.aivision.R
 import com.corporation8793.aivision.room.Course
 
-class CourseAdapter  : RecyclerView.Adapter<CourseAdapter.ViewHolder>(){
+class CourseAdapter(size : Int)  : RecyclerView.Adapter<CourseAdapter.ViewHolder>(){
 
     var datas = mutableListOf<Course>()
     var check : Boolean = false
+    var item_width : Int = size
     lateinit var context : Context
     lateinit var drawable : GradientDrawable
     var pos : Int = 0
@@ -62,6 +63,10 @@ class CourseAdapter  : RecyclerView.Adapter<CourseAdapter.ViewHolder>(){
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(datas[position])
+        var layoutParams:ViewGroup.LayoutParams = holder.itemView.layoutParams
+        layoutParams.width = item_width
+        holder.itemView.requestLayout()
+
         Log.e("datas", datas[position].courseName)
 //        val layoutParams = holder.itemView.layoutParams
 //        layoutParams.width = 170
