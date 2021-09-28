@@ -1,4 +1,6 @@
 import android.content.Context
+import android.content.Context.WIFI_SERVICE
+import android.net.wifi.WifiManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -37,6 +39,8 @@ class CardPagerAdapter(val context: Context, val activity: MainActivity): CardAd
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)
                 as LayoutInflater
 
+        val wifiManager : WifiManager = context.getSystemService(WIFI_SERVICE) as WifiManager
+
         binding = CardAdaptorBinding.inflate(inflater)
         if (mData[position].getCourseType() == 0) {
             binding.mCourseName.text = mData[position].getCourseName()
@@ -49,7 +53,11 @@ class CardPagerAdapter(val context: Context, val activity: MainActivity): CardAd
 
             binding.courseStartBtn.setOnClickListener {
                 //  : 시작하기 클릭 처리 리스너
-                activity.replaceFragment(CourseFragment(this.activity, position), 2)
+                if (wifiManager.connectionInfo.ssid != WifiManager.UNKNOWN_SSID) {
+                    activity.replaceFragment(CourseFragment(this.activity, position), 2)
+                } else {
+                    Toast.makeText(activity, "Wi-Fi 연결을 확인해주세요", Toast.LENGTH_SHORT).show()
+                }
             }
 
             binding.cardCourseStarSelector.setOnClickListener {
@@ -71,8 +79,12 @@ class CardPagerAdapter(val context: Context, val activity: MainActivity): CardAd
             binding.mySpotText.visibility = View.VISIBLE
 
             binding.courseStartBtn.setOnClickListener {
-                //  : 시작하기 클릭 처리 리스너
-                activity.replaceFragment(MyFragment(activity), 3)
+                if (wifiManager.connectionInfo.ssid != WifiManager.UNKNOWN_SSID) {
+                    //  : 시작하기 클릭 처리 리스너
+                    activity.replaceFragment(MyFragment(activity), 3)
+                } else {
+                    Toast.makeText(activity, "Wi-Fi 연결을 확인해주세요", Toast.LENGTH_SHORT).show()
+                }
             }
 
             binding.cardCourseStarSelector.setOnClickListener {

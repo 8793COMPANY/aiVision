@@ -166,6 +166,10 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                                 )
                             )
                             currentLocation = LatLng(location.latitude, location.longitude)
+                            Log.e("lastLocation", "onCreateView: location ${location.latitude}, ${location.longitude} !!")
+                        } else {
+                            currentLocation = LatLng(result[0].courseLatitude.toDouble(), result[0].courseLongitude.toDouble())
+                            Log.e("lastLocation", "onCreateView: location NULL !!")
                         }
                     }
             }
@@ -272,6 +276,10 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                             )
                         )
                         currentLocation = LatLng(location.latitude, location.longitude)
+                        Log.e("lastLocation", "onCreateView: location ${location.latitude}, ${location.longitude} !!")
+                    } else {
+                        currentLocation = LatLng(result[0].courseLatitude.toDouble(), result[0].courseLongitude.toDouble())
+                        Log.e("lastLocation", "onCreateView: location NULL !!")
                     }
                 }
 

@@ -2,6 +2,8 @@ package com.corporation8793.aivision.recyclerview.course_fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Context.WIFI_SERVICE
+import android.net.wifi.WifiManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +30,8 @@ import kotlin.coroutines.coroutineContext
 
 class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, private val dataSet:List<Course>,
                          val listDataSet : MutableList<listData> = mutableListOf()) : RecyclerView.Adapter<CoursePagerAdapter.Holder>() {
+    lateinit var wifiManager : WifiManager
+
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var mCourseName : TextView = itemView.findViewById(R.id.mCourseName)
         var dash_line_before : ImageView = itemView.findViewById(R.id.dash_line_before)
@@ -40,6 +44,9 @@ class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, p
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context)
         .inflate(R.layout.course_fragment_listview_item, parent, false)
+
+        wifiManager = mContext.getSystemService(WIFI_SERVICE) as WifiManager
+
         return Holder(view)
     }
 
@@ -69,7 +76,11 @@ class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, p
                 mFragment.course_list_view_adaptor?.listDataSet?.get(mFragment.prev_position)?.course_progress = false
                 mFragment.ypv.removeYouTubePlayerListener(mFragment.ypv_object!!)
             }
-            mFragment.playVR_ver2(dataSet, position)
+            if (wifiManager.connectionInfo.ssid != WifiManager.UNKNOWN_SSID) {
+                mFragment.playVR_ver2(dataSet, position)
+            } else {
+                Toast.makeText(mFragment.mActivity, "Wi-Fi 연결을 확인해주세요", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
