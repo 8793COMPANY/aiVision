@@ -2,6 +2,7 @@ package com.corporation8793.aivision.fragment
 
 import CardPagerAdapter
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -65,6 +66,7 @@ class HomeFragment(activity: MainActivity) : Fragment() {
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                Log.i("포-포지션~", "onPageScrolled: $position")
                 val realCurrentPosition: Int
                 val nextPosition: Int
                 val baseElevation: Float = (binding.cardViewPager.adapter as CardPagerAdapter).getBaseElevation()
