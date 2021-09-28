@@ -7,12 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.cardview.widget.CardView
+import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager.widget.ViewPager
 import com.corporation8793.aivision.MainActivity
+import com.corporation8793.aivision.R
 import com.corporation8793.aivision.card.CardAdapter
 import com.corporation8793.aivision.card.CardItem
 import com.corporation8793.aivision.databinding.FragmentHomeBinding
+import org.apache.log4j.lf5.util.Resource
 
 // : Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,11 +66,9 @@ class HomeFragment(activity: MainActivity) : Fragment() {
 
         binding.cardViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
-
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                Log.i("포-포지션~", "onPageScrolled: $position")
                 val realCurrentPosition: Int
                 val nextPosition: Int
                 val baseElevation: Float = (binding.cardViewPager.adapter as CardPagerAdapter).getBaseElevation()
@@ -105,7 +107,11 @@ class HomeFragment(activity: MainActivity) : Fragment() {
             }
 
             override fun onPageSelected(position: Int) {
-
+                when (position) {
+                    0, 1, 2, 3, 4, 5 -> binding.homeMainBackground.background = ResourcesCompat.getDrawable(resources,
+                        resources.getIdentifier("home_main_background_$position", "drawable", mActivity.packageName),
+                        mActivity.theme)
+                }
             } })
 
         return binding.root
