@@ -1,25 +1,20 @@
 package com.corporation8793.aivision.fragment
 
-import android.app.Activity
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
-import android.util.Xml
-import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.FILL_PARENT
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.get
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.corporation8793.aivision.Application
@@ -27,29 +22,22 @@ import com.corporation8793.aivision.MainActivity
 import com.corporation8793.aivision.R
 import com.corporation8793.aivision.recyclerview.course_fragment.CoursePagerAdapter
 import com.corporation8793.aivision.room.Course
-import com.naver.maps.geometry.Coord
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.CameraUpdate
-import com.naver.maps.map.MapFragment
-import com.naver.maps.map.NaverMap
+import com.naver.maps.map.*
 import com.naver.maps.map.NaverMap.LAYER_GROUP_TRANSIT
-import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.util.MarkerIcons
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerCallback
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerFullScreenListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.loadOrCueVideo
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.StringBuilder
 
 // : Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,6 +54,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     var nMap : NaverMap? = null
+    lateinit var currentLocation : LatLng
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     var course_list_view : RecyclerView? = null
     var course_list_view_adaptor : CoursePagerAdapter? = null
     var result: List<Course> = listOf()
@@ -98,6 +88,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         }
     }
 
+    @SuppressLint("MissingPermission")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -112,6 +103,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         map = view.findViewById(R.id.map)
         ypv = view.findViewById(R.id.youtube_player_view)
         ypv_temp = view.findViewById(R.id.youtube_player_view)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(mActivity)
 
         finish_btn.setOnClickListener {
             mActivity.replaceFragment(HomeFragment(mActivity), 1)
@@ -163,9 +156,18 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             it.apply {
                 mapType = NaverMap.MapType.Basic
                 setLayerGroupEnabled(LAYER_GROUP_TRANSIT, true)
-                moveCamera(CameraUpdate.scrollTo(
-                        LatLng(result[0].courseLatitude.toDouble(),
-                                result[0].courseLongitude.toDouble())))
+
+                fusedLocationClient.lastLocation
+                    .addOnSuccessListener { location->
+                        if (location != null) {
+                            moveCamera(
+                                CameraUpdate.scrollTo(
+                                    LatLng(location.latitude, location.longitude)
+                                )
+                            )
+                            currentLocation = LatLng(location.latitude, location.longitude)
+                        }
+                    }
             }
 
             var coords : MutableList<LatLng> = mutableListOf()
@@ -243,6 +245,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         }
     }
 
+    @SuppressLint("MissingPermission")
     fun refreshMap() {
         // 오버레이 초기화
         if (ypv_flag) {
@@ -259,13 +262,19 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         nMap?.apply {
             mapType = NaverMap.MapType.Basic
             setLayerGroupEnabled(LAYER_GROUP_TRANSIT, true)
-            moveCamera(
-                    CameraUpdate.scrollTo(
-                    LatLng(result[0].courseLatitude.toDouble(),
-                            result[0].courseLongitude.toDouble()
+
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location->
+                    if (location != null) {
+                        moveCamera(
+                            CameraUpdate.scrollTo(
+                                LatLng(location.latitude, location.longitude)
                             )
                         )
-                    )
+                        currentLocation = LatLng(location.latitude, location.longitude)
+                    }
+                }
+
         }
 
         path = PathOverlay()
