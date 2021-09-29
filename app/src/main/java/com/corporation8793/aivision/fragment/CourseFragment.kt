@@ -141,8 +141,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             result = application.db.courseDao().getAllByCourseType(name)
 
             val lds : MutableList<CoursePagerAdapter.listData> = mutableListOf()
-            for (rs in result) {
-                lds.add(CoursePagerAdapter.listData(false, false))
+            for ((index, rs) in result.withIndex()) {
+                lds.add(CoursePagerAdapter.listData(index, false, false))
             }
             listDataSet = lds
 
@@ -235,8 +235,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             when (flag) {
                 1 -> {
                     val lds : MutableList<CoursePagerAdapter.listData> = mutableListOf()
-                    for (rs in result) {
-                        lds.add(CoursePagerAdapter.listData(false, false))
+                    for ((index, rs) in result.withIndex()) {
+                        lds.add(CoursePagerAdapter.listData(index,false, false))
                     }
                     listDataSet = lds
                 }

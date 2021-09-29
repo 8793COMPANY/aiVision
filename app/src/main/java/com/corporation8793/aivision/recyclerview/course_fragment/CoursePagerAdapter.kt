@@ -52,7 +52,7 @@ class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, p
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.mCourseName.text = dataSet[position].courseName
-        listDataSet.add(listData(course_progress = false, course_visit_chk = false))
+        listDataSet.add(listData(position = position, course_progress = false, course_visit_chk = false))
         when(position) {
             0 -> holder.dash_line_before.visibility = View.INVISIBLE
             (itemCount - 1) -> holder.dash_line_after.visibility = View.INVISIBLE
@@ -89,6 +89,7 @@ class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, p
     }
 
     data class listData(
+        var position : Int,
         var course_progress : Boolean,
         var course_visit_chk : Boolean
     )
