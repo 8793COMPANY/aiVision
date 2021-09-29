@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="282dp"
+        android:layout_height="218dp"
         android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,7 +53,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.95" />
+                app:layout_constraintVertical_bias="0.85" />
 
             <ImageView
                 android:id="@+id/course_visit_chk"
@@ -65,7 +65,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.45" />
+                app:layout_constraintVertical_bias="0.35" />
 
             <TextView
                 android:id="@+id/mCourseName"
@@ -80,15 +80,15 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/course_visit_chk"
-                app:layout_constraintVertical_bias="0.05" />
+                app:layout_constraintVertical_bias="0.15" />
 
             <Button
-                android:id="@+id/course_vr_start_btn"
+                android:id="@+id/course_know_more"
                 android:layout_width="76dp"
                 android:layout_height="18dp"
-                android:background="@drawable/course_vr_start_btn"
+                android:background="@drawable/course_know_more"
                 android:gravity="center"
-                android:text="VR 시청하기"
+                android:text="알아보기"
                 android:textColor="#767676"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -96,7 +96,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mCourseName"
-                app:layout_constraintVertical_bias="0.05"
+                app:layout_constraintVertical_bias="0.15"
                 app:layout_constraintWidth_percent="0.9" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

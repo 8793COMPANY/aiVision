@@ -38,7 +38,7 @@ class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, p
         var dash_line_after : ImageView = itemView.findViewById(R.id.dash_line_after)
         var course_progress : TextView = itemView.findViewById(R.id.course_progress)
         var course_visit_chk : ImageView = itemView.findViewById(R.id.course_visit_chk)
-        var course_vr_start_btn : Button = itemView.findViewById(R.id.course_vr_start_btn)
+        var course_know_more : Button = itemView.findViewById(R.id.course_know_more)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -71,13 +71,14 @@ class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, p
             !listDataSet[position].course_visit_chk -> holder.course_visit_chk.setBackgroundResource(R.drawable.course_visit_chk_off)
         }
 
-        holder.course_vr_start_btn.setOnClickListener {
+        holder.course_know_more.setOnClickListener {
             if (mFragment.ypv_object != null) {
                 mFragment.course_list_view_adaptor?.listDataSet?.get(mFragment.prev_position)?.course_progress = false
                 mFragment.ypv.removeYouTubePlayerListener(mFragment.ypv_object!!)
             }
             if (wifiManager.connectionInfo.ssid != WifiManager.UNKNOWN_SSID) {
-                mFragment.playVR_ver2(dataSet, position)
+                //mFragment.playVR_ver2(dataSet, position)
+                mFragment.knowMore()
             } else {
                 Toast.makeText(mFragment.mActivity, "Wi-Fi 연결을 확인해주세요", Toast.LENGTH_SHORT).show()
             }

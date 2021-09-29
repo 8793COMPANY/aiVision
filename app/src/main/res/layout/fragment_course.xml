@@ -13,7 +13,7 @@
         android:background="@color/white"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="720:110"
+        app:layout_constraintDimensionRatio="1536:174"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,11 +39,11 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/finish_btn"
-            android:layout_width="0dp"
+            android:layout_width="47dp"
             android:layout_height="0dp"
             android:background="@drawable/finish_btn"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="60:60"
+            app:layout_constraintDimensionRatio="10:10"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.95"
             app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +67,7 @@
         app:layout_constraintTop_toBottomOf="@id/actionbar"
         app:layout_constraintWidth_default="percent"
         app:layout_constraintHeight_default="percent"
-        app:layout_constraintHeight_percent="0.6"
+        app:layout_constraintHeight_percent="0.7"
         app:layout_constraintWidth_percent="1"/>
 
     <LinearLayout
@@ -100,7 +100,6 @@
         android:background="@color/white"
         android:elevation="20dp"
         android:orientation="horizontal"
-        android:weightSum="720"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

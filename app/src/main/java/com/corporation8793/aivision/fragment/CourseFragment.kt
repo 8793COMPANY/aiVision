@@ -24,6 +24,8 @@ import com.corporation8793.aivision.recyclerview.course_fragment.CoursePagerAdap
 import com.corporation8793.aivision.room.Course
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.NaverMap.LAYER_GROUP_TRANSIT
@@ -59,6 +61,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     var course_list_view : RecyclerView? = null
     var course_list_view_adaptor : CoursePagerAdapter? = null
     var result: List<Course> = listOf()
+    private lateinit var bottomSheetView : View
+    private lateinit var bottomSheetDialog : BottomSheetDialog
     val mActivity = activity
     lateinit var finish_btn : AppCompatButton
     lateinit var map : View
@@ -105,6 +109,11 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         ypv_temp = view.findViewById(R.id.youtube_player_view)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(mActivity)
+
+        bottomSheetView = inflater.inflate(R.layout.bottom_sheet_layout, container, false)
+        bottomSheetDialog = BottomSheetDialog(mActivity)
+        bottomSheetDialog.setContentView(bottomSheetView)
+        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
 
         finish_btn.setOnClickListener {
             mActivity.replaceFragment(HomeFragment(mActivity), 1)
@@ -395,6 +404,10 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
         ypv_flag = true
         lifecycle.addObserver(ypv)
+    }
+
+    fun knowMore() {
+        bottomSheetDialog.show()
     }
 
     override fun onAttach(context: Context) {

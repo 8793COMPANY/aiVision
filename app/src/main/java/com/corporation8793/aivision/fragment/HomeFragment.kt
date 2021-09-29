@@ -64,6 +64,8 @@ class HomeFragment(activity: MainActivity) : Fragment() {
         binding.cardViewPager.offscreenPageLimit = 6
         binding.cardViewPager.currentItem = 0
 
+        binding.cardViewPager.pageMargin = 120
+
         binding.cardViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
