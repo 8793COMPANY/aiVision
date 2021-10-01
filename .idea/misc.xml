@@ -18,14 +18,15 @@
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/drawable/course_start_btn_2.xml" value="0.36041666666666666" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/drawable/course_vr_start_btn.xml" value="0.36041666666666666" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/drawable/dash_line.xml" value="0.36041666666666666" />
+        <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/drawable/dash_line_done.xml" value="0.337890625" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/drawable/rounded_shape.xml" value="0.36041666666666666" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/activity_main.xml" value="0.34010416666666665" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/activity_quiz.xml" value="0.34010416666666665" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/activity_splash.xml" value="0.15473933649289098" />
-        <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.2" />
+        <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.12" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/button_ripple.xml" value="0.34010416666666665" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/card_adaptor.xml" value="0.33" />
-        <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/course_fragment_listview_item.xml" value="0.25" />
+        <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/course_fragment_listview_item.xml" value="0.67" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/fragment_course.xml" value="0.25" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/fragment_my.xml" value="0.2105978260869565" />
@@ -39,5 +40,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.12" />
+      </ProjectState>
+    </option>
   </component>
 </project>

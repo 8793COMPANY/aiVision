@@ -114,6 +114,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         bottomSheetDialog = BottomSheetDialog(mActivity)
         bottomSheetDialog.setContentView(bottomSheetView)
         bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomSheetDialog.behavior.skipCollapsed = true
+        bottomSheetDialog.behavior.saveFlags = BottomSheetBehavior.SAVE_SKIP_COLLAPSED
+        bottomSheetDialog.behavior.isFitToContents = true
 
         finish_btn.setOnClickListener {
             mActivity.replaceFragment(HomeFragment(mActivity), 1)

@@ -18,6 +18,18 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/dash_line_before_done"
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                android:layerType="software"
+                android:src="@drawable/dash_line_done"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/course_visit_chk"
+                app:layout_constraintEnd_toStartOf="@+id/course_visit_chk"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/course_visit_chk" />
+
+            <ImageView
                 android:id="@+id/dash_line_before"
                 android:layout_width="0dp"
                 android:layout_height="10dp"
@@ -36,6 +48,18 @@
                 android:layerType="software"
                 android:src="@drawable/dash_line"
                 android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/course_visit_chk"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/course_visit_chk"
+                app:layout_constraintTop_toTopOf="@+id/course_visit_chk" />
+
+            <ImageView
+                android:id="@+id/dash_line_after_done"
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                android:layerType="software"
+                android:src="@drawable/dash_line_done"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/course_visit_chk"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/course_visit_chk"
