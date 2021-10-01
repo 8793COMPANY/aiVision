@@ -35,7 +35,9 @@ class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, p
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var mCourseName : TextView = itemView.findViewById(R.id.mCourseName)
         var dash_line_before : ImageView = itemView.findViewById(R.id.dash_line_before)
+        var dash_line_before_done : ImageView = itemView.findViewById(R.id.dash_line_before_done)
         var dash_line_after : ImageView = itemView.findViewById(R.id.dash_line_after)
+        var dash_line_after_done : ImageView = itemView.findViewById(R.id.dash_line_after_done)
         var course_progress : TextView = itemView.findViewById(R.id.course_progress)
         var course_visit_chk : ImageView = itemView.findViewById(R.id.course_visit_chk)
         var course_know_more : Button = itemView.findViewById(R.id.course_know_more)
@@ -51,16 +53,29 @@ class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, p
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.setIsRecyclable(false)
         holder.mCourseName.text = dataSet[position].courseName
         listDataSet.add(listData(position = position, course_progress = false, course_visit_chk = false))
         when(position) {
-            0 -> holder.dash_line_before.visibility = View.INVISIBLE
-            (itemCount - 1) -> holder.dash_line_after.visibility = View.INVISIBLE
+            // 첫 번째
+            0 -> {
+                holder.dash_line_before.visibility = View.INVISIBLE
+                holder.dash_line_before_done.visibility = View.INVISIBLE
+            }
+
+            // 마지막
+            (itemCount - 1) -> {
+                holder.dash_line_after.visibility = View.INVISIBLE
+                holder.dash_line_after_done.visibility = View.INVISIBLE
+            }
+
+            // 중간
             else -> {
                 holder.dash_line_before.visibility = View.VISIBLE
                 holder.dash_line_after.visibility = View.VISIBLE
             }
         }
+
         when {
             listDataSet[position].course_progress -> holder.course_progress.visibility = View.VISIBLE
             !listDataSet[position].course_progress -> holder.course_progress.visibility = View.INVISIBLE
@@ -71,14 +86,26 @@ class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, p
             !listDataSet[position].course_visit_chk -> holder.course_visit_chk.setBackgroundResource(R.drawable.course_visit_chk_off)
         }
 
+        if (listDataSet[position].course_visit_chk) {
+            for ((i, d) in listDataSet.withIndex()) {
+                if (d.course_visit_chk && (i > position)) {
+                    holder.dash_line_after_done.visibility = View.VISIBLE
+                    holder.dash_line_after.visibility = View.INVISIBLE
+                } else if (d.course_visit_chk && (i < position)) {
+                    holder.dash_line_before_done.visibility = View.VISIBLE
+                    holder.dash_line_before.visibility = View.INVISIBLE
+                }
+            }
+        }
+
         holder.course_know_more.setOnClickListener {
             if (mFragment.ypv_object != null) {
                 mFragment.course_list_view_adaptor?.listDataSet?.get(mFragment.prev_position)?.course_progress = false
                 mFragment.ypv.removeYouTubePlayerListener(mFragment.ypv_object!!)
             }
             if (wifiManager.connectionInfo.ssid != WifiManager.UNKNOWN_SSID) {
-                //mFragment.playVR_ver2(dataSet, position)
-                mFragment.knowMore()
+                mFragment.playVR_ver2(dataSet, position)
+                //mFragment.knowMore()
             } else {
                 Toast.makeText(mFragment.mActivity, "Wi-Fi 연결을 확인해주세요", Toast.LENGTH_SHORT).show()
             }
