@@ -104,8 +104,8 @@ class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, p
                 mFragment.ypv.removeYouTubePlayerListener(mFragment.ypv_object!!)
             }
             if (wifiManager.connectionInfo.ssid != WifiManager.UNKNOWN_SSID) {
-                mFragment.playVR_ver2(dataSet, position)
-                //mFragment.knowMore()
+                //mFragment.playVR_ver2(dataSet, position)
+                mFragment.knowMore(dataSet, position)
             } else {
                 Toast.makeText(mFragment.mActivity, "Wi-Fi 연결을 확인해주세요", Toast.LENGTH_SHORT).show()
             }
