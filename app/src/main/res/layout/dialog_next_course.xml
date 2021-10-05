@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/next_course_dialog"
+    android:orientation="vertical"
+    android:weightSum="400">
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="@drawable/next_course_dialog"-->
+<!--        android:orientation="vertical"-->
+<!--        android:weightSum="400">-->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="220"></View>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="126"
+            android:orientation="horizontal"
+            android:weightSum="840">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"></View>
+
+            <Button
+                android:id="@+id/ok_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="352"
+                android:background="@drawable/dialog_ok_btn"></Button>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="36"></View>
+
+            <Button
+                android:id="@+id/cancel_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="352"
+                android:background="@drawable/dialog_cancel_btn"></Button>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"></View>
+        </LinearLayout>
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="54"></View>
+
+<!--    </LinearLayout>-->
+</LinearLayout>

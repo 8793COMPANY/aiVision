@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/course_select_background"
+    android:weightSum="855"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/course1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="142"
+        android:weightSum="142"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="40"></View>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="70">
+
+            <TextView
+                android:id="@+id/courseType1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="횃불코스"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:textSize="15dp"></TextView>
+
+            <ImageView
+                android:id="@+id/course1_sign"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/current_course_sign"
+                android:layout_toLeftOf="@+id/courseType1"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"></ImageView>
+
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="32"></View>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#83000000"></View>
+
+    <LinearLayout
+        android:id="@+id/course2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="142"
+        android:weightSum="142"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="40"></View>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="70">
+
+            <TextView
+                android:id="@+id/courseType2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="희생코스"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:textSize="15dp"></TextView>
+
+            <ImageView
+                android:id="@+id/course2_sign"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:layout_toLeftOf="@+id/courseType2"></ImageView>
+
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="32"></View>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#83000000"></View>
+
+
+    <LinearLayout
+        android:id="@+id/course3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="142"
+        android:weightSum="142"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="40"></View>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="70">
+
+            <TextView
+                android:id="@+id/courseType3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="열정코스"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:textSize="15dp"></TextView>
+
+            <ImageView
+                android:id="@+id/course3_sign"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_toLeftOf="@+id/courseType3"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"></ImageView>
+
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="32"></View>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#83000000"></View>
+
+    <LinearLayout
+        android:id="@+id/course4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="142" android:weightSum="142"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="40"></View>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="70">
+
+            <TextView
+                android:id="@+id/courseType4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="영혼코스"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:textSize="15dp"></TextView>
+
+            <ImageView
+                android:id="@+id/course4_sign"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_toLeftOf="@+id/courseType4"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"></ImageView>
+
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="32"></View>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#83000000"></View>
+
+    <LinearLayout
+        android:id="@+id/course5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="142"
+        android:weightSum="142"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="40"></View>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="70">
+
+            <TextView
+                android:id="@+id/courseType5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="열정코스"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:textSize="15dp"></TextView>
+
+            <ImageView
+                android:id="@+id/course5_sign"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_toLeftOf="@+id/courseType5"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"></ImageView>
+
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="32"></View>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#83000000"></View>
+
+    <LinearLayout
+        android:id="@+id/course6"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="142"
+        android:weightSum="142"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="40"></View>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="70">
+
+            <TextView
+                android:id="@+id/courseType6"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="나만의 VR코스"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:textSize="15dp"></TextView>
+
+            <ImageView
+                android:id="@+id/course6_sign"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_toLeftOf="@+id/courseType6"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"></ImageView>
+
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="32"></View>
+    </LinearLayout>
+
+
+</LinearLayout>

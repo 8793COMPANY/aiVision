@@ -1,17 +1,20 @@
 package com.corporation8793.aivision.fragment
 
-import android.content.Intent
+import android.content.Context
+import android.graphics.Color
 import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.corporation8793.aivision.Application
@@ -19,11 +22,9 @@ import com.corporation8793.aivision.MainActivity
 import com.corporation8793.aivision.R
 import com.corporation8793.aivision.recyclerview.CourseAdapter
 import com.corporation8793.aivision.recyclerview.RecyclerViewDecoration
-import com.corporation8793.aivision.room.AppDatabase
 import com.corporation8793.aivision.room.Course
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -50,6 +51,14 @@ class MyFragment(activity: MainActivity)  : Fragment() {
     var check : Boolean = false
     val mActivity = activity
     lateinit var application: Application
+
+    lateinit var mClickLister : View.OnClickListener
+
+    lateinit var mAlertDialog : AlertDialog
+
+
+    var count : Int = 0
+
 
     var courseType: String = "횃불코스"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,13 +114,13 @@ class MyFragment(activity: MainActivity)  : Fragment() {
         changeCourseItem("횃불코스")
 
 
-        allCourseAdapter.setOnItemClickListener(object : CourseAdapter.OnItemClickListener{
-            override fun onItemClick(v: View, data: Course, pos : Int, courseName : String) {
+        allCourseAdapter.setOnItemClickListener(object : CourseAdapter.OnItemClickListener {
+            override fun onItemClick(v: View, data: Course, pos: Int, courseName: String) {
                 if (check)
                     addItem(courseName)
-                    recyclerView.scrollToPosition(datas.size)
-                }
-            })
+                recyclerView.scrollToPosition(datas.size)
+            }
+        })
 
 
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -125,31 +134,33 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab!!.position) {
-                    0-> {
+                    0 -> {
                         Handler(Looper.getMainLooper()).postDelayed({
                             changeCourseItem("횃불코스")
                         }, 200)
                     }
-                    1-> {
+                    1 -> {
                         Handler(Looper.getMainLooper()).postDelayed({
                             changeCourseItem("희생코스")
                         }, 200)
 
                     }
-                    2-> {
+                    2 -> {
                         Handler(Looper.getMainLooper()).postDelayed({
                             changeCourseItem("광장코스")
                         }, 200)
                     }
-                    3-> {
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            changeCourseItem("열정코스")
-                        }, 200)
+                    3 -> {
+                        courseSelectMenu()
+//                        Handler(Looper.getMainLooper()).postDelayed({
+//                            changeCourseItem("열정코스")
+//                        }, 200)
                     }
-                    4->{
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        changeCourseItem("영혼코스")
-                    }, 200)
+                    4 -> {
+                        nextCourseDialog()
+//                    Handler(Looper.getMainLooper()).postDelayed({
+//                        changeCourseItem("영혼코스")
+//                    }, 200)
                     }
 
                 }
@@ -165,11 +176,11 @@ class MyFragment(activity: MainActivity)  : Fragment() {
                 check = false
                 courseAdapter.editMode()
                 datas.apply {
-                    add(Course(datas.size,"","","last_item_image","","","","",""))
+                    add(Course(datas.size, "", "", "last_item_image", "", "", "", "", ""))
                     courseAdapter.datas = datas
-                    datas.removeAt(datas.size-1)
+                    datas.removeAt(datas.size - 1)
                     courseAdapter.notifyDataSetChanged()
-                    recyclerView.scrollToPosition(courseAdapter.itemCount-1)
+                    recyclerView.scrollToPosition(courseAdapter.itemCount - 1)
                 }
             }else{
                 edit_btn.setBackgroundResource(R.drawable.my_finish_btn)
@@ -186,19 +197,55 @@ class MyFragment(activity: MainActivity)  : Fragment() {
                 str += i.courseName+","
             }
             if (!str.trim().equals("")){
-                Log.e(courseType,str.substring(0,str.length-1))
+                Log.e(courseType, str.substring(0, str.length - 1))
 
 
-                Application.prefs.setString("my_course",str.substring(0,str.length-1))
+                Application.prefs.setString("my_course", str.substring(0, str.length - 1))
             }else{
-                Application.prefs.setString("my_course",str.substring(0,str.length))
+                Application.prefs.setString("my_course", str.substring(0, str.length))
             }
 
         }
 
+        mClickLister= object : View.OnClickListener{ override fun onClick(v: View?) {
+             if (v?.id == R.id.course1){
+                 count=0
+                 mAlertDialog.dismiss()
+             }
+             if (v?.id == R.id.course2){
+                 count=1
+                 mAlertDialog.dismiss()
+             }
+            if (v?.id == R.id.course3){
+                count=2
+                mAlertDialog.dismiss()
+            }
+            if (v?.id == R.id.course4){
+                count=3
+                mAlertDialog.dismiss()
+            }
+            if (v?.id == R.id.course5){
+                count=4
+                mAlertDialog.dismiss()
+            }
+            if (v?.id == R.id.course6){
+                count=5
+                mAlertDialog.dismiss()
+            }
+
+            }
+        }
+
+
+
+
+
+
 
         return view
     }
+
+
 
     fun notifyItem(){
 
@@ -208,11 +255,13 @@ class MyFragment(activity: MainActivity)  : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
 
                     var listsize: Int = 0
-                    if (!Application.prefs.getString("my_course","none").equals("none")) {
-                        Log.e("in","pref")
-                        var arrays : List<String> = Application.prefs.getString("my_course","none").split(",")
+                    if (!Application.prefs.getString("my_course", "none").equals("none")) {
+                        Log.e("in", "pref")
+                        var arrays : List<String> = Application.prefs.getString("my_course", "none").split(
+                            ","
+                        )
                         for(i in arrays){
-                            Log.e("i확인",i)
+                            Log.e("i확인", i)
                             if (application.db.courseDao().findCourseData(i) != null) {
                                 add(application.db.courseDao().findCourseData(i))
                             }
@@ -236,7 +285,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
         }
 
 
-    fun changeCourseItem(courseType : String){
+    fun changeCourseItem(courseType: String){
 
         this.courseType = courseType
         all_datas.clear()
@@ -259,13 +308,13 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 
 
 
-    fun addItem(courseName : String){
+    fun addItem(courseName: String){
         datas.apply {
 
-            Log.e("in","notifyItem")
+            Log.e("in", "notifyItem")
             CoroutineScope(Dispatchers.IO).launch {
                 val list : List<Course> = application.db.courseDao().findByCourseName(courseName)
-                addAll(datas.size-1,list)
+                addAll(datas.size - 1, list)
 
 
                 Handler(Looper.getMainLooper()).postDelayed({
@@ -281,13 +330,120 @@ class MyFragment(activity: MainActivity)  : Fragment() {
         }
     }
 
+    // 여기서부터
+
+    fun courseSelectMenu(){
+        val builder = AlertDialog.Builder(this.requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.course_select_layout, null)
+
+        val course1 = dialogView.findViewById<LinearLayout>(R.id.course1)
+        val course2 = dialogView.findViewById<LinearLayout>(R.id.course2)
+        val course3 = dialogView.findViewById<LinearLayout>(R.id.course3)
+        val course4 = dialogView.findViewById<LinearLayout>(R.id.course4)
+        val course5 = dialogView.findViewById<LinearLayout>(R.id.course5)
+        val course6 = dialogView.findViewById<LinearLayout>(R.id.course6)
+
+        course1.setOnClickListener(mClickLister)
+        course2.setOnClickListener(mClickLister)
+        course3.setOnClickListener(mClickLister)
+        course4.setOnClickListener(mClickLister)
+        course5.setOnClickListener(mClickLister)
+        course6.setOnClickListener(mClickLister)
+
+        if (count != 0){
+            dialogView.findViewById<ImageView>(R.id.course1_sign).setBackgroundResource(android.R.color.transparent)
+            var array = arrayOf(R.id.course1_sign,R.id.course2_sign,R.id.course3_sign,R.id.course4_sign,R.id.course5_sign,R.id.course6_sign)
+
+            dialogView.findViewById<ImageView>(array[count]).setBackgroundResource(R.drawable.current_course_sign)
+        }
+
+
+        mAlertDialog = builder.setView(dialogView).show()
+
+        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+        mAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        if (Build.VERSION.SDK_INT < 30){
+            val display = windowManager.defaultDisplay
+            val size = Point()
+
+            display.getSize(size)
+
+            val window = mAlertDialog.window
+
+            val x = (size.x * 0.55f).toInt()
+            val y = (size.y * 0.38f).toInt()
+
+            window?.setLayout(x, y)
+
+        }else{
+            val rect = windowManager.currentWindowMetrics.bounds
+
+            val window = mAlertDialog.window
+            val x = (rect.width() * 0.55f).toInt()
+            val y = (rect.height() * 0.38f).toInt()
+
+            window?.setLayout(x, y)
+        }
+
+    }
+
+
+
+    fun nextCourseDialog(){
+        val builder = AlertDialog.Builder(this.requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.dialog_next_course, null)
+        val ok_btn = dialogView.findViewById<Button>(R.id.ok_btn)
+        val cancel_btn = dialogView.findViewById<Button>(R.id.cancel_btn)
+        val mAlertDialog = builder.setView(dialogView).show()
+        ok_btn.setOnClickListener{
+            Toast.makeText(context, "ok!", Toast.LENGTH_SHORT).show()
+            mAlertDialog.dismiss()
+        }
+        cancel_btn.setOnClickListener{
+            mAlertDialog.dismiss()
+        }
+
+        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+        mAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        if (Build.VERSION.SDK_INT < 30){
+            val display = windowManager.defaultDisplay
+            val size = Point()
+
+            display.getSize(size)
+
+            val window = mAlertDialog.window
+
+            val x = (size.x * 0.7f).toInt()
+            val y = (size.y * 0.2f).toInt()
+
+            window?.setLayout(x, y)
+
+        }else{
+            val rect = windowManager.currentWindowMetrics.bounds
+
+            val window = mAlertDialog.window
+            val x = (rect.width() * 0.7f).toInt()
+            val y = (rect.height() * 0.2f).toInt()
+
+            window?.setLayout(x, y)
+        }
+
+    }
+
+    //여기까지
+
+
     fun allCourseList(courseName: String){
         all_datas.clear()
         all_datas.apply {
             CoroutineScope(Dispatchers.IO).launch {
 
-                if (Application.prefs.getString(courseType,"none").equals("none")) {
-                    Log.e("in","dao")
+                if (Application.prefs.getString(courseType, "none").equals("none")) {
+                    Log.e("in", "dao")
 
 //                    for (i in 0..application.db.courseDao().withoutCourseType(courseName).size-1) {
 //                        Log.e("in", i.toString())
@@ -296,8 +452,10 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 //                    }
                     addAll(application.db.courseDao().withoutCourseType(courseName))
                 }else{
-                    Log.e("in","pref")
-                    var arrays : List<String> = Application.prefs.getString(courseType,"none").split(",")
+                    Log.e("in", "pref")
+                    var arrays : List<String> = Application.prefs.getString(courseType, "none").split(
+                        ","
+                    )
 
                     for (i in 0..application.db.courseDao().getAll().size-1) {
                         if (application.db.courseDao().getAll().get(i).courseName in arrays){
