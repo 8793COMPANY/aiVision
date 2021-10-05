@@ -221,7 +221,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             ) {
                 when (position) {
                     0, 1, 2, 3, 4 -> command = course_list.selectedItem.toString()
-                    5 -> mActivity.replaceFragment(MyFragment(mActivity), 3)
+                    5 -> myCourseSelected(application, 1)
                 }
 
                 if (position != 5) {
@@ -244,6 +244,38 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     fun spinnerSelected(application : Application, name : String, flag : Int = 0) {
         CoroutineScope(Dispatchers.IO).launch {
             result = application.db.courseDao().getAllByCourseType(name)
+            when (flag) {
+                1 -> {
+                    val lds : MutableList<CoursePagerAdapter.listData> = mutableListOf()
+                    for ((index, rs) in result.withIndex()) {
+                        lds.add(CoursePagerAdapter.listData(index,false, false))
+                    }
+                    listDataSet = lds
+                }
+            }
+
+            CoroutineScope(Dispatchers.Main).launch {
+                refreshMap()
+                refreshCourseListView()
+            }
+        }
+    }
+
+    fun myCourseSelected(application : Application, flag : Int = 0) {
+        CoroutineScope(Dispatchers.IO).launch {
+            var ml : MutableList<Course> = mutableListOf()
+            ml.apply {
+                if (Application.prefs.getString("my_course","none") != "none") {
+                    var arrays : List<String> = Application.prefs.getString("my_course","none").split(",")
+                    for(i in arrays){
+                        if (application.db.courseDao().findCourseData(i) != null) {
+                            add(application.db.courseDao().findCourseData(i))
+                        }
+                    }
+                }
+            }
+
+            result = ml.toList()
             when (flag) {
                 1 -> {
                     val lds : MutableList<CoursePagerAdapter.listData> = mutableListOf()
@@ -376,6 +408,14 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
                         ypv_container.layoutParams.height = 0
                         ypv_container.requestLayout()
+
+                        finish_btn.setOnClickListener {
+                            if (command != "5") {
+                                spinnerSelected(application, command)
+                            } else {
+                                myCourseSelected(application)
+                            }
+                        }
                     }
                     PlayerConstants.PlayerState.ENDED -> {
                         course_list_view_adaptor?.listDataSet?.get(position)?.course_progress = false
@@ -392,8 +432,12 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                         finish_btn.setOnClickListener {
                             if (command != "5") {
                                 spinnerSelected(application, command)
+                            } else {
+                                myCourseSelected(application)
                             }
                         }
+
+                        // 다음 코스 팝업 (prev_position + 1 로 play vr 재생)
 
                         listDataSet = course_list_view_adaptor?.listDataSet!!
                     }
