@@ -14,6 +14,7 @@ import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -287,8 +288,12 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             }
 
             CoroutineScope(Dispatchers.Main).launch {
-                refreshMap()
-                refreshCourseListView()
+                if (result.isNotEmpty()) {
+                    refreshMap()
+                    refreshCourseListView()
+                } else {
+                    mActivity.replaceFragment(MyFragment(mActivity), 3)
+                }
             }
         }
     }
@@ -453,7 +458,28 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         lifecycle.addObserver(ypv)
     }
 
-    fun knowMore() {
+    fun knowMore(dataSet : List<Course>, position : Int) {
+        // 바텀 시트 초기화
+        bottomSheetView.findViewById<ImageView>(R.id.bottom_sheet_dialog_picture).background = ResourcesCompat.getDrawable(resources,
+            resources.getIdentifier(dataSet[position].courseImgName, "drawable", mActivity.packageName),
+            mActivity.theme)
+        bottomSheetView.findViewById<TextView>(R.id.course_name).text = dataSet[position].courseName
+        bottomSheetView.findViewById<TextView>(R.id.course_content).text = dataSet[position].courseContent
+        // 버튼 리스너 초기화
+        bottomSheetView.findViewById<Button>(R.id.bottom_sheet_dialog_dismiss_btn).setOnClickListener { bottomSheetDialog.dismiss() }
+        bottomSheetView.findViewById<Button>(R.id.play_vr_btn).setOnClickListener {
+            playVR_ver2(dataSet, position)
+            bottomSheetDialog.dismiss()
+        }
+        // 스테이트 초기화
+        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomSheetDialog.behavior.skipCollapsed = true
+        bottomSheetDialog.behavior.saveFlags = BottomSheetBehavior.SAVE_SKIP_COLLAPSED
+        bottomSheetDialog.behavior.isFitToContents = true
+        // 초기화 끝~
+        bottomSheetDialog.setContentView(bottomSheetView)
+
+        // 쑈~ 끝은 없는거야~ 😁
         bottomSheetDialog.show()
     }
 
