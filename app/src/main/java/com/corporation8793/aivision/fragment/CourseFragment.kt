@@ -460,6 +460,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
     fun knowMore(dataSet : List<Course>, position : Int) {
         // 바텀 시트 초기화
+        val naverSearchQuery = "https://search.naver.com/search.naver?query=${dataSet[position].courseName}"
         bottomSheetView.findViewById<ImageView>(R.id.bottom_sheet_dialog_picture).background = ResourcesCompat.getDrawable(resources,
             resources.getIdentifier(dataSet[position].courseImgName, "drawable", mActivity.packageName),
             mActivity.theme)
