@@ -5,15 +5,20 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
+import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.WindowManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
@@ -69,6 +74,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     var totalPage = 0
     var currentPage = 0
     var contents : List<String> = listOf()
+    lateinit var mClickLister : View.OnClickListener
+    lateinit var mAlertDialog : AlertDialog
+    var count : Int = 0
     val mActivity = activity
     lateinit var finish_btn : AppCompatButton
     lateinit var map : View
@@ -447,9 +455,10 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                             }
                         }
 
-                        // 다음 코스 팝업 (prev_position + 1 로 play vr 재생)
-
                         listDataSet = course_list_view_adaptor?.listDataSet!!
+
+                        ypv.removeYouTubePlayerListener(this)
+                        nextCourseDialog()
                     }
                 }
                 course_list_view_adaptor?.notifyDataSetChanged()
@@ -606,4 +615,118 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         super.onDetach()
         callback.remove()
     }
+
+    // 여기서부터
+
+    fun courseSelectMenu(){
+        val builder = AlertDialog.Builder(this.requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.course_select_layout, null)
+
+        val course1 = dialogView.findViewById<LinearLayout>(R.id.course1)
+        val course2 = dialogView.findViewById<LinearLayout>(R.id.course2)
+        val course3 = dialogView.findViewById<LinearLayout>(R.id.course3)
+        val course4 = dialogView.findViewById<LinearLayout>(R.id.course4)
+        val course5 = dialogView.findViewById<LinearLayout>(R.id.course5)
+        val course6 = dialogView.findViewById<LinearLayout>(R.id.course6)
+
+        course1.setOnClickListener(mClickLister)
+        course2.setOnClickListener(mClickLister)
+        course3.setOnClickListener(mClickLister)
+        course4.setOnClickListener(mClickLister)
+        course5.setOnClickListener(mClickLister)
+        course6.setOnClickListener(mClickLister)
+
+        if (count != 0){
+            dialogView.findViewById<ImageView>(R.id.course1_sign).setBackgroundResource(android.R.color.transparent)
+            var array = arrayOf(
+                R.id.course1_sign,
+                R.id.course2_sign,
+                R.id.course3_sign,
+                R.id.course4_sign,
+                R.id.course5_sign,
+                R.id.course6_sign
+            )
+
+            dialogView.findViewById<ImageView>(array[count]).setBackgroundResource(R.drawable.current_course_sign)
+        }
+
+
+        mAlertDialog = builder.setView(dialogView).show()
+
+        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+        mAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        if (Build.VERSION.SDK_INT < 30){
+            val display = windowManager.defaultDisplay
+            val size = Point()
+
+            display.getSize(size)
+
+            val window = mAlertDialog.window
+
+            val x = (size.x * 0.4f).toInt()
+            val y = (size.y * 0.4f).toInt()
+
+            window?.setLayout(x, y)
+
+        }else{
+            val rect = windowManager.currentWindowMetrics.bounds
+
+            val window = mAlertDialog.window
+            val x = (rect.width() * 0.4f).toInt()
+            val y = (rect.height() * 0.4f).toInt()
+
+            window?.setLayout(x, y)
+        }
+
+    }
+
+
+
+    fun nextCourseDialog(){
+        val builder = AlertDialog.Builder(this.requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.dialog_next_course, null)
+        val ok_btn = dialogView.findViewById<Button>(R.id.ok_btn)
+        val cancel_btn = dialogView.findViewById<Button>(R.id.cancel_btn)
+        val mAlertDialog = builder.setView(dialogView).show()
+        ok_btn.setOnClickListener{
+            prev_position += 1
+            playVR_ver2(result, prev_position)
+            mAlertDialog.dismiss()
+        }
+        cancel_btn.setOnClickListener{
+            mAlertDialog.dismiss()
+        }
+
+        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+        mAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        if (Build.VERSION.SDK_INT < 30){
+            val display = windowManager.defaultDisplay
+            val size = Point()
+
+            display.getSize(size)
+
+            val window = mAlertDialog.window
+
+            val x = (size.x * 0.5f).toInt()
+            val y = (size.y * 0.2f).toInt()
+
+            window?.setLayout(x, y)
+
+        }else{
+            val rect = windowManager.currentWindowMetrics.bounds
+
+            val window = mAlertDialog.window
+            val x = (rect.width() * 0.5f).toInt()
+            val y = (rect.height() * 0.2f).toInt()
+
+            window?.setLayout(x, y)
+        }
+
+    }
+
+    //여기까지
 }
