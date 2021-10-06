@@ -10,6 +10,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.*
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -27,6 +28,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 
 // : Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -90,7 +92,10 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 /* val display = activity!!.windowManaver.defaultDisplay */ // in case of Fragment
         val size = Point()
         display.getRealSize(size) // or getSize(size)
-        val width : Int = ((size.x / 720.0) * 170).toInt()
+//        val width : Int = ((size.x / 720.0) * 170).toInt()
+
+        val width : Int = ((size.x / 1536.0) * 280).toInt()
+
 
 
         tabs.addTab(tabs.newTab().setText("횃불코스"))
@@ -98,6 +103,13 @@ class MyFragment(activity: MainActivity)  : Fragment() {
         tabs.addTab(tabs.newTab().setText("광장코스"))
         tabs.addTab(tabs.newTab().setText("열정코스"))
         tabs.addTab(tabs.newTab().setText("영혼코스"))
+
+        for (i in 0 until tabs.getTabCount()) {
+            val tab = (tabs.getChildAt(0) as ViewGroup).getChildAt(i)
+            val p = tab.layoutParams as MarginLayoutParams
+            p.setMargins(0, 0, 100, 0)
+            tab.requestLayout()
+        }
 
 
         courseAdapter = CourseAdapter(width)
@@ -352,7 +364,14 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 
         if (count != 0){
             dialogView.findViewById<ImageView>(R.id.course1_sign).setBackgroundResource(android.R.color.transparent)
-            var array = arrayOf(R.id.course1_sign,R.id.course2_sign,R.id.course3_sign,R.id.course4_sign,R.id.course5_sign,R.id.course6_sign)
+            var array = arrayOf(
+                R.id.course1_sign,
+                R.id.course2_sign,
+                R.id.course3_sign,
+                R.id.course4_sign,
+                R.id.course5_sign,
+                R.id.course6_sign
+            )
 
             dialogView.findViewById<ImageView>(array[count]).setBackgroundResource(R.drawable.current_course_sign)
         }
@@ -372,8 +391,8 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 
             val window = mAlertDialog.window
 
-            val x = (size.x * 0.55f).toInt()
-            val y = (size.y * 0.38f).toInt()
+            val x = (size.x * 0.4f).toInt()
+            val y = (size.y * 0.4f).toInt()
 
             window?.setLayout(x, y)
 
@@ -381,8 +400,8 @@ class MyFragment(activity: MainActivity)  : Fragment() {
             val rect = windowManager.currentWindowMetrics.bounds
 
             val window = mAlertDialog.window
-            val x = (rect.width() * 0.55f).toInt()
-            val y = (rect.height() * 0.38f).toInt()
+            val x = (rect.width() * 0.4f).toInt()
+            val y = (rect.height() * 0.4f).toInt()
 
             window?.setLayout(x, y)
         }
@@ -417,7 +436,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 
             val window = mAlertDialog.window
 
-            val x = (size.x * 0.7f).toInt()
+            val x = (size.x * 0.5f).toInt()
             val y = (size.y * 0.2f).toInt()
 
             window?.setLayout(x, y)
@@ -426,7 +445,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
             val rect = windowManager.currentWindowMetrics.bounds
 
             val window = mAlertDialog.window
-            val x = (rect.width() * 0.7f).toInt()
+            val x = (rect.width() * 0.5f).toInt()
             val y = (rect.height() * 0.2f).toInt()
 
             window?.setLayout(x, y)

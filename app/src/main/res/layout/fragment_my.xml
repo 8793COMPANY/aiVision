@@ -45,14 +45,14 @@
             android:layout_height="0dp"
             android:background="@drawable/save_btn"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="70:48"
+            app:layout_constraintDimensionRatio="138:86"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.95"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
             app:layout_constraintWidth_default="percent"
-            app:layout_constraintWidth_percent="0.09"
+            app:layout_constraintWidth_percent="0.06"
             ></androidx.appcompat.widget.AppCompatButton>
 
 
@@ -70,30 +70,30 @@
         app:layout_constraintWidth_percent="1"
         android:background="@drawable/my_course_select_background"
         android:orientation="vertical"
-        android:weightSum="502"
+        android:weightSum="784"
         app:layout_constraintVertical_weight="0.46">
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="56"></View>
+            android:layout_weight="91"></View>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="40"
+            android:layout_weight="64"
             android:orientation="horizontal"
-            android:weightSum="720">
+            android:weightSum="1536">
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="596"></View>
+                android:layout_weight="1317"></View>
 
             <Button
                 android:id="@+id/edit_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="80"
+                android:layout_weight="128"
                 android:background="@drawable/my_edit_btn"></Button>
 
         </LinearLayout>
@@ -101,13 +101,13 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="44"></View>
+            android:layout_weight="35"></View>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="332"
+            android:layout_weight="533"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/recyclerview_item"
@@ -116,7 +116,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="46"></View>
+            android:layout_weight="73"></View>
 
 
     </LinearLayout>
@@ -142,7 +142,7 @@
             android:layout_weight="78"
             android:orientation="horizontal"
             android:background="@color/white"
-            app:tabMode="scrollable"
+            app:tabMode="fixed"
             app:tabGravity="fill"
             app:tabTextColor="#505050"
             app:tabSelectedTextColor="#ffffff"
@@ -150,6 +150,7 @@
             app:tabBackground="@drawable/tab_selector"
             app:tabIndicatorFullWidth="false"
             android:layout_marginLeft="30dp"
+            app:tabPaddingStart="10dp"
             app:tabRippleColor="@android:color/transparent"></com.google.android.material.tabs.TabLayout>
 
     </LinearLayout>
