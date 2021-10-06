@@ -23,7 +23,7 @@
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/activity_main.xml" value="0.34010416666666665" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/activity_quiz.xml" value="0.34010416666666665" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/activity_splash.xml" value="0.15473933649289098" />
-        <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.12" />
+        <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.5" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/button_ripple.xml" value="0.34010416666666665" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/card_adaptor.xml" value="0.33" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/course_fragment_listview_item.xml" value="0.67" />
@@ -31,6 +31,8 @@
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/fragment_my.xml" value="0.2105978260869565" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/recyclerview_item.xml" value="0.2151268115942029" />
+        <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1953125" />
+        <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.31640625" />
       </map>
     </option>
   </component>

@@ -2,8 +2,10 @@ package com.corporation8793.aivision.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -64,6 +66,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     var result: List<Course> = listOf()
     private lateinit var bottomSheetView : View
     private lateinit var bottomSheetDialog : BottomSheetDialog
+    var totalPage = 0
+    var currentPage = 0
+    var contents : List<String> = listOf()
     val mActivity = activity
     lateinit var finish_btn : AppCompatButton
     lateinit var map : View
@@ -459,19 +464,111 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     }
 
     fun knowMore(dataSet : List<Course>, position : Int) {
-        // 바텀 시트 초기화
         val naverSearchQuery = "https://search.naver.com/search.naver?query=${dataSet[position].courseName}"
+        val chunkSize = 175
+        contents = dataSet[position].courseContent.chunked(chunkSize)
+        totalPage = contents.size
+        currentPage = 0
+
+        // 바텀 시트 초기화
         bottomSheetView.findViewById<ImageView>(R.id.bottom_sheet_dialog_picture).background = ResourcesCompat.getDrawable(resources,
             resources.getIdentifier(dataSet[position].courseImgName, "drawable", mActivity.packageName),
             mActivity.theme)
         bottomSheetView.findViewById<TextView>(R.id.course_name).text = dataSet[position].courseName
-        bottomSheetView.findViewById<TextView>(R.id.course_content).text = dataSet[position].courseContent
         // 버튼 리스너 초기화
-        bottomSheetView.findViewById<Button>(R.id.bottom_sheet_dialog_dismiss_btn).setOnClickListener { bottomSheetDialog.dismiss() }
+        bottomSheetView.findViewById<Button>(R.id.bottom_sheet_dialog_dismiss_btn).setOnClickListener {
+            totalPage = 0
+            currentPage = 0
+            bottomSheetDialog.dismiss()
+        }
         bottomSheetView.findViewById<Button>(R.id.play_vr_btn).setOnClickListener {
             playVR_ver2(dataSet, position)
             bottomSheetDialog.dismiss()
         }
+        bottomSheetView.findViewById<Button>(R.id.bts_open_webview).setOnClickListener {
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(naverSearchQuery)
+            startActivity(i)
+        }
+        bottomSheetView.findViewById<Button>(R.id.bts_prev_page).setOnClickListener {
+            currentPage -= 1
+            if (currentPage > 0) {
+                bottomSheetView.findViewById<TextView>(R.id.course_content).text = contents[currentPage] + "..."
+                bottomSheetView.findViewById<TextView>(R.id.bts_pager).text = "${currentPage + 1}/${totalPage}"
+                bottomSheetView.findViewById<Button>(R.id.bts_prev_page).isEnabled = true
+                bottomSheetView.findViewById<Button>(R.id.bts_prev_page).background = ResourcesCompat.getDrawable(resources,
+                    resources.getIdentifier("bts_prev_page_on", "drawable", mActivity.packageName),
+                    mActivity.theme)
+                bottomSheetView.findViewById<Button>(R.id.bts_next_page).isEnabled = true
+                bottomSheetView.findViewById<Button>(R.id.bts_next_page).background = ResourcesCompat.getDrawable(resources,
+                    resources.getIdentifier("bts_next_page_on", "drawable", mActivity.packageName),
+                    mActivity.theme)
+            } else if (currentPage <= 0) {
+                currentPage = 0
+                bottomSheetView.findViewById<TextView>(R.id.course_content).text = contents[currentPage] + "..."
+                bottomSheetView.findViewById<TextView>(R.id.bts_pager).text = "${currentPage + 1}/${totalPage}"
+                bottomSheetView.findViewById<Button>(R.id.bts_prev_page).isEnabled = false
+                bottomSheetView.findViewById<Button>(R.id.bts_prev_page).background = ResourcesCompat.getDrawable(resources,
+                    resources.getIdentifier("bts_prev_page_off", "drawable", mActivity.packageName),
+                    mActivity.theme)
+                bottomSheetView.findViewById<Button>(R.id.bts_next_page).isEnabled = true
+                bottomSheetView.findViewById<Button>(R.id.bts_next_page).background = ResourcesCompat.getDrawable(resources,
+                    resources.getIdentifier("bts_next_page_on", "drawable", mActivity.packageName),
+                    mActivity.theme)
+            }
+        }
+        bottomSheetView.findViewById<Button>(R.id.bts_next_page).setOnClickListener {
+            currentPage += 1
+            if (currentPage < (totalPage-1)) {
+                bottomSheetView.findViewById<TextView>(R.id.course_content).text = contents[currentPage] + "..."
+                bottomSheetView.findViewById<TextView>(R.id.bts_pager).text = "${currentPage + 1}/${totalPage}"
+                bottomSheetView.findViewById<Button>(R.id.bts_prev_page).isEnabled = true
+                bottomSheetView.findViewById<Button>(R.id.bts_prev_page).background = ResourcesCompat.getDrawable(resources,
+                    resources.getIdentifier("bts_prev_page_on", "drawable", mActivity.packageName),
+                    mActivity.theme)
+                bottomSheetView.findViewById<Button>(R.id.bts_next_page).isEnabled = true
+                bottomSheetView.findViewById<Button>(R.id.bts_next_page).background = ResourcesCompat.getDrawable(resources,
+                    resources.getIdentifier("bts_next_page_on", "drawable", mActivity.packageName),
+                    mActivity.theme)
+            } else if (currentPage >= (totalPage-1)) {
+                currentPage = totalPage-1
+                bottomSheetView.findViewById<TextView>(R.id.course_content).text = contents[currentPage]
+                bottomSheetView.findViewById<TextView>(R.id.bts_pager).text = "${totalPage}/${totalPage}"
+                bottomSheetView.findViewById<Button>(R.id.bts_prev_page).isEnabled = true
+                bottomSheetView.findViewById<Button>(R.id.bts_prev_page).background = ResourcesCompat.getDrawable(resources,
+                    resources.getIdentifier("bts_prev_page_on", "drawable", mActivity.packageName),
+                    mActivity.theme)
+                bottomSheetView.findViewById<Button>(R.id.bts_next_page).isEnabled = false
+                bottomSheetView.findViewById<Button>(R.id.bts_next_page).background = ResourcesCompat.getDrawable(resources,
+                    resources.getIdentifier("bts_next_page_off", "drawable", mActivity.packageName),
+                    mActivity.theme)
+            }
+        }
+        // 페이지네이션
+        if (dataSet[position].courseContent.length > chunkSize) {
+            bottomSheetView.findViewById<TextView>(R.id.course_content).text = contents[currentPage] + "..."
+            bottomSheetView.findViewById<TextView>(R.id.bts_pager).text = "${currentPage + 1}/${totalPage}"
+            bottomSheetView.findViewById<Button>(R.id.bts_prev_page).isEnabled = false
+            bottomSheetView.findViewById<Button>(R.id.bts_prev_page).background = ResourcesCompat.getDrawable(resources,
+                resources.getIdentifier("bts_prev_page_off", "drawable", mActivity.packageName),
+                mActivity.theme)
+            bottomSheetView.findViewById<Button>(R.id.bts_next_page).isEnabled = true
+            bottomSheetView.findViewById<Button>(R.id.bts_next_page).background = ResourcesCompat.getDrawable(resources,
+                resources.getIdentifier("bts_next_page_on", "drawable", mActivity.packageName),
+                mActivity.theme)
+        } else {
+            bottomSheetView.findViewById<TextView>(R.id.course_content).text = dataSet[position].courseContent
+            bottomSheetView.findViewById<TextView>(R.id.bts_pager).text = "${currentPage + 1}/1"
+            bottomSheetView.findViewById<Button>(R.id.bts_prev_page).isEnabled = false
+            bottomSheetView.findViewById<Button>(R.id.bts_prev_page).background = ResourcesCompat.getDrawable(resources,
+                resources.getIdentifier("bts_prev_page_off", "drawable", mActivity.packageName),
+                mActivity.theme)
+            bottomSheetView.findViewById<Button>(R.id.bts_next_page).isEnabled = false
+            bottomSheetView.findViewById<Button>(R.id.bts_next_page).background = ResourcesCompat.getDrawable(resources,
+                resources.getIdentifier("bts_next_page_off", "drawable", mActivity.packageName),
+                mActivity.theme)
+        }
+
         // 스테이트 초기화
         bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetDialog.behavior.skipCollapsed = true
