@@ -76,6 +76,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     var contents : List<String> = listOf()
     lateinit var mClickLister : View.OnClickListener
     lateinit var mAlertDialog : AlertDialog
+    lateinit var course_list_select : TextView
     var count : Int = 0
     val mActivity = activity
     lateinit var finish_btn : AppCompatButton
@@ -90,6 +91,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     lateinit var actionbar : ConstraintLayout
     lateinit var ypv_container : LinearLayout
     lateinit var callback: OnBackPressedCallback
+    var name = ""
     var command = ""
     var ypv_flag : Boolean = false
     val mFragment = this
@@ -113,7 +115,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_course, container, false)
-        val course_list : Spinner = view.findViewById(R.id.course_list)
+        val course_list : LinearLayout = view.findViewById(R.id.course_list)
+        course_list_select = view.findViewById(R.id.course_list_select)
         actionbar = view.findViewById(R.id.actionbar)
         course_list_view_container = view.findViewById(R.id.course_list_view_container)
         finish_btn = view.findViewById(R.id.finish_btn)
@@ -155,7 +158,6 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         course_list_view?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         CoroutineScope(Dispatchers.IO).launch {
-            var name = ""
             when (mCourseFlag) {
                 0 -> name = "횃불코스"
                 1 -> name = "희생코스"
@@ -163,6 +165,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                 3 -> name = "열정코스"
                 4 -> name = "영혼코스"
             }
+
+            course_list_select.text = name
+            count = mCourseFlag
 
             result = application.db.courseDao().getAllByCourseType(name)
 
@@ -218,33 +223,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             }
         }
 
-        course_list.adapter = ArrayAdapter.createFromResource(
-            view.context,
-            R.array.itemList,
-            android.R.layout.simple_spinner_item
-        )
-
-        course_list.setSelection(mCourseFlag)
-
-        course_list.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                when (position) {
-                    0, 1, 2, 3, 4 -> command = course_list.selectedItem.toString()
-                    5 -> myCourseSelected(application, 1)
-                }
-
-                if (position != 5) {
-                    spinnerSelected(application, command, 1)
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
+        course_list.setOnClickListener {
+            courseSelectMenu()
+            course_list_select.requestLayout()
         }
 
         return view
@@ -256,6 +237,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     }
 
     fun spinnerSelected(application : Application, name : String, flag : Int = 0) {
+        course_list_select.text = name
+        course_list_select.requestLayout()
+
         CoroutineScope(Dispatchers.IO).launch {
             result = application.db.courseDao().getAllByCourseType(name)
             when (flag) {
@@ -276,6 +260,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     }
 
     fun myCourseSelected(application : Application, flag : Int = 0) {
+        course_list_select.text = name
+        course_list_select.requestLayout()
+
         CoroutineScope(Dispatchers.IO).launch {
             var ml : MutableList<Course> = mutableListOf()
             ml.apply {
@@ -629,6 +616,50 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         val course5 = dialogView.findViewById<LinearLayout>(R.id.course5)
         val course6 = dialogView.findViewById<LinearLayout>(R.id.course6)
 
+        mClickLister= View.OnClickListener { v ->
+            if (v?.id == R.id.course1){
+                count=0
+                mAlertDialog.dismiss()
+            }
+            if (v?.id == R.id.course2){
+                count=1
+                mAlertDialog.dismiss()
+            }
+            if (v?.id == R.id.course3){
+                count=2
+                mAlertDialog.dismiss()
+            }
+            if (v?.id == R.id.course4){
+                count=3
+                mAlertDialog.dismiss()
+            }
+            if (v?.id == R.id.course5){
+                count=4
+                mAlertDialog.dismiss()
+            }
+            if (v?.id == R.id.course6){
+                count=5
+                mAlertDialog.dismiss()
+            }
+
+            when (count) {
+                0 -> name = "횃불코스"
+                1 -> name = "희생코스"
+                2 -> name = "광장코스"
+                3 -> name = "열정코스"
+                4 -> name = "영혼코스"
+                5 -> {
+                    name = "나만의 VR코스"
+                    myCourseSelected(application, 1)
+                }
+            }
+            command = name
+
+            if (count != 5) {
+                spinnerSelected(application, command, 1)
+            }
+        }
+
         course1.setOnClickListener(mClickLister)
         course2.setOnClickListener(mClickLister)
         course3.setOnClickListener(mClickLister)
@@ -649,7 +680,6 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
             dialogView.findViewById<ImageView>(array[count]).setBackgroundResource(R.drawable.current_course_sign)
         }
-
 
         mAlertDialog = builder.setView(dialogView).show()
 
