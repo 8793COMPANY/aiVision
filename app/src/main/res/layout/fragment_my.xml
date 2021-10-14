@@ -52,7 +52,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
             app:layout_constraintWidth_default="percent"
-            app:layout_constraintWidth_percent="0.06"
+            app:layout_constraintWidth_percent="0.1"
             ></androidx.appcompat.widget.AppCompatButton>
 
 
@@ -75,25 +75,25 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="91"></View>
+            android:layout_weight="80"></View>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="64"
             android:orientation="horizontal"
-            android:weightSum="1536">
+            android:weightSum="1440">
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1317"></View>
+                android:layout_weight="1200"></View>
 
             <Button
                 android:id="@+id/edit_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="128"
+                android:layout_weight="158"
                 android:background="@drawable/my_edit_btn"></Button>
 
         </LinearLayout>
@@ -142,7 +142,7 @@
             android:layout_weight="78"
             android:orientation="horizontal"
             android:background="@color/white"
-            app:tabMode="fixed"
+            app:tabMode="scrollable"
             app:tabGravity="fill"
             app:tabTextColor="#505050"
             app:tabSelectedTextColor="#ffffff"
@@ -150,7 +150,6 @@
             app:tabBackground="@drawable/tab_selector"
             app:tabIndicatorFullWidth="false"
             android:layout_marginLeft="30dp"
-            app:tabPaddingStart="10dp"
             app:tabRippleColor="@android:color/transparent"></com.google.android.material.tabs.TabLayout>
 
     </LinearLayout>
