@@ -303,7 +303,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     }
 
     @SuppressLint("MissingPermission")
-    fun refreshMap(res : List<Course>) {
+    fun refreshMap(res : List<Course> = listOf()) {
         // 오버레이 초기화
         if (ypv_flag) {
             map.visibility = View.VISIBLE
@@ -455,6 +455,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                         listDataSet = course_list_view_adaptor?.listDataSet!!
 
                         ypv.removeYouTubePlayerListener(this)
+
+                        refreshMap()
                         nextCourseDialog()
                     }
                 }
@@ -463,7 +465,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         }
         ypv.addYouTubePlayerListener(ypv_object as AbstractYouTubePlayerListener)
         ypv.enterFullScreen()
-        yp?.loadVideo(dataSet[position].courseURL.replace("https://youtu.be/", ""),70F)
+        yp?.loadVideo(dataSet[position].courseURL.replace("https://youtu.be/", ""),0F)
 
         ypv_flag = true
         lifecycle.addObserver(ypv)
@@ -751,8 +753,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
             val window = mAlertDialog.window
 
-            val x = (size.x * 0.5f).toInt()
-            val y = (size.y * 0.2f).toInt()
+            val x = (size.x * 0.3f).toInt()
+            val y = (size.y * 0.5f).toInt()
 
             window?.setLayout(x, y)
 
@@ -760,8 +762,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             val rect = windowManager.currentWindowMetrics.bounds
 
             val window = mAlertDialog.window
-            val x = (rect.width() * 0.5f).toInt()
-            val y = (rect.height() * 0.2f).toInt()
+            val x = (rect.width() * 0.3f).toInt()
+            val y = (rect.height() * 0.5f).toInt()
 
             window?.setLayout(x, y)
         }

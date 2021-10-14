@@ -13,7 +13,7 @@
         android:background="@color/white"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1536:174"
+        app:layout_constraintDimensionRatio="720:112"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,13 +42,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="횃불코스"
-                android:textSize="25sp"
+                android:textSize="17.5sp"
                 android:textColor="#4d4d4d"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
+                android:layout_width="21dp"
+                android:layout_height="43.4dp"
+                android:layout_marginLeft="10dp"
                 android:background="@drawable/course_spinner_arrow"/>
 
         </LinearLayout>
@@ -56,7 +56,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/finish_btn"
-            android:layout_width="47dp"
+            android:layout_width="32.9dp"
             android:layout_height="0dp"
             android:background="@drawable/finish_btn"
             app:layout_constraintBottom_toBottomOf="parent"
