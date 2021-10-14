@@ -10,9 +10,9 @@
     <FrameLayout
         android:id="@+id/bottomSheetDashBoardLayout"
         android:layout_width="match_parent"
-        android:layout_height="568dp"
+        android:layout_height="397.6dp"
         android:background="@drawable/bottom_sheet_background"
-        android:layout_marginTop="136dp"
+        android:layout_marginTop="95.2dp"
         app:behavior_draggable="false"
         app:behavior_hideable="false"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="136dp" />
+                app:layout_constraintGuide_begin="95.2dp" />
 
             <TextView
                 android:id="@+id/course_name"
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:text="전남대학교 정문"
                 android:textColor="#18a5b1"
-                android:textSize="28dp"
+                android:textSize="19.6dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -50,11 +50,11 @@
                 android:text="1980년 5월 17일 밤 전남대에 진주한 계엄군은 도서관 등에서 공부하고 있던 학생들을 무자비하게 구타하고 불법 구금하였다. 계엄군은 5월 18일 아침 학교에 등교하거나 5‧17비상계엄확대조치에 항의하기 위해 정문앞에 모인 학생들을 무자비하게 강제해산시켰다. 이에 학생들이 항의하면서 항쟁의 불씨가 되었다."
                 android:textColor="#6f6e6f"
                 android:textAlignment="center"
-                android:textSize="18dp"
+                android:textSize="12.6dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/course_name"
                 app:layout_constraintHeight_default="percent"
-                app:layout_constraintHeight_percent="0.2"
+                app:layout_constraintHeight_percent="0.25"
                 app:layout_constraintStart_toStartOf="@+id/course_name"
                 app:layout_constraintTop_toBottomOf="@+id/course_name"
                 app:layout_constraintVertical_bias="0.1"
@@ -69,7 +69,7 @@
                 android:backgroundTint="#18a5b1"
                 android:text="VR 시청하기"
                 android:textColor="#FFF"
-                android:textSize="27dp"
+                android:textSize="18.9dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/bottom_sheet_dialog_dismiss_btn"
                 app:layout_constraintHeight_default="percent"
@@ -89,7 +89,7 @@
                 android:backgroundTint="#f2f2f2"
                 android:text="닫기"
                 android:textColor="#707070"
-                android:textSize="27dp"
+                android:textSize="18.9dp"
                 app:layout_constraintBottom_toBottomOf="@+id/play_vr_btn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_default="percent"
@@ -102,8 +102,8 @@
 
             <Button
                 android:id="@+id/bts_open_webview"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="12.6dp"
+                android:layout_height="12.6dp"
                 android:background="@drawable/bts_open_webview"
                 app:layout_constraintBottom_toBottomOf="@id/course_name"
                 app:layout_constraintHeight_default="percent"
@@ -117,8 +117,8 @@
 
             <Button
                 android:id="@+id/bts_prev_page"
-                android:layout_width="23.5dp"
-                android:layout_height="23.5dp"
+                android:layout_width="16.45dp"
+                android:layout_height="16.45dp"
                 android:background="@drawable/bts_prev_page_off"
                 app:layout_constraintBottom_toTopOf="@+id/play_vr_btn"
                 app:layout_constraintEnd_toStartOf="@+id/bts_pager"
@@ -136,7 +136,7 @@
                 android:layout_height="0dp"
                 android:text="1/1"
                 android:textColor="#6f6e6f"
-                android:textSize="18dp"
+                android:textSize="12.6dp"
                 android:gravity="center"
                 app:layout_constraintBottom_toTopOf="@+id/play_vr_btn"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -147,8 +147,8 @@
 
             <Button
                 android:id="@+id/bts_next_page"
-                android:layout_width="23.5dp"
-                android:layout_height="23.5dp"
+                android:layout_width="16.45dp"
+                android:layout_height="16.45dp"
                 android:background="@drawable/bts_next_page_off"
                 app:layout_constraintBottom_toTopOf="@+id/bottom_sheet_dialog_dismiss_btn"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -168,8 +168,8 @@
         android:background="@android:color/transparent">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="440dp"
-            android:layout_height="272dp"
+            android:layout_width="308dp"
+            android:layout_height="190.4dp"
             app:cardCornerRadius="35dp"
             android:layout_gravity="center">
 

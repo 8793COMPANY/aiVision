@@ -26,18 +26,19 @@
         android:layout_height="0dp"
         android:orientation="horizontal"
         android:elevation="20dp"
-        android:weightSum="1536"
+        android:weightSum="720"
         android:background="@color/white"
-        app:layout_constraintDimensionRatio="1536:178"
+        app:layout_constraintDimensionRatio="720:112"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+
         >
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="106"></View>
+            android:layout_weight="30"></View>
 
 
         <Button
@@ -45,36 +46,29 @@
             android:id="@+id/home_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="350"></Button>
+            android:layout_weight="220"></Button>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="137"/>
 
         <Button
             android:background="@drawable/course_btn_selector"
             android:id="@+id/course_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="350"></Button>
+            android:layout_weight="220"></Button>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="137"/>
 
         <Button
             android:background="@drawable/my_btn_selector"
             android:id="@+id/my_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="350"></Button>
+            android:layout_weight="220"></Button>
+
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="106"></View>
+            android:layout_weight="30"></View>
 
     </LinearLayout>
 
