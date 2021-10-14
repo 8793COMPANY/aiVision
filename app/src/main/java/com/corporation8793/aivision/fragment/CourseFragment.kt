@@ -321,7 +321,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                             moveCamera(
                                 CameraUpdate.scrollAndZoomTo(
                                     LatLng(res[position].courseLatitude.toDouble(), res[position].courseLongitude.toDouble()),
-                                    11.0
+                                    13.0
                                 )
                             )
                             currentLocation = LatLng(location.latitude, location.longitude)
