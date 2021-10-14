@@ -196,8 +196,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                     .addOnSuccessListener { location->
                         if (location != null) {
                             moveCamera(
-                                CameraUpdate.scrollTo(
-                                    LatLng(location.latitude, location.longitude)
+                                CameraUpdate.scrollAndZoomTo(
+                                    LatLng(35.153629399146354, 126.88364996966044),
+                                    10.0
                                 )
                             )
                             currentLocation = LatLng(location.latitude, location.longitude)
@@ -303,12 +304,58 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     }
 
     @SuppressLint("MissingPermission")
-    fun refreshMap(res : List<Course> = listOf()) {
+    fun refreshMap(res : List<Course> = listOf(), position : Int = 0) {
         // 오버레이 초기화
         if (ypv_flag) {
             map.visibility = View.VISIBLE
             ypv.visibility = View.INVISIBLE
             ypv_flag = !ypv_flag
+
+            nMap?.apply {
+                mapType = NaverMap.MapType.Basic
+                setLayerGroupEnabled(LAYER_GROUP_TRANSIT, true)
+
+                fusedLocationClient.lastLocation
+                    .addOnSuccessListener { location->
+                        if (location != null) {
+                            moveCamera(
+                                CameraUpdate.scrollAndZoomTo(
+                                    LatLng(res[position].courseLatitude.toDouble(), res[position].courseLongitude.toDouble()),
+                                    11.0
+                                )
+                            )
+                            currentLocation = LatLng(location.latitude, location.longitude)
+                            Log.e("lastLocation", "onCreateView: location ${location.latitude}, ${location.longitude} !!")
+                        } else {
+                            currentLocation = LatLng(result[0].courseLatitude.toDouble(), result[0].courseLongitude.toDouble())
+                            Log.e("lastLocation", "onCreateView: location NULL !!")
+                        }
+                    }
+
+            }
+        } else {
+            nMap?.apply {
+                mapType = NaverMap.MapType.Basic
+                setLayerGroupEnabled(LAYER_GROUP_TRANSIT, true)
+
+                fusedLocationClient.lastLocation
+                    .addOnSuccessListener { location->
+                        if (location != null) {
+                            moveCamera(
+                                CameraUpdate.scrollAndZoomTo(
+                                    LatLng(35.153629399146354, 126.88364996966044),
+                                    10.0
+                                )
+                            )
+                            currentLocation = LatLng(location.latitude, location.longitude)
+                            Log.e("lastLocation", "onCreateView: location ${location.latitude}, ${location.longitude} !!")
+                        } else {
+                            currentLocation = LatLng(result[0].courseLatitude.toDouble(), result[0].courseLongitude.toDouble())
+                            Log.e("lastLocation", "onCreateView: location NULL !!")
+                        }
+                    }
+
+            }
         }
 
         path.map = null
@@ -319,28 +366,6 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         if (res.isNotEmpty()) {
             result = res
         } else {
-
-        }
-
-        nMap?.apply {
-            mapType = NaverMap.MapType.Basic
-            setLayerGroupEnabled(LAYER_GROUP_TRANSIT, true)
-
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location->
-                    if (location != null) {
-                        moveCamera(
-                            CameraUpdate.scrollTo(
-                                LatLng(location.latitude, location.longitude)
-                            )
-                        )
-                        currentLocation = LatLng(location.latitude, location.longitude)
-                        Log.e("lastLocation", "onCreateView: location ${location.latitude}, ${location.longitude} !!")
-                    } else {
-                        currentLocation = LatLng(result[0].courseLatitude.toDouble(), result[0].courseLongitude.toDouble())
-                        Log.e("lastLocation", "onCreateView: location NULL !!")
-                    }
-                }
 
         }
 
@@ -456,7 +481,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
                         ypv.removeYouTubePlayerListener(this)
 
-                        refreshMap()
+                        refreshMap(dataSet, position)
                         nextCourseDialog()
                     }
                 }
@@ -707,7 +732,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
             val window = mAlertDialog.window
 
-            val x = (size.x * 0.4f).toInt()
+            val x = (size.x * 0.6f).toInt()
             val y = (size.y * 0.4f).toInt()
 
             window?.setLayout(x, y)
@@ -716,7 +741,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             val rect = windowManager.currentWindowMetrics.bounds
 
             val window = mAlertDialog.window
-            val x = (rect.width() * 0.4f).toInt()
+            val x = (rect.width() * 0.6f).toInt()
             val y = (rect.height() * 0.4f).toInt()
 
             window?.setLayout(x, y)
