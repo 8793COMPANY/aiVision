@@ -45,9 +45,8 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import okhttp3.Dispatcher
 
 // : Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -164,21 +163,26 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                 2 -> name = "광장코스"
                 3 -> name = "열정코스"
                 4 -> name = "영혼코스"
+                5 -> name = "나만의 VR코스"
             }
 
             course_list_select.text = name
             count = mCourseFlag
 
-            result = application.db.courseDao().getAllByCourseType(name)
+            if (mCourseFlag != 5) {
+                result = application.db.courseDao().getAllByCourseType(name)
 
-            val lds : MutableList<CoursePagerAdapter.listData> = mutableListOf()
-            for ((index, rs) in result.withIndex()) {
-                lds.add(CoursePagerAdapter.listData(index, false, false))
-            }
-            listDataSet = lds
+                val lds : MutableList<CoursePagerAdapter.listData> = mutableListOf()
+                for ((index, rs) in result.withIndex()) {
+                    lds.add(CoursePagerAdapter.listData(index, false, false))
+                }
+                listDataSet = lds
 
-            CoroutineScope(Dispatchers.Main).launch {
-                refreshCourseListView()
+                CoroutineScope(Dispatchers.Main).launch {
+                    refreshCourseListView()
+                }
+            } else {
+                myCourseSelected(application, 1)
             }
         }
 
@@ -252,8 +256,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                 }
             }
 
-            CoroutineScope(Dispatchers.Main).launch {
-                refreshMap()
+            withContext(Dispatchers.Main) {
+                refreshMap(result)
                 refreshCourseListView()
             }
         }
@@ -289,7 +293,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
             CoroutineScope(Dispatchers.Main).launch {
                 if (result.isNotEmpty()) {
-                    refreshMap()
+                    refreshMap(result)
                     refreshCourseListView()
                 } else {
                     mActivity.replaceFragment(MyFragment(mActivity), 3)
@@ -299,7 +303,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     }
 
     @SuppressLint("MissingPermission")
-    fun refreshMap() {
+    fun refreshMap(res : List<Course>) {
         // 오버레이 초기화
         if (ypv_flag) {
             map.visibility = View.VISIBLE
@@ -310,6 +314,12 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         path.map = null
         for (mk in markers) {
             mk.map = null
+        }
+
+        if (res.isNotEmpty()) {
+            result = res
+        } else {
+
         }
 
         nMap?.apply {
@@ -453,7 +463,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         }
         ypv.addYouTubePlayerListener(ypv_object as AbstractYouTubePlayerListener)
         ypv.enterFullScreen()
-        yp?.loadVideo(dataSet[position].courseURL.replace("https://youtu.be/", ""),0F)
+        yp?.loadVideo(dataSet[position].courseURL.replace("https://youtu.be/", ""),70F)
 
         ypv_flag = true
         lifecycle.addObserver(ypv)

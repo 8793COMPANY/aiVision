@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
                     android:text="{@CardItem.mCourseName}"
-                    android:textSize="35sp"
+                    android:textSize="23.3sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-thin"
                     android:text="{@CardItem.mCourseTime}"
-                    android:textSize="22sp"
+                    android:textSize="14.6sp"
                     app:layout_constraintEnd_toEndOf="@+id/mCourseName"
                     app:layout_constraintStart_toStartOf="@+id/mCourseName"
                     app:layout_constraintTop_toBottomOf="@+id/mCourseName"
@@ -61,8 +61,8 @@
 
                 <ImageButton
                     android:id="@+id/card_course_star_selector"
-                    android:layout_width="55dp"
-                    android:layout_height="53.5dp"
+                    android:layout_width="36.6dp"
+                    android:layout_height="35.6dp"
                     android:background="@drawable/card_course_star_selector"
                     app:layout_constraintBottom_toBottomOf="@+id/mCourseName"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -73,8 +73,8 @@
 
                 <ImageView
                     android:id="@+id/card_distance"
-                    android:layout_width="95dp"
-                    android:layout_height="29.5dp"
+                    android:layout_width="63.3dp"
+                    android:layout_height="19.6dp"
                     android:background="@drawable/card_distance"
                     app:layout_constraintBottom_toBottomOf="@+id/start_spot_img"
                     app:layout_constraintEnd_toEndOf="@+id/mCourseTime"
@@ -89,7 +89,7 @@
                     android:fontFamily="sans-serif-thin"
                     android:text="{@CardItem.mCourseDistance}"
                     android:textColor="#9bc7c6"
-                    android:textSize="22sp"
+                    android:textSize="14.6sp"
                     app:layout_constraintEnd_toEndOf="@+id/card_distance"
                     app:layout_constraintStart_toStartOf="@+id/card_distance"
                     app:layout_constraintTop_toBottomOf="@+id/card_distance"
@@ -97,8 +97,8 @@
 
                 <ImageView
                     android:id="@+id/my_spot_img"
-                    android:layout_width="149dp"
-                    android:layout_height="121dp"
+                    android:layout_width="84dp"
+                    android:layout_height="63.3dp"
                     android:background="@drawable/card_my"
                     app:layout_constraintBottom_toBottomOf="@+id/start_spot_img"
                     app:layout_constraintEnd_toEndOf="@+id/mCourseName"
@@ -112,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-thin"
                     android:text="나만의 관광지 코스를 만들어보세요"
-                    android:textSize="22sp"
+                    android:textSize="14.6sp"
                     app:layout_constraintBottom_toTopOf="@+id/course_start_btn"
                     app:layout_constraintEnd_toEndOf="@+id/card_distance"
                     app:layout_constraintStart_toStartOf="@+id/card_distance"
@@ -122,8 +122,8 @@
 
                 <ImageView
                     android:id="@+id/start_spot_img"
-                    android:layout_width="126dp"
-                    android:layout_height="95dp"
+                    android:layout_width="84dp"
+                    android:layout_height="63.3dp"
                     android:background="@drawable/card_start"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/card_distance"
@@ -139,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-thin"
                     android:text="{@CardItem.mCourseStart}"
-                    android:textSize="12sp"
+                    android:textSize="14.6sp"
                     app:layout_constraintEnd_toEndOf="@+id/start_spot_img"
                     app:layout_constraintStart_toStartOf="@+id/start_spot_img"
                     app:layout_constraintTop_toBottomOf="@+id/start_spot_img"
@@ -147,8 +147,8 @@
 
                 <ImageView
                     android:id="@+id/goal_spot_img"
-                    android:layout_width="126dp"
-                    android:layout_height="95dp"
+                    android:layout_width="84dp"
+                    android:layout_height="63.3dp"
                     android:background="@drawable/card_goal"
                     app:layout_constraintBottom_toBottomOf="@+id/start_spot_img"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -163,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-thin"
                     android:text="{@CardItem.mCourseGoal}"
-                    android:textSize="12sp"
+                    android:textSize="14.6sp"
                     app:layout_constraintEnd_toEndOf="@+id/goal_spot_img"
                     app:layout_constraintStart_toStartOf="@+id/goal_spot_img"
                     app:layout_constraintTop_toBottomOf="@+id/goal_spot_img"
@@ -172,12 +172,12 @@
                 <Button
                     android:id="@+id/course_start_btn"
                     android:layout_width="0dp"
-                    android:layout_height="71dp"
+                    android:layout_height="47.3dp"
                     android:background="@drawable/course_start_btn"
                     android:gravity="center"
                     android:text="시작하기"
                     android:textColor="#FFF"
-                    android:textSize="28sp"
+                    android:textSize="18.6sp"
                     app:cornerRadius="50dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -185,7 +185,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.90999997"
                     app:layout_constraintWidth_default="percent"
-                    app:layout_constraintWidth_percent="0.8" />
+                    app:layout_constraintWidth_percent="0.7" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import com.corporation8793.aivision.fragment.CourseFragment
 import com.corporation8793.aivision.fragment.HomeFragment
 import com.corporation8793.aivision.fragment.MyFragment
+import com.corporation8793.aivision.recyclerview.course_fragment.CoursePagerAdapter
 import com.corporation8793.aivision.room.Course
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val mActivity = this
 
         home_btn = findViewById(R.id.home_btn)
         course_btn = findViewById(R.id.course_btn)
@@ -52,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         my_btn.setOnClickListener {
-            replaceFragment(MyFragment(this), 3)
+            replaceFragment(MyFragment(mActivity), 3)
         }
     }
 
