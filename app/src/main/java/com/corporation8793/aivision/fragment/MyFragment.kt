@@ -92,7 +92,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 /* val display = activity!!.windowManaver.defaultDisplay */ // in case of Fragment
         val size = Point()
         display.getRealSize(size) // or getSize(size)
-        val width : Int = ((size.x / 720.0) * 170).toInt()
+        val width : Int = ((size.x / 720.0) * 190).toInt()
 
 //        val width : Int = ((size.x / 1536.0) * 280).toInt()
 
