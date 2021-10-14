@@ -2,16 +2,23 @@ package com.corporation8793.aivision.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
+import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.WindowManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
@@ -64,6 +71,13 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     var result: List<Course> = listOf()
     private lateinit var bottomSheetView : View
     private lateinit var bottomSheetDialog : BottomSheetDialog
+    var totalPage = 0
+    var currentPage = 0
+    var contents : List<String> = listOf()
+    lateinit var mClickLister : View.OnClickListener
+    lateinit var mAlertDialog : AlertDialog
+    lateinit var course_list_select : TextView
+    var count : Int = 0
     val mActivity = activity
     lateinit var finish_btn : AppCompatButton
     lateinit var map : View
@@ -77,6 +91,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     lateinit var actionbar : ConstraintLayout
     lateinit var ypv_container : LinearLayout
     lateinit var callback: OnBackPressedCallback
+    var name = ""
     var command = ""
     var ypv_flag : Boolean = false
     val mFragment = this
@@ -100,7 +115,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_course, container, false)
-        val course_list : Spinner = view.findViewById(R.id.course_list)
+        val course_list : LinearLayout = view.findViewById(R.id.course_list)
+        course_list_select = view.findViewById(R.id.course_list_select)
         actionbar = view.findViewById(R.id.actionbar)
         course_list_view_container = view.findViewById(R.id.course_list_view_container)
         finish_btn = view.findViewById(R.id.finish_btn)
@@ -142,7 +158,6 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         course_list_view?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         CoroutineScope(Dispatchers.IO).launch {
-            var name = ""
             when (mCourseFlag) {
                 0 -> name = "횃불코스"
                 1 -> name = "희생코스"
@@ -150,6 +165,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                 3 -> name = "열정코스"
                 4 -> name = "영혼코스"
             }
+
+            course_list_select.text = name
+            count = mCourseFlag
 
             result = application.db.courseDao().getAllByCourseType(name)
 
@@ -205,33 +223,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             }
         }
 
-        course_list.adapter = ArrayAdapter.createFromResource(
-            view.context,
-            R.array.itemList,
-            android.R.layout.simple_spinner_item
-        )
-
-        course_list.setSelection(mCourseFlag)
-
-        course_list.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                when (position) {
-                    0, 1, 2, 3, 4 -> command = course_list.selectedItem.toString()
-                    5 -> myCourseSelected(application, 1)
-                }
-
-                if (position != 5) {
-                    spinnerSelected(application, command, 1)
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
+        course_list.setOnClickListener {
+            courseSelectMenu()
+            course_list_select.requestLayout()
         }
 
         return view
@@ -243,6 +237,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     }
 
     fun spinnerSelected(application : Application, name : String, flag : Int = 0) {
+        course_list_select.text = name
+        course_list_select.requestLayout()
+
         CoroutineScope(Dispatchers.IO).launch {
             result = application.db.courseDao().getAllByCourseType(name)
             when (flag) {
@@ -263,6 +260,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     }
 
     fun myCourseSelected(application : Application, flag : Int = 0) {
+        course_list_select.text = name
+        course_list_select.requestLayout()
+
         CoroutineScope(Dispatchers.IO).launch {
             var ml : MutableList<Course> = mutableListOf()
             ml.apply {
@@ -442,9 +442,10 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                             }
                         }
 
-                        // 다음 코스 팝업 (prev_position + 1 로 play vr 재생)
-
                         listDataSet = course_list_view_adaptor?.listDataSet!!
+
+                        ypv.removeYouTubePlayerListener(this)
+                        nextCourseDialog()
                     }
                 }
                 course_list_view_adaptor?.notifyDataSetChanged()
@@ -459,18 +460,111 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     }
 
     fun knowMore(dataSet : List<Course>, position : Int) {
+        val naverSearchQuery = "https://search.naver.com/search.naver?query=${dataSet[position].courseName}"
+        val chunkSize = 175
+        contents = dataSet[position].courseContent.chunked(chunkSize)
+        totalPage = contents.size
+        currentPage = 0
+
         // 바텀 시트 초기화
         bottomSheetView.findViewById<ImageView>(R.id.bottom_sheet_dialog_picture).background = ResourcesCompat.getDrawable(resources,
             resources.getIdentifier(dataSet[position].courseImgName, "drawable", mActivity.packageName),
             mActivity.theme)
         bottomSheetView.findViewById<TextView>(R.id.course_name).text = dataSet[position].courseName
-        bottomSheetView.findViewById<TextView>(R.id.course_content).text = dataSet[position].courseContent
         // 버튼 리스너 초기화
-        bottomSheetView.findViewById<Button>(R.id.bottom_sheet_dialog_dismiss_btn).setOnClickListener { bottomSheetDialog.dismiss() }
+        bottomSheetView.findViewById<Button>(R.id.bottom_sheet_dialog_dismiss_btn).setOnClickListener {
+            totalPage = 0
+            currentPage = 0
+            bottomSheetDialog.dismiss()
+        }
         bottomSheetView.findViewById<Button>(R.id.play_vr_btn).setOnClickListener {
             playVR_ver2(dataSet, position)
             bottomSheetDialog.dismiss()
         }
+        bottomSheetView.findViewById<Button>(R.id.bts_open_webview).setOnClickListener {
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(naverSearchQuery)
+            startActivity(i)
+        }
+        bottomSheetView.findViewById<Button>(R.id.bts_prev_page).setOnClickListener {
+            currentPage -= 1
+            if (currentPage > 0) {
+                bottomSheetView.findViewById<TextView>(R.id.course_content).text = contents[currentPage] + "..."
+                bottomSheetView.findViewById<TextView>(R.id.bts_pager).text = "${currentPage + 1}/${totalPage}"
+                bottomSheetView.findViewById<Button>(R.id.bts_prev_page).isEnabled = true
+                bottomSheetView.findViewById<Button>(R.id.bts_prev_page).background = ResourcesCompat.getDrawable(resources,
+                    resources.getIdentifier("bts_prev_page_on", "drawable", mActivity.packageName),
+                    mActivity.theme)
+                bottomSheetView.findViewById<Button>(R.id.bts_next_page).isEnabled = true
+                bottomSheetView.findViewById<Button>(R.id.bts_next_page).background = ResourcesCompat.getDrawable(resources,
+                    resources.getIdentifier("bts_next_page_on", "drawable", mActivity.packageName),
+                    mActivity.theme)
+            } else if (currentPage <= 0) {
+                currentPage = 0
+                bottomSheetView.findViewById<TextView>(R.id.course_content).text = contents[currentPage] + "..."
+                bottomSheetView.findViewById<TextView>(R.id.bts_pager).text = "${currentPage + 1}/${totalPage}"
+                bottomSheetView.findViewById<Button>(R.id.bts_prev_page).isEnabled = false
+                bottomSheetView.findViewById<Button>(R.id.bts_prev_page).background = ResourcesCompat.getDrawable(resources,
+                    resources.getIdentifier("bts_prev_page_off", "drawable", mActivity.packageName),
+                    mActivity.theme)
+                bottomSheetView.findViewById<Button>(R.id.bts_next_page).isEnabled = true
+                bottomSheetView.findViewById<Button>(R.id.bts_next_page).background = ResourcesCompat.getDrawable(resources,
+                    resources.getIdentifier("bts_next_page_on", "drawable", mActivity.packageName),
+                    mActivity.theme)
+            }
+        }
+        bottomSheetView.findViewById<Button>(R.id.bts_next_page).setOnClickListener {
+            currentPage += 1
+            if (currentPage < (totalPage-1)) {
+                bottomSheetView.findViewById<TextView>(R.id.course_content).text = contents[currentPage] + "..."
+                bottomSheetView.findViewById<TextView>(R.id.bts_pager).text = "${currentPage + 1}/${totalPage}"
+                bottomSheetView.findViewById<Button>(R.id.bts_prev_page).isEnabled = true
+                bottomSheetView.findViewById<Button>(R.id.bts_prev_page).background = ResourcesCompat.getDrawable(resources,
+                    resources.getIdentifier("bts_prev_page_on", "drawable", mActivity.packageName),
+                    mActivity.theme)
+                bottomSheetView.findViewById<Button>(R.id.bts_next_page).isEnabled = true
+                bottomSheetView.findViewById<Button>(R.id.bts_next_page).background = ResourcesCompat.getDrawable(resources,
+                    resources.getIdentifier("bts_next_page_on", "drawable", mActivity.packageName),
+                    mActivity.theme)
+            } else if (currentPage >= (totalPage-1)) {
+                currentPage = totalPage-1
+                bottomSheetView.findViewById<TextView>(R.id.course_content).text = contents[currentPage]
+                bottomSheetView.findViewById<TextView>(R.id.bts_pager).text = "${totalPage}/${totalPage}"
+                bottomSheetView.findViewById<Button>(R.id.bts_prev_page).isEnabled = true
+                bottomSheetView.findViewById<Button>(R.id.bts_prev_page).background = ResourcesCompat.getDrawable(resources,
+                    resources.getIdentifier("bts_prev_page_on", "drawable", mActivity.packageName),
+                    mActivity.theme)
+                bottomSheetView.findViewById<Button>(R.id.bts_next_page).isEnabled = false
+                bottomSheetView.findViewById<Button>(R.id.bts_next_page).background = ResourcesCompat.getDrawable(resources,
+                    resources.getIdentifier("bts_next_page_off", "drawable", mActivity.packageName),
+                    mActivity.theme)
+            }
+        }
+        // 페이지네이션
+        if (dataSet[position].courseContent.length > chunkSize) {
+            bottomSheetView.findViewById<TextView>(R.id.course_content).text = contents[currentPage] + "..."
+            bottomSheetView.findViewById<TextView>(R.id.bts_pager).text = "${currentPage + 1}/${totalPage}"
+            bottomSheetView.findViewById<Button>(R.id.bts_prev_page).isEnabled = false
+            bottomSheetView.findViewById<Button>(R.id.bts_prev_page).background = ResourcesCompat.getDrawable(resources,
+                resources.getIdentifier("bts_prev_page_off", "drawable", mActivity.packageName),
+                mActivity.theme)
+            bottomSheetView.findViewById<Button>(R.id.bts_next_page).isEnabled = true
+            bottomSheetView.findViewById<Button>(R.id.bts_next_page).background = ResourcesCompat.getDrawable(resources,
+                resources.getIdentifier("bts_next_page_on", "drawable", mActivity.packageName),
+                mActivity.theme)
+        } else {
+            bottomSheetView.findViewById<TextView>(R.id.course_content).text = dataSet[position].courseContent
+            bottomSheetView.findViewById<TextView>(R.id.bts_pager).text = "${currentPage + 1}/1"
+            bottomSheetView.findViewById<Button>(R.id.bts_prev_page).isEnabled = false
+            bottomSheetView.findViewById<Button>(R.id.bts_prev_page).background = ResourcesCompat.getDrawable(resources,
+                resources.getIdentifier("bts_prev_page_off", "drawable", mActivity.packageName),
+                mActivity.theme)
+            bottomSheetView.findViewById<Button>(R.id.bts_next_page).isEnabled = false
+            bottomSheetView.findViewById<Button>(R.id.bts_next_page).background = ResourcesCompat.getDrawable(resources,
+                resources.getIdentifier("bts_next_page_off", "drawable", mActivity.packageName),
+                mActivity.theme)
+        }
+
         // 스테이트 초기화
         bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetDialog.behavior.skipCollapsed = true
@@ -508,4 +602,161 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         super.onDetach()
         callback.remove()
     }
+
+    // 여기서부터
+
+    fun courseSelectMenu(){
+        val builder = AlertDialog.Builder(this.requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.course_select_layout, null)
+
+        val course1 = dialogView.findViewById<LinearLayout>(R.id.course1)
+        val course2 = dialogView.findViewById<LinearLayout>(R.id.course2)
+        val course3 = dialogView.findViewById<LinearLayout>(R.id.course3)
+        val course4 = dialogView.findViewById<LinearLayout>(R.id.course4)
+        val course5 = dialogView.findViewById<LinearLayout>(R.id.course5)
+        val course6 = dialogView.findViewById<LinearLayout>(R.id.course6)
+
+        mClickLister= View.OnClickListener { v ->
+            if (v?.id == R.id.course1){
+                count=0
+                mAlertDialog.dismiss()
+            }
+            if (v?.id == R.id.course2){
+                count=1
+                mAlertDialog.dismiss()
+            }
+            if (v?.id == R.id.course3){
+                count=2
+                mAlertDialog.dismiss()
+            }
+            if (v?.id == R.id.course4){
+                count=3
+                mAlertDialog.dismiss()
+            }
+            if (v?.id == R.id.course5){
+                count=4
+                mAlertDialog.dismiss()
+            }
+            if (v?.id == R.id.course6){
+                count=5
+                mAlertDialog.dismiss()
+            }
+
+            when (count) {
+                0 -> name = "횃불코스"
+                1 -> name = "희생코스"
+                2 -> name = "광장코스"
+                3 -> name = "열정코스"
+                4 -> name = "영혼코스"
+                5 -> {
+                    name = "나만의 VR코스"
+                    myCourseSelected(application, 1)
+                }
+            }
+            command = name
+
+            if (count != 5) {
+                spinnerSelected(application, command, 1)
+            }
+        }
+
+        course1.setOnClickListener(mClickLister)
+        course2.setOnClickListener(mClickLister)
+        course3.setOnClickListener(mClickLister)
+        course4.setOnClickListener(mClickLister)
+        course5.setOnClickListener(mClickLister)
+        course6.setOnClickListener(mClickLister)
+
+        if (count != 0){
+            dialogView.findViewById<ImageView>(R.id.course1_sign).setBackgroundResource(android.R.color.transparent)
+            var array = arrayOf(
+                R.id.course1_sign,
+                R.id.course2_sign,
+                R.id.course3_sign,
+                R.id.course4_sign,
+                R.id.course5_sign,
+                R.id.course6_sign
+            )
+
+            dialogView.findViewById<ImageView>(array[count]).setBackgroundResource(R.drawable.current_course_sign)
+        }
+
+        mAlertDialog = builder.setView(dialogView).show()
+
+        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+        mAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        if (Build.VERSION.SDK_INT < 30){
+            val display = windowManager.defaultDisplay
+            val size = Point()
+
+            display.getSize(size)
+
+            val window = mAlertDialog.window
+
+            val x = (size.x * 0.4f).toInt()
+            val y = (size.y * 0.4f).toInt()
+
+            window?.setLayout(x, y)
+
+        }else{
+            val rect = windowManager.currentWindowMetrics.bounds
+
+            val window = mAlertDialog.window
+            val x = (rect.width() * 0.4f).toInt()
+            val y = (rect.height() * 0.4f).toInt()
+
+            window?.setLayout(x, y)
+        }
+
+    }
+
+
+
+    fun nextCourseDialog(){
+        val builder = AlertDialog.Builder(this.requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.dialog_next_course, null)
+        val ok_btn = dialogView.findViewById<Button>(R.id.ok_btn)
+        val cancel_btn = dialogView.findViewById<Button>(R.id.cancel_btn)
+        val mAlertDialog = builder.setView(dialogView).show()
+        ok_btn.setOnClickListener{
+            prev_position += 1
+            playVR_ver2(result, prev_position)
+            mAlertDialog.dismiss()
+        }
+        cancel_btn.setOnClickListener{
+            mAlertDialog.dismiss()
+        }
+
+        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+        mAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        if (Build.VERSION.SDK_INT < 30){
+            val display = windowManager.defaultDisplay
+            val size = Point()
+
+            display.getSize(size)
+
+            val window = mAlertDialog.window
+
+            val x = (size.x * 0.5f).toInt()
+            val y = (size.y * 0.2f).toInt()
+
+            window?.setLayout(x, y)
+
+        }else{
+            val rect = windowManager.currentWindowMetrics.bounds
+
+            val window = mAlertDialog.window
+            val x = (rect.width() * 0.5f).toInt()
+            val y = (rect.height() * 0.2f).toInt()
+
+            window?.setLayout(x, y)
+        }
+
+    }
+
+    //여기까지
 }

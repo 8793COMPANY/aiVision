@@ -2,6 +2,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
@@ -45,18 +46,18 @@
                 android:id="@+id/course_content"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:ellipsize="end"
                 android:text="1980년 5월 17일 밤 전남대에 진주한 계엄군은 도서관 등에서 공부하고 있던 학생들을 무자비하게 구타하고 불법 구금하였다. 계엄군은 5월 18일 아침 학교에 등교하거나 5‧17비상계엄확대조치에 항의하기 위해 정문앞에 모인 학생들을 무자비하게 강제해산시켰다. 이에 학생들이 항의하면서 항쟁의 불씨가 되었다."
                 android:textColor="#6f6e6f"
+                android:textAlignment="center"
                 android:textSize="18dp"
-                android:maxLines="4"
-                android:ellipsize="end"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/course_name"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.2"
                 app:layout_constraintStart_toStartOf="@+id/course_name"
                 app:layout_constraintTop_toBottomOf="@+id/course_name"
                 app:layout_constraintVertical_bias="0.1"
-                app:layout_constraintHeight_default="percent"
-                app:layout_constraintHeight_percent="0.2"
                 app:layout_constraintWidth_default="percent"
                 app:layout_constraintWidth_percent="0.8" />
 
@@ -76,16 +77,12 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/course_content"
-                app:layout_constraintVertical_bias="0.35"
+                app:layout_constraintVertical_bias="0.7"
                 app:layout_constraintWidth_default="percent"
                 app:layout_constraintWidth_percent="0.35" />
 
             <Button
                 android:id="@+id/bottom_sheet_dialog_dismiss_btn"
-                app:layout_constraintWidth_default="percent"
-                app:layout_constraintHeight_default="percent"
-                app:layout_constraintWidth_percent="0.35"
-                app:layout_constraintHeight_percent="0.1"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@drawable/course_start_btn"
@@ -95,9 +92,71 @@
                 android:textSize="27dp"
                 app:layout_constraintBottom_toBottomOf="@+id/play_vr_btn"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.1"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/play_vr_btn"
-                app:layout_constraintTop_toTopOf="@+id/play_vr_btn" />
+                app:layout_constraintTop_toTopOf="@+id/play_vr_btn"
+                app:layout_constraintWidth_default="percent"
+                app:layout_constraintWidth_percent="0.35" />
+
+            <Button
+                android:id="@+id/bts_open_webview"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@drawable/bts_open_webview"
+                app:layout_constraintBottom_toBottomOf="@id/course_name"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.05"
+                app:layout_constraintHorizontal_bias="0.05"
+                app:layout_constraintLeft_toRightOf="@id/course_name"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/course_name"
+                app:layout_constraintWidth_default="percent"
+                app:layout_constraintWidth_percent="0.05" />
+
+            <Button
+                android:id="@+id/bts_prev_page"
+                android:layout_width="23.5dp"
+                android:layout_height="23.5dp"
+                android:background="@drawable/bts_prev_page_off"
+                app:layout_constraintBottom_toTopOf="@+id/play_vr_btn"
+                app:layout_constraintEnd_toStartOf="@+id/bts_pager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/course_content"
+                app:layout_constraintHorizontal_bias="0.9"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.025"
+                app:layout_constraintWidth_default="percent"
+                app:layout_constraintWidth_percent="0.025" />
+
+            <TextView
+                android:id="@+id/bts_pager"
+                android:layout_width="39dp"
+                android:layout_height="0dp"
+                android:text="1/1"
+                android:textColor="#6f6e6f"
+                android:textSize="18dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toTopOf="@+id/play_vr_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.05"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/course_content"
+                app:layout_constraintWidth_percent="0.05" />
+
+            <Button
+                android:id="@+id/bts_next_page"
+                android:layout_width="23.5dp"
+                android:layout_height="23.5dp"
+                android:background="@drawable/bts_next_page_off"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_sheet_dialog_dismiss_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.05"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toEndOf="@+id/bts_pager"
+                app:layout_constraintTop_toBottomOf="@+id/course_content"
+                app:layout_constraintWidth_percent="0.05" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>

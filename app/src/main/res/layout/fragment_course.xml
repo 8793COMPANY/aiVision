@@ -22,7 +22,7 @@
         app:layout_constraintWidth_default="percent"
         app:layout_constraintWidth_percent="1">
 
-        <Spinner
+        <LinearLayout
             android:id="@+id/course_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -34,7 +34,24 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
             app:layout_constraintWidth_default="percent"
-            app:layout_constraintWidth_percent="0.3"></Spinner>
+            app:layout_constraintWidth_percent="0.3"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/course_list_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="횃불코스"
+                android:textSize="25sp"
+                android:textColor="#4d4d4d"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/course_spinner_arrow"/>
+
+        </LinearLayout>
 
 
         <androidx.appcompat.widget.AppCompatButton
