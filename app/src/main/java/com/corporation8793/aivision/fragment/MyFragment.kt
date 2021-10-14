@@ -92,9 +92,9 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 /* val display = activity!!.windowManaver.defaultDisplay */ // in case of Fragment
         val size = Point()
         display.getRealSize(size) // or getSize(size)
-//        val width : Int = ((size.x / 720.0) * 170).toInt()
+        val width : Int = ((size.x / 720.0) * 170).toInt()
 
-        val width : Int = ((size.x / 1536.0) * 280).toInt()
+//        val width : Int = ((size.x / 1536.0) * 280).toInt()
 
 
 
@@ -104,12 +104,12 @@ class MyFragment(activity: MainActivity)  : Fragment() {
         tabs.addTab(tabs.newTab().setText("열정코스"))
         tabs.addTab(tabs.newTab().setText("영혼코스"))
 
-        for (i in 0 until tabs.getTabCount()) {
-            val tab = (tabs.getChildAt(0) as ViewGroup).getChildAt(i)
-            val p = tab.layoutParams as MarginLayoutParams
-            p.setMargins(0, 0, 100, 0)
-            tab.requestLayout()
-        }
+//        for (i in 0 until tabs.getTabCount()) {
+//            val tab = (tabs.getChildAt(0) as ViewGroup).getChildAt(i)
+//            val p = tab.layoutParams as MarginLayoutParams
+//            p.setMargins(0, 0, 100, 0)
+//            tab.requestLayout()
+//        }
 
 
         courseAdapter = CourseAdapter(width)
@@ -391,7 +391,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 
             val window = mAlertDialog.window
 
-            val x = (size.x * 0.4f).toInt()
+            val x = (size.x * 0.45f).toInt()
             val y = (size.y * 0.4f).toInt()
 
             window?.setLayout(x, y)
@@ -400,7 +400,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
             val rect = windowManager.currentWindowMetrics.bounds
 
             val window = mAlertDialog.window
-            val x = (rect.width() * 0.4f).toInt()
+            val x = (rect.width() * 0.45f).toInt()
             val y = (rect.height() * 0.4f).toInt()
 
             window?.setLayout(x, y)
@@ -436,7 +436,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 
             val window = mAlertDialog.window
 
-            val x = (size.x * 0.5f).toInt()
+            val x = (size.x * 0.7f).toInt()
             val y = (size.y * 0.2f).toInt()
 
             window?.setLayout(x, y)
@@ -445,7 +445,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
             val rect = windowManager.currentWindowMetrics.bounds
 
             val window = mAlertDialog.window
-            val x = (rect.width() * 0.5f).toInt()
+            val x = (rect.width() * 0.7f).toInt()
             val y = (rect.height() * 0.2f).toInt()
 
             window?.setLayout(x, y)
