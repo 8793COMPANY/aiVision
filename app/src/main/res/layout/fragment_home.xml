@@ -33,8 +33,8 @@
                     android:layout_height="0dp"
                     android:clipToPadding="false"
 
-                    android:paddingHorizontal="138.5dp"
-                    android:paddingBottom="57dp"
+                    android:paddingHorizontal="41.55dp"
+                    android:paddingBottom="17.1dp"
 
                     android:overScrollMode="never"
                     app:layout_constraintBottom_toBottomOf="parent"
