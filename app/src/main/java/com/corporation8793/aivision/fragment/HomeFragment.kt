@@ -110,9 +110,20 @@ class HomeFragment(activity: MainActivity) : Fragment() {
 
             override fun onPageSelected(position: Int) {
                 when (position) {
-                    0, 1, 2, 3, 4, 5 -> binding.homeMainBackground.background = ResourcesCompat.getDrawable(resources,
-                        resources.getIdentifier("home_main_background_$position", "drawable", mActivity.packageName),
-                        mActivity.theme)
+                    0, 1, 2, 3, 4, 5 -> {
+                        binding.homeMainBackground.background = ResourcesCompat.getDrawable(resources,
+                            resources.getIdentifier("home_main_background_$position", "drawable", mActivity.packageName),
+                            mActivity.theme)
+
+                        when (position) {
+                            0 -> binding.homeMainTitle.text = "횃불코스"
+                            1 -> binding.homeMainTitle.text = "희생코스"
+                            2 -> binding.homeMainTitle.text = "광장코스"
+                            3 -> binding.homeMainTitle.text = "열정코스"
+                            4 -> binding.homeMainTitle.text = "영혼코스"
+                            5 -> binding.homeMainTitle.text = "나만의 VR코스"
+                        }
+                    }
                 }
             } })
 
