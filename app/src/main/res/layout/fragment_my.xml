@@ -180,16 +180,16 @@
                 android:id="@+id/all_course_list"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="316"
+                android:layout_weight="320"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/recyclerview_item"
                 android:layout_marginLeft="30dp"></androidx.recyclerview.widget.RecyclerView>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="44"></View>
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_weight="40"></View>-->
 
 
 
