@@ -31,6 +31,10 @@
             android:value="3l4bxymvbl" />
 
         <activity android:name=".QuizActivity"></activity>
+
+        <activity android:name=".IntroActivity">
+
+        </activity>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"

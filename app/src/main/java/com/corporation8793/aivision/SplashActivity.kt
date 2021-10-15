@@ -51,7 +51,7 @@ class SplashActivity : AppCompatActivity() {
                 ActivityCompat.requestPermissions(this, PERMISSIONS, LOCATION_PERMISSION_REQUEST_CODE)
             } else {
                 Handler(Looper.getMainLooper()).postDelayed({
-                    var intent = Intent(this, MainActivity::class.java)
+                    var intent = Intent(this, IntroActivity::class.java)
                     startActivity(intent)
                     finish()
                 }, 3000)
