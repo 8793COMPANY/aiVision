@@ -163,16 +163,16 @@ class MyFragment(activity: MainActivity)  : Fragment() {
                         }, 200)
                     }
                     3 -> {
-                        courseSelectMenu()
-//                        Handler(Looper.getMainLooper()).postDelayed({
-//                            changeCourseItem("열정코스")
-//                        }, 200)
+//                        courseSelectMenu()
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            changeCourseItem("열정코스")
+                        }, 200)
                     }
                     4 -> {
-                        nextCourseDialog()
-//                    Handler(Looper.getMainLooper()).postDelayed({
-//                        changeCourseItem("영혼코스")
-//                    }, 200)
+//                        nextCourseDialog()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        changeCourseItem("영혼코스")
+                    }, 200)
                     }
 
                 }
