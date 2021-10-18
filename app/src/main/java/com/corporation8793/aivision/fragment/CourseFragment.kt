@@ -490,7 +490,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         }
         ypv.addYouTubePlayerListener(ypv_object as AbstractYouTubePlayerListener)
         ypv.enterFullScreen()
-        yp?.loadVideo(dataSet[position].courseURL.replace("https://youtu.be/", ""),0F)
+        yp?.loadVideo(dataSet[position].courseURL.replace("https://youtu.be/", ""),70F)
 
         ypv_flag = true
         lifecycle.addObserver(ypv)
@@ -778,8 +778,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
             val window = mAlertDialog.window
 
-            val x = (size.x * 0.3f).toInt()
-            val y = (size.y * 0.5f).toInt()
+            val x = (size.x * 0.7f).toInt()
+            val y = (size.y * 0.3f).toInt()
 
             window?.setLayout(x, y)
 
@@ -787,8 +787,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             val rect = windowManager.currentWindowMetrics.bounds
 
             val window = mAlertDialog.window
-            val x = (rect.width() * 0.3f).toInt()
-            val y = (rect.height() * 0.5f).toInt()
+            val x = (rect.width() * 0.7f).toInt()
+            val y = (rect.height() * 0.3f).toInt()
 
             window?.setLayout(x, y)
         }
