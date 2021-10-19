@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -63,7 +64,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     var nMap : NaverMap? = null
-    lateinit var currentLocation : LatLng
+    var currentLocation = activity.currentLocation
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     var course_list_view : RecyclerView? = null
     var course_list_view_adaptor : CoursePagerAdapter? = null
@@ -404,7 +405,18 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         }
     }
 
+    @SuppressLint("MissingPermission")
     fun refreshCourseListView() {
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location->
+                if (location != null) {
+                    currentLocation = LatLng(location.latitude, location.longitude)
+                    Log.e("lastLocation", "onCreateView: location ${location.latitude}, ${location.longitude} !!")
+                } else {
+                    currentLocation = LatLng(result[0].courseLatitude.toDouble(), result[0].courseLongitude.toDouble())
+                    Log.e("lastLocation", "onCreateView: location NULL !!")
+                }
+            }
         course_list_view_adaptor = CoursePagerAdapter(mActivity.applicationContext, mFragment, result, listDataSet)
         course_list_view?.adapter = course_list_view_adaptor
         course_list_view?.adapter?.notifyDataSetChanged()
@@ -482,7 +494,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                         ypv.removeYouTubePlayerListener(this)
 
                         refreshMap(dataSet, position)
-                        nextCourseDialog()
+                        if (position != (dataSet.size - 1)) {
+                            Handler().postDelayed({nextCourseDialog()}, 500)
+                        }
                     }
                 }
                 course_list_view_adaptor?.notifyDataSetChanged()

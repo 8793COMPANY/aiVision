@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.corporation8793.aivision.MainActivity
 import com.corporation8793.aivision.R
 import com.corporation8793.aivision.fragment.CourseFragment
+import com.corporation8793.aivision.naver_map.LocationDistance
 import com.corporation8793.aivision.room.Course
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -27,10 +28,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.coroutines.coroutineContext
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, private val dataSet:List<Course>,
                          val listDataSet : MutableList<listData> = mutableListOf()) : RecyclerView.Adapter<CoursePagerAdapter.Holder>() {
     lateinit var wifiManager : WifiManager
+    lateinit var locationDistance : LocationDistance
 
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var mCourseName : TextView = itemView.findViewById(R.id.mCourseName)
@@ -41,6 +45,7 @@ class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, p
         var course_progress : TextView = itemView.findViewById(R.id.course_progress)
         var course_visit_chk : ImageView = itemView.findViewById(R.id.course_visit_chk)
         var course_know_more : Button = itemView.findViewById(R.id.course_know_more)
+        var mCourseDistance : TextView = itemView.findViewById(R.id.mCourseDistance)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -48,6 +53,7 @@ class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, p
         .inflate(R.layout.course_fragment_listview_item, parent, false)
 
         wifiManager = mContext.getSystemService(WIFI_SERVICE) as WifiManager
+        locationDistance = LocationDistance()
 
         return Holder(view)
     }
@@ -55,6 +61,13 @@ class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, p
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.setIsRecyclable(false)
         holder.mCourseName.text = dataSet[position].courseName
+        holder.mCourseDistance.text = "${String.format("%.2f",
+            locationDistance.distance(
+            dataSet[position].courseLatitude.toDouble(),
+            dataSet[position].courseLongitude.toDouble(),
+            mFragment.currentLocation.latitude,
+            mFragment.currentLocation.longitude,
+            "kilometer"))} km"
         listDataSet.add(listData(position = position, course_progress = false, course_visit_chk = false))
         when(position) {
             // 첫 번째
@@ -107,10 +120,9 @@ class CoursePagerAdapter(val mContext: Context, val mFragment: CourseFragment, p
                 //mFragment.playVR_ver2(dataSet, position)
                 mFragment.knowMore(dataSet, position)
             } else {
-                // TODO : 임시코드
                 mFragment.knowMore(dataSet, position)
                 //Toast.makeText(mFragment.mActivity, "Wi-Fi 연결을 확인해주세요", Toast.LENGTH_SHORT).show()
-                Toast.makeText(mFragment.mActivity, "Wi-Fi 연결을 권장합니다", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(mFragment.mActivity, "Wi-Fi 연결을 권장합니다", Toast.LENGTH_SHORT).show()
             }
         }
     }

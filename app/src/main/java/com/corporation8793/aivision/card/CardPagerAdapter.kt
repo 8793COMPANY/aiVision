@@ -63,10 +63,9 @@ class CardPagerAdapter(val context: Context, val activity: MainActivity): CardAd
                 if (wifiManager.connectionInfo.ssid != WifiManager.UNKNOWN_SSID) {
                     activity.replaceFragment(CourseFragment(this.activity, position), 2)
                 } else {
-                    // TODO : 임시코드
                     activity.replaceFragment(CourseFragment(this.activity, position), 2)
                     //Toast.makeText(activity, "Wi-Fi 연결을 확인해주세요", Toast.LENGTH_SHORT).show()
-                    Toast.makeText(activity, "Wi-Fi 연결을 권장합니다", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(activity, "Wi-Fi 연결을 권장합니다", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -116,7 +115,6 @@ class CardPagerAdapter(val context: Context, val activity: MainActivity): CardAd
                         }
                     }
                 } else {
-                    // TODO : 임시코드
                     // 시작하기 클릭 처리 리스너
                     CoroutineScope(Dispatchers.IO).launch {
                         var ml : MutableList<Course> = mutableListOf()
@@ -144,7 +142,7 @@ class CardPagerAdapter(val context: Context, val activity: MainActivity): CardAd
                     }
                     //
                     //Toast.makeText(activity, "Wi-Fi 연결을 확인해주세요", Toast.LENGTH_SHORT).show()
-                    Toast.makeText(activity, "Wi-Fi 연결을 권장합니다", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(activity, "Wi-Fi 연결을 권장합니다", Toast.LENGTH_SHORT).show()
                 }
             }
 
