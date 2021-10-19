@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/next_course_dialog"
     android:orientation="vertical"
-    android:weightSum="400">
+    android:weightSum="450">
 
 <!--    <LinearLayout-->
 <!--        android:layout_width="match_parent"-->
@@ -16,50 +16,50 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="268"></View>
+            android:layout_weight="269"></View>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="88"
+            android:layout_weight="122"
             android:orientation="horizontal"
-            android:weightSum="840">
+            android:weightSum="970">
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="50"></View>
+                android:layout_weight="80"></View>
 
             <Button
                 android:id="@+id/ok_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="352"
+                android:layout_weight="390"
                 android:background="@drawable/dialog_ok_btn"></Button>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="36"></View>
+                android:layout_weight="30"></View>
 
             <Button
                 android:id="@+id/cancel_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="352"
+                android:layout_weight="390"
                 android:background="@drawable/dialog_cancel_btn"></Button>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="50"></View>
+                android:layout_weight="80"></View>
         </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="44"></View>
+        android:layout_weight="59"></View>
 
 <!--    </LinearLayout>-->
 </LinearLayout>

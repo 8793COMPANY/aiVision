@@ -21,7 +21,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     app:layout_constraintHeight_default="percent"
-                    app:layout_constraintHeight_percent="0.55"
+                    app:layout_constraintHeight_percent="0.65"
                     android:background="@drawable/home_main_background_0"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -46,8 +46,8 @@
                     android:layout_height="0dp"
                     android:clipToPadding="false"
 
-                    android:paddingHorizontal="41.55dp"
-                    android:paddingBottom="17.1dp"
+                    android:paddingHorizontal="25dp"
+                    android:paddingVertical="45dp"
 
                     android:overScrollMode="never"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -89,7 +89,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.4" />
+                app:layout_constraintVertical_bias="0.35" />
 
             <TextView
                 android:id="@+id/mCourseName"
@@ -104,14 +104,14 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/course_visit_chk"
-                app:layout_constraintVertical_bias="0.15" />
+                app:layout_constraintVertical_bias="0.1" />
             <TextView
                 android:id="@+id/mCourseDistance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="20dp"
                 android:text="0 km"
-                android:textSize="6.5sp"
+                android:textSize="10sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/mCourseName"
                 app:layout_constraintLeft_toLeftOf="@id/mCourseName"
@@ -126,14 +126,14 @@
                 android:background="@drawable/course_know_more"
                 android:gravity="center"
                 android:text="알아보기"
-                android:textColor="#767676"
+                android:textColor="#6f7070"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mCourseDistance"
-                app:layout_constraintVertical_bias="0.15"
+                app:layout_constraintVertical_bias="0.1"
                 app:layout_constraintWidth_percent="0.9" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

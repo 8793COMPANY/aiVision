@@ -25,7 +25,7 @@
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/activity_splash.xml" value="0.15473933649289098" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.2" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/button_ripple.xml" value="0.34010416666666665" />
-        <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/card_adaptor.xml" value="0.33" />
+        <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/card_adaptor.xml" value="0.25" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/course_fragment_listview_item.xml" value="0.5" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/course_select_layout.xml" value="0.13557692307692307" />
         <entry key="..\:/DONG/Documents/AndroidStudioProjects/KotlinProject/aiVision/app/src/main/res/layout/dialog_next_course.xml" value="0.15" />
@@ -39,7 +39,7 @@
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
