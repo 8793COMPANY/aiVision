@@ -101,22 +101,32 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="76"></View>
+            android:layout_weight="46"></View>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="920"
+            android:layout_weight="940"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/recyclerview_item"
             android:layout_marginLeft="30dp"></androidx.recyclerview.widget.RecyclerView>
 
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/recyclerview"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="94                                                                   0"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--            tools:listitem="@layout/recyclerview_item"-->
+<!--            android:layout_marginLeft="30dp"></androidx.recyclerview.widget.RecyclerView>-->
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="50"></View>
+            android:layout_weight="55"></View>
 
 
     </LinearLayout>
@@ -180,7 +190,7 @@
                 android:id="@+id/all_course_list"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="980"
+                android:layout_weight="960"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/recyclerview_item"

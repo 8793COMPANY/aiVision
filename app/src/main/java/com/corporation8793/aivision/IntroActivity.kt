@@ -31,7 +31,7 @@ class IntroActivity  : AppCompatActivity() {
                 super.onPageSelected(position)
                 if (position == 0){
                     before_btn.visibility = View.INVISIBLE
-                }else if (position == 2){
+                }else if (position == 5){
                     next_btn.setText("완료")
                 }else{
                     before_btn.visibility = View.VISIBLE
@@ -63,6 +63,6 @@ class IntroActivity  : AppCompatActivity() {
     }
 
     private fun getIntroList(): ArrayList<Int>{
-        return arrayListOf<Int>(R.color.black,R.color.design_default_color_primary,R.color.purple_200)
+        return arrayListOf<Int>(R.drawable.intro1,R.drawable.intro2,R.drawable.intro3,R.drawable.intro4,R.drawable.intro5,R.drawable.intro6)
     }
 }
