@@ -16,30 +16,37 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:weightSum="315"
+        android:weightSum="990"
         android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/course_img"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="225"
+            android:layout_weight="650"
                 android:background="@drawable/background_rounding"
                 android:scaleType="centerCrop"></ImageView>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="22"></View>
+                android:layout_weight="40"></View>
 
             <TextView
                 android:id="@+id/course_name"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="68"
-                android:textSize="13dp"
-                android:textStyle="bold"
-                android:gravity="center_horizontal"></TextView>
+                android:layout_weight="300"
+                android:textSize="15dp"
+                android:textStyle="normal"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:text="hi"
+                android:textColor="#353535"
+                android:fontFamily="@font/nskr_regular"
+                android:gravity="center_horizontal"
+                android:includeFontPadding="false"
+                ></TextView>
 
     </LinearLayout>
 

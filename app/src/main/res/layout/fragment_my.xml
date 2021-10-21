@@ -71,7 +71,7 @@
         android:background="@drawable/my_course_select_background"
         android:orientation="vertical"
         android:weightSum="1240"
-        app:layout_constraintVertical_weight="0.46">
+        app:layout_constraintVertical_weight="0.43">
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -101,13 +101,13 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="96"></View>
+            android:layout_weight="76"></View>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="880"
+            android:layout_weight="920"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/recyclerview_item"
@@ -116,7 +116,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="70"></View>
+            android:layout_weight="50"></View>
 
 
     </LinearLayout>
@@ -168,19 +168,19 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         android:weightSum="1090"
-        app:layout_constraintVertical_weight="0.37">
+        app:layout_constraintVertical_weight="0.40">
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="117"></View>
+            android:layout_weight="57"></View>
 
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/all_course_list"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="880"
+                android:layout_weight="980"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/recyclerview_item"
