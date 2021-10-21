@@ -92,7 +92,7 @@ class MyFragment(activity: MainActivity)  : Fragment() {
 /* val display = activity!!.windowManaver.defaultDisplay */ // in case of Fragment
         val size = Point()
         display.getRealSize(size) // or getSize(size)
-        val width : Int = ((size.x / 720.0) * 190).toInt()
+        val width : Int = ((size.x / 1440.0) * 420).toInt()
 
 //        val width : Int = ((size.x / 1536.0) * 280).toInt()
 
@@ -216,6 +216,10 @@ class MyFragment(activity: MainActivity)  : Fragment() {
             }else{
                 Application.prefs.setString("my_course", str.substring(0, str.length))
             }
+
+            edit_btn.setBackgroundResource(R.drawable.my_finish_btn)
+            check = true
+            courseAdapter.editMode()
 
         }
 
