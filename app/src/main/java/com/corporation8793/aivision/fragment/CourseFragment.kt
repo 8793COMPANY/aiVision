@@ -793,7 +793,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             val window = mAlertDialog.window
 
             val x = (size.x * 0.7f).toInt()
-            val y = (size.y * 0.3f).toInt()
+            val y = (size.y * 0.15f).toInt()
 
             window?.setLayout(x, y)
 
@@ -802,7 +802,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
             val window = mAlertDialog.window
             val x = (rect.width() * 0.7f).toInt()
-            val y = (rect.height() * 0.3f).toInt()
+            val y = (rect.height() * 0.15f).toInt()
 
             window?.setLayout(x, y)
         }

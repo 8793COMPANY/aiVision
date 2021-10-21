@@ -70,6 +70,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="진행 중"
+                android:fontFamily="@font/nskr_medium"
+                android:includeFontPadding="false"
                 android:textColor="#18a5b1"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toTopOf="@+id/course_visit_chk"
@@ -89,7 +91,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.4" />
+                app:layout_constraintVertical_bias="0.35" />
 
             <TextView
                 android:id="@+id/mCourseName"
@@ -98,21 +100,25 @@
                 android:paddingHorizontal="20dp"
                 android:text="헬~ 헬로!"
                 android:textSize="13sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/nskr_medium"
+                android:includeFontPadding="false"
+                android:textColor="#4d4d4d"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/course_visit_chk"
-                app:layout_constraintVertical_bias="0.15" />
+                app:layout_constraintVertical_bias="0.1" />
             <TextView
                 android:id="@+id/mCourseDistance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="20dp"
                 android:text="0 km"
-                android:textSize="6.5sp"
-                android:textStyle="bold"
+                android:textSize="11sp"
+                android:fontFamily="@font/nskr_regular"
+                android:includeFontPadding="false"
+                android:textColor="#6f7070"
                 app:layout_constraintTop_toBottomOf="@id/mCourseName"
                 app:layout_constraintLeft_toLeftOf="@id/mCourseName"
                 app:layout_constraintRight_toRightOf="@id/mCourseName"
@@ -121,19 +127,22 @@
 
             <Button
                 android:id="@+id/course_know_more"
-                android:layout_width="76dp"
-                android:layout_height="18dp"
+                android:layout_width="78dp"
+                android:layout_height="20dp"
                 android:background="@drawable/course_know_more"
                 android:gravity="center"
                 android:text="알아보기"
-                android:textColor="#767676"
-                android:textSize="10sp"
+                android:fontFamily="@font/nskr_regular"
+                android:includeFontPadding="false"
+                android:textColor="#6f7070"
+                android:textSize="12sp"
+                style="?android:attr/borderlessButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mCourseDistance"
-                app:layout_constraintVertical_bias="0.15"
+                app:layout_constraintVertical_bias="0.1"
                 app:layout_constraintWidth_percent="0.9" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,7 @@
 import android.content.Context
 import android.content.Context.WIFI_SERVICE
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.net.wifi.WifiManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager.widget.PagerAdapter
 import com.corporation8793.aivision.Application
 import com.corporation8793.aivision.MainActivity
@@ -49,7 +52,8 @@ class CardPagerAdapter(val context: Context, val activity: MainActivity): CardAd
         val application = Application().getInstance(activity.applicationContext)
 
         binding = CardAdaptorBinding.inflate(inflater)
-        if (mData[position].getCourseType() == 0) {
+        if (mData[position].getCourseType() != 5) {
+            var cs = ""
             binding.mCourseName.text = mData[position].getCourseName()
             binding.mCourseTime.text = mData[position].getCourseTime()
             binding.mCourseStart.text = mData[position].getCourseStart()
@@ -57,6 +61,28 @@ class CardPagerAdapter(val context: Context, val activity: MainActivity): CardAd
             binding.mCourseDistance.text = mData[position].getCourseDistance()
             binding.mySpotImg.visibility = View.INVISIBLE
             binding.mySpotText.visibility = View.INVISIBLE
+
+            when (mData[position].getCourseType()) {
+                0 -> cs = "#9bc7c6"
+                1 -> cs = "#98acc4"
+                2 -> cs = "#beb796"
+                3 -> cs = "#9bc3a5"
+                4 -> cs = "#c6a79c"
+            }
+            binding.courseStartBtn.backgroundTintList = ColorStateList.valueOf(Color.parseColor(cs))
+            binding.mCourseDistance.setTextColor(ColorStateList.valueOf(Color.parseColor(cs)))
+
+            binding.startSpotImg.background = ResourcesCompat.getDrawable(activity.resources,
+                activity.resources.getIdentifier("card_start_${mData[position].getCourseType()}", "drawable", activity.packageName),
+                activity.theme)
+
+            binding.cardDistance.background = ResourcesCompat.getDrawable(activity.resources,
+                activity.resources.getIdentifier("card_distance_${mData[position].getCourseType()}", "drawable", activity.packageName),
+                activity.theme)
+
+            binding.goalSpotImg.background = ResourcesCompat.getDrawable(activity.resources,
+                activity.resources.getIdentifier("card_goal_${mData[position].getCourseType()}", "drawable", activity.packageName),
+                activity.theme)
 
             binding.courseStartBtn.setOnClickListener {
                 //  : 시작하기 클릭 처리 리스너
