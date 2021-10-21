@@ -31,14 +31,23 @@
                     android:id="@+id/home_main_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/nskr_bold"
+                    android:includeFontPadding="false"
+                    android:shadowColor="#FF000000"
+
+                    android:shadowDx="5.0"
+                    android:shadowDy="5.0"
+                    android:shadowRadius="2.0"
                     android:text="횃불코스"
+
                     android:textColor="#FFF"
                     android:textSize="45dp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/home_main_background"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/home_main_background" />
+                    app:layout_constraintTop_toTopOf="@+id/home_main_background"
+                    app:layout_constraintVertical_bias="0.4" />
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/card_view_pager"
@@ -46,8 +55,8 @@
                     android:layout_height="0dp"
                     android:clipToPadding="false"
 
-                    android:paddingHorizontal="25dp"
-                    android:paddingVertical="45dp"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="20dp"
 
                     android:overScrollMode="never"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -54,9 +54,9 @@ class HomeFragment(activity: MainActivity) : Fragment() {
         // 카드뷰 뷰페이저 데이터 입력
         testCardAdapter.addCardItem( CardItem(0, "횃불코스", "1시간 50분", "전남대학교 정문", "구 전남도청", "6.7km", false))
         testCardAdapter.addCardItem( CardItem(1, "희생코스", "5시간 20분", "구 전남도청", "광주공원 광장", "21.5km", false))
-        testCardAdapter.addCardItem( CardItem(2, "광장코스", "3시간", "광주공원 광장", "5·18기념공원", "11.1km", false))
-        testCardAdapter.addCardItem( CardItem(3, "열정코스", "1시간 30분", "5·18기념공원", "전남대 민주길", "5.9km", false))
-        testCardAdapter.addCardItem( CardItem(4, "영혼코스", "3시간 10분", "전남대학교 정문", "국립5·18민주묘지", "12.5km", false))
+        testCardAdapter.addCardItem( CardItem(2, "광장코스", "3시간", "광주공원 광장", "5·18 기념공원", "11.1km", false))
+        testCardAdapter.addCardItem( CardItem(3, "열정코스", "1시간 30분", "5·18 기념공원", "전남대 민주길", "5.9km", false))
+        testCardAdapter.addCardItem( CardItem(4, "영혼코스", "3시간 10분", "전남대학교 정문", "국립5·18 민주묘지", "12.5km", false))
         testCardAdapter.addCardItem( CardItem(5, "나만의 VR코스", "0", "0", "0", "0", false))
 
         var mLastOffset = 0f

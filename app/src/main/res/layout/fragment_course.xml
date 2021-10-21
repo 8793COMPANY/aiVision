@@ -84,7 +84,7 @@
         app:layout_constraintTop_toBottomOf="@id/actionbar"
         app:layout_constraintWidth_default="percent"
         app:layout_constraintHeight_default="percent"
-        app:layout_constraintHeight_percent="0.7"
+        app:layout_constraintHeight_percent="0.65"
         app:layout_constraintWidth_percent="1"/>
 
     <LinearLayout
