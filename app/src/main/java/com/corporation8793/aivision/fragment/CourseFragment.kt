@@ -632,6 +632,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                /*
                 if (ypv.isFullScreen()) {
                     yp?.pause()
                     mActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -644,6 +645,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                 } else {
                     yp?.pause()
                 }
+                */
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
