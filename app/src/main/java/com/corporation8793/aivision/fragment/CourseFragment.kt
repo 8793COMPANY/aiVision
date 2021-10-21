@@ -461,13 +461,15 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                         ypv_container.layoutParams.height = 0
                         ypv_container.requestLayout()
 
-/*                        finish_btn.setOnClickListener {
+                        /*
+                        finish_btn.setOnClickListener {
                             if (command != "5") {
                                 spinnerSelected(application, command)
                             } else {
                                 myCourseSelected(application)
                             }
-                        }*/
+                        }
+                        */
                     }
                     PlayerConstants.PlayerState.ENDED -> {
                         course_list_view_adaptor?.listDataSet?.get(position)?.course_progress = false
@@ -481,13 +483,15 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                         ypv_container.layoutParams.height = 0
                         ypv_container.requestLayout()
 
-/*                        finish_btn.setOnClickListener {
+                        /*
+                        finish_btn.setOnClickListener {
                             if (command != "5") {
                                 spinnerSelected(application, command)
                             } else {
                                 myCourseSelected(application)
-                            }*/
+                            }
                         }
+                        */
 
                         listDataSet = course_list_view_adaptor?.listDataSet!!
 
