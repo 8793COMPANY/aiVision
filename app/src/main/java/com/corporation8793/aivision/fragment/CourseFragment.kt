@@ -83,6 +83,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     lateinit var map : View
     lateinit var ypv : YouTubePlayerView
     lateinit var ypv_temp : YouTubePlayerView
+    lateinit var ypv_close_btn : Button
+    lateinit var ypv_prev_btn : Button
+    lateinit var ypv_next_btn : Button
     var listDataSet : MutableList<CoursePagerAdapter.listData> = mutableListOf()
     var ypv_object : YouTubePlayerListener? = null
     var prev_position : Int = 0
@@ -124,6 +127,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         map = view.findViewById(R.id.map)
         ypv = view.findViewById(R.id.youtube_player_view)
         ypv_temp = view.findViewById(R.id.youtube_player_view)
+        ypv_close_btn = view.findViewById(R.id.ypv_close_btn)
+        ypv_prev_btn = view.findViewById(R.id.ypv_prev_btn)
+        ypv_next_btn = view.findViewById(R.id.ypv_next_btn)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(mActivity)
 
@@ -429,6 +435,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         ypv.enableBackgroundPlayback(false)
 
         prev_position = position
+
         ypv_object = object : AbstractYouTubePlayerListener() {
             override fun onVideoId(youTubePlayer: YouTubePlayer, videoId: String) {
                 super.onVideoId(youTubePlayer, videoId)
@@ -444,6 +451,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                         mActivity.linear.visibility = View.GONE
                         course_list_view_container.visibility = View.GONE
                         actionbar.visibility = View.GONE
+                        ypv_close_btn.visibility = View.VISIBLE
 
                         ypv_container.layoutParams.height = MATCH_PARENT
                         ypv_container.requestLayout()
@@ -457,6 +465,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                         mActivity.linear.visibility = View.VISIBLE
                         course_list_view_container.visibility = View.VISIBLE
                         actionbar.visibility = View.VISIBLE
+                        ypv_close_btn.visibility = View.GONE
 
                         ypv_container.layoutParams.height = 0
                         ypv_container.requestLayout()
@@ -479,6 +488,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                         mActivity.linear.visibility = View.VISIBLE
                         course_list_view_container.visibility = View.VISIBLE
                         actionbar.visibility = View.VISIBLE
+                        ypv_close_btn.visibility = View.GONE
 
                         ypv_container.layoutParams.height = 0
                         ypv_container.requestLayout()
@@ -506,9 +516,33 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                 course_list_view_adaptor?.notifyDataSetChanged()
             }
         }
+
+
+        ypv_next_btn.setOnClickListener {
+            if (position != (dataSet.size - 1)) {
+                course_list_view_adaptor?.listDataSet?.get(prev_position)?.course_progress = false
+                ypv.removeYouTubePlayerListener(ypv_object!!)
+                prev_position += 1
+                playVR_ver2(dataSet, prev_position)
+            }
+        }
+
+        ypv_prev_btn.setOnClickListener {
+            if (prev_position > 0) {
+                course_list_view_adaptor?.listDataSet?.get(prev_position)?.course_progress = false
+                ypv.removeYouTubePlayerListener(ypv_object!!)
+                prev_position -= 1
+                playVR_ver2(dataSet, prev_position)
+            }
+        }
+
+        ypv_close_btn.setOnClickListener {
+            yp?.pause()
+        }
+
         ypv.addYouTubePlayerListener(ypv_object as AbstractYouTubePlayerListener)
         ypv.enterFullScreen()
-        yp?.loadVideo(dataSet[position].courseURL.replace("https://youtu.be/", ""),70F)
+        yp?.loadVideo(dataSet[position].courseURL.replace("https://youtu.be/", ""),0F)
 
         ypv_flag = true
         lifecycle.addObserver(ypv)
