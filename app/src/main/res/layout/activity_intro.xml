@@ -28,31 +28,31 @@
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="50"></View>
+            android:layout_weight="100"></View>
 
         <Button
-            android:id="@+id/before_btn"
+            android:id="@+id/invisible_forever"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="300"
-            android:text="이전"></Button>
+            android:layout_weight="372"
+            android:background="@android:color/transparent"></Button>
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="740"></View>
+            android:layout_weight="660"></View>
 
         <Button
-            android:id="@+id/next_btn"
+            android:id="@+id/close"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="300"
-            android:text="다음"></Button>
+            android:layout_weight="200"
+            android:background="@android:color/transparent"></Button>
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="50"></View>
+            android:layout_weight="100"></View>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
