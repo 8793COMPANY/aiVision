@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.Switch
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
+import com.corporation8793.aivision.fragment.AllCourseFragment
 import com.corporation8793.aivision.fragment.CourseFragment
 import com.corporation8793.aivision.fragment.HomeFragment
 import com.corporation8793.aivision.fragment.MyFragment
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var home_btn: Button
     lateinit var course_btn: Button
     lateinit var my_btn: Button
+    lateinit var all_course_btn: Button
     lateinit var linear: LinearLayout
     lateinit var currentLocation : LatLng
     private lateinit var fusedLocationClient : FusedLocationProviderClient
@@ -46,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         course_btn = findViewById(R.id.course_btn)
         my_btn = findViewById(R.id.my_btn)
         linear = findViewById(R.id.linear)
+        all_course_btn = findViewById(R.id.all_course_btn)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         fusedLocationClient.lastLocation
@@ -77,19 +80,25 @@ class MainActivity : AppCompatActivity() {
         my_btn.setOnClickListener {
             replaceFragment(MyFragment(mActivity), 3)
         }
+
+        all_course_btn.setOnClickListener{
+            replaceFragment(AllCourseFragment(this), 4)
+        }
     }
 
-    private fun settingBtn(btn1: Button, btn2: Button, btn3: Button) {
+    private fun settingBtn(btn1: Button, btn2: Button, btn3: Button, btn4: Button) {
         btn1.isSelected = true
         btn2.isSelected = false
         btn3.isSelected = false
+        btn4.isSelected = false
     }
 
         private fun settingFlagBtn(flag: Int) {
             when (flag) {
-                1 -> settingBtn(home_btn, course_btn, my_btn)
-                2 -> settingBtn(course_btn, home_btn, my_btn)
-                3 -> settingBtn(my_btn, home_btn, course_btn)
+                1 -> settingBtn(home_btn, course_btn, my_btn,all_course_btn)
+                2 -> settingBtn(course_btn, home_btn, my_btn,all_course_btn)
+                3 -> settingBtn(my_btn, home_btn, course_btn,all_course_btn)
+                4 -> settingBtn(all_course_btn, home_btn, course_btn,my_btn)
             }
         }
 
