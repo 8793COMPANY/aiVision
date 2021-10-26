@@ -39,6 +39,7 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.NaverMap.LAYER_GROUP_TRANSIT
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.util.MarkerIcons
@@ -228,7 +229,13 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                 markers.add(Marker(coordinateInScope))
             }
 
-            for (mk in markers) {
+            for ((i, mk) in markers.withIndex()) {
+                val listener = Overlay.OnClickListener {
+                    knowMore(result, i)
+                    true
+                }
+
+                mk.onClickListener = listener
                 mk.map = nMap
             }
 
@@ -402,7 +409,13 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             }
         }
 
-        for (mk in markers) {
+        for ((i, mk) in markers.withIndex()) {
+            val listener = Overlay.OnClickListener {
+                knowMore(result, i)
+                true
+            }
+
+            mk.onClickListener = listener
             mk.map = nMap
         }
 
