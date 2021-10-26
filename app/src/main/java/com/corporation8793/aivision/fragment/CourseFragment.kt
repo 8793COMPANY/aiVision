@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.gesture.GestureOverlayView
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
@@ -12,15 +13,13 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.WindowManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
+import androidx.constraintlayout.motion.widget.OnSwipe
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -31,6 +30,7 @@ import com.corporation8793.aivision.MainActivity
 import com.corporation8793.aivision.R
 import com.corporation8793.aivision.recyclerview.course_fragment.CoursePagerAdapter
 import com.corporation8793.aivision.room.Course
+import com.corporation8793.aivision.youtube_player.OnSwipeTouchListener
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -50,6 +50,10 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.You
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import kotlinx.coroutines.*
 import okhttp3.Dispatcher
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerTracker
+
+
+
 
 // : Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -89,6 +93,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     lateinit var ypv_close_btn : Button
     lateinit var ypv_prev_btn : Button
     lateinit var ypv_next_btn : Button
+    lateinit var ypv_swipe : LinearLayout
     var listDataSet : MutableList<CoursePagerAdapter.listData> = mutableListOf()
     var ypv_object : YouTubePlayerListener? = null
     var prev_position : Int = 0
@@ -133,6 +138,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         ypv_close_btn = view.findViewById(R.id.ypv_close_btn)
         ypv_prev_btn = view.findViewById(R.id.ypv_prev_btn)
         ypv_next_btn = view.findViewById(R.id.ypv_next_btn)
+        ypv_swipe = view.findViewById(R.id.ypv_swipe)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(mActivity)
 
@@ -447,6 +453,9 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     }
 
     fun playVR_ver2(dataSet : List<Course>, position : Int) {
+        val tracker = YouTubePlayerTracker()
+        yp?.addListener(tracker)
+
         map.visibility = View.INVISIBLE
         ypv.visibility = View.VISIBLE
 
@@ -535,6 +544,24 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             }
         }
 
+        ypv_swipe.setOnTouchListener(object : OnSwipeTouchListener(mActivity) {
+            override fun ost() {
+                when (tracker.state) {
+                    PlayerConstants.PlayerState.PLAYING -> yp?.pause()
+                    PlayerConstants.PlayerState.PAUSED -> yp?.play()
+                }
+            }
+
+            override fun onSwipeRight() {
+                super.onSwipeRight()
+                yp?.seekTo(tracker.currentSecond + 5f)
+            }
+
+            override fun onSwipeLeft() {
+                super.onSwipeLeft()
+                yp?.seekTo(tracker.currentSecond - 5f)
+            }
+        })
 
         ypv_next_btn.setOnClickListener {
             if (position != (dataSet.size - 1)) {

@@ -106,7 +106,13 @@
             android:visibility="invisible"
             app:showFullScreenButton="false"
             app:showYouTubeButton="false"
-            app:autoPlay="false" >
+            app:autoPlay="false">
+
+            <LinearLayout
+                android:id="@+id/ypv_swipe"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" />
 
             <Button
                 android:id="@+id/ypv_close_btn"
