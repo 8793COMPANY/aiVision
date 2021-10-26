@@ -39,6 +39,7 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.NaverMap.LAYER_GROUP_TRANSIT
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.util.MarkerIcons
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -65,6 +66,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     private var param2: String? = null
     var nMap : NaverMap? = null
     var currentLocation = activity.currentLocation
+    var currentMarker = Marker()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     var course_list_view : RecyclerView? = null
     var course_list_view_adaptor : CoursePagerAdapter? = null
@@ -216,6 +218,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                         }
                     }
             }
+            makeCurrentMarker(Marker(), currentLocation)
 
             var coords : MutableList<LatLng> = mutableListOf()
 
@@ -338,8 +341,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                             Log.e("lastLocation", "onCreateView: location NULL !!")
                         }
                     }
-
             }
+            makeCurrentMarker(Marker(), currentLocation)
         } else {
             nMap?.apply {
                 mapType = NaverMap.MapType.Basic
@@ -363,12 +366,14 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                     }
 
             }
+            makeCurrentMarker(Marker(), currentLocation)
         }
 
         path.map = null
         for (mk in markers) {
             mk.map = null
         }
+        deleteCurrentMarker()
 
         if (res.isNotEmpty()) {
             result = res
@@ -850,4 +855,19 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     }
 
     //여기까지
+
+    fun makeCurrentMarker(m : Marker, cl : LatLng) {
+        m.apply {
+            position = cl
+            icon = OverlayImage.fromResource(R.drawable.cur_pos_2)
+            width = 100
+            height = 100
+            map = nMap
+        }
+        currentMarker = m
+    }
+
+    fun deleteCurrentMarker() {
+        currentMarker.map = null
+    }
 }
