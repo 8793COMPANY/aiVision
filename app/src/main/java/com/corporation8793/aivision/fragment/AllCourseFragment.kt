@@ -145,7 +145,7 @@ class AllCourseFragment(activity: MainActivity) : Fragment() {
 
 
             course_marker(result,Color.RED )
-            course_marker(result2, Color.GREEN )
+            course_marker(result2, Color.CYAN )
             course_marker(result3, Color.BLUE )
             course_marker(result4, Color.MAGENTA )
             course_marker(result5, Color.LTGRAY )
@@ -183,10 +183,13 @@ class AllCourseFragment(activity: MainActivity) : Fragment() {
         }
 
 
-//        path.apply {
-//            this.coords = coords
-//            map = nMap
-//        }
+        path.apply {
+            this.coords = coords
+            map = nMap
+            path.color =color
+        }
+
+
 
     }
 }
