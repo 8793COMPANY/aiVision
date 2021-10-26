@@ -546,6 +546,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
         ypv_swipe.setOnTouchListener(object : OnSwipeTouchListener(mActivity) {
             override fun ost() {
+                yp?.seekTo(tracker.currentSecond)
+
                 when (tracker.state) {
                     PlayerConstants.PlayerState.PLAYING -> yp?.pause()
                     PlayerConstants.PlayerState.PAUSED -> yp?.play()
@@ -554,12 +556,16 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
 
             override fun onSwipeRight() {
                 super.onSwipeRight()
-                yp?.seekTo(tracker.currentSecond + 5f)
+                when (tracker.state) {
+                    PlayerConstants.PlayerState.PLAYING -> yp?.seekTo(tracker.currentSecond + 5f)
+                }
             }
 
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
-                yp?.seekTo(tracker.currentSecond - 5f)
+                when (tracker.state) {
+                    PlayerConstants.PlayerState.PLAYING -> yp?.seekTo(tracker.currentSecond - 5f)
+                }
             }
         })
 
