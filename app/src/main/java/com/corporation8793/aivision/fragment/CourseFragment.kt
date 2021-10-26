@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.gesture.GestureOverlayView
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
@@ -12,15 +13,13 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.WindowManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
+import androidx.constraintlayout.motion.widget.OnSwipe
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -31,6 +30,7 @@ import com.corporation8793.aivision.MainActivity
 import com.corporation8793.aivision.R
 import com.corporation8793.aivision.recyclerview.course_fragment.CoursePagerAdapter
 import com.corporation8793.aivision.room.Course
+import com.corporation8793.aivision.youtube_player.OnSwipeTouchListener
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -39,6 +39,8 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.NaverMap.LAYER_GROUP_TRANSIT
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.Overlay
+import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.util.MarkerIcons
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -48,6 +50,10 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.You
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import kotlinx.coroutines.*
 import okhttp3.Dispatcher
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerTracker
+
+
+
 
 // : Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,6 +71,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     private var param2: String? = null
     var nMap : NaverMap? = null
     var currentLocation = activity.currentLocation
+    var currentMarker = Marker()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     var course_list_view : RecyclerView? = null
     var course_list_view_adaptor : CoursePagerAdapter? = null
@@ -83,6 +90,10 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     lateinit var map : View
     lateinit var ypv : YouTubePlayerView
     lateinit var ypv_temp : YouTubePlayerView
+    lateinit var ypv_close_btn : Button
+    lateinit var ypv_prev_btn : Button
+    lateinit var ypv_next_btn : Button
+    lateinit var ypv_swipe : LinearLayout
     var listDataSet : MutableList<CoursePagerAdapter.listData> = mutableListOf()
     var ypv_object : YouTubePlayerListener? = null
     var prev_position : Int = 0
@@ -124,6 +135,10 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         map = view.findViewById(R.id.map)
         ypv = view.findViewById(R.id.youtube_player_view)
         ypv_temp = view.findViewById(R.id.youtube_player_view)
+        ypv_close_btn = view.findViewById(R.id.ypv_close_btn)
+        ypv_prev_btn = view.findViewById(R.id.ypv_prev_btn)
+        ypv_next_btn = view.findViewById(R.id.ypv_next_btn)
+        ypv_swipe = view.findViewById(R.id.ypv_swipe)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(mActivity)
 
@@ -210,6 +225,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                         }
                     }
             }
+            makeCurrentMarker(Marker(), currentLocation)
 
             var coords : MutableList<LatLng> = mutableListOf()
 
@@ -219,7 +235,13 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                 markers.add(Marker(coordinateInScope))
             }
 
-            for (mk in markers) {
+            for ((i, mk) in markers.withIndex()) {
+                val listener = Overlay.OnClickListener {
+                    knowMore(result, i)
+                    true
+                }
+
+                mk.onClickListener = listener
                 mk.map = nMap
             }
 
@@ -332,8 +354,8 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                             Log.e("lastLocation", "onCreateView: location NULL !!")
                         }
                     }
-
             }
+            makeCurrentMarker(Marker(), currentLocation)
         } else {
             nMap?.apply {
                 mapType = NaverMap.MapType.Basic
@@ -357,12 +379,14 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                     }
 
             }
+            makeCurrentMarker(Marker(), currentLocation)
         }
 
         path.map = null
         for (mk in markers) {
             mk.map = null
         }
+        deleteCurrentMarker()
 
         if (res.isNotEmpty()) {
             result = res
@@ -391,7 +415,13 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             }
         }
 
-        for (mk in markers) {
+        for ((i, mk) in markers.withIndex()) {
+            val listener = Overlay.OnClickListener {
+                knowMore(result, i)
+                true
+            }
+
+            mk.onClickListener = listener
             mk.map = nMap
         }
 
@@ -423,12 +453,16 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     }
 
     fun playVR_ver2(dataSet : List<Course>, position : Int) {
+        val tracker = YouTubePlayerTracker()
+        yp?.addListener(tracker)
+
         map.visibility = View.INVISIBLE
         ypv.visibility = View.VISIBLE
 
         ypv.enableBackgroundPlayback(false)
 
         prev_position = position
+
         ypv_object = object : AbstractYouTubePlayerListener() {
             override fun onVideoId(youTubePlayer: YouTubePlayer, videoId: String) {
                 super.onVideoId(youTubePlayer, videoId)
@@ -444,6 +478,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                         mActivity.linear.visibility = View.GONE
                         course_list_view_container.visibility = View.GONE
                         actionbar.visibility = View.GONE
+                        ypv_close_btn.visibility = View.VISIBLE
 
                         ypv_container.layoutParams.height = MATCH_PARENT
                         ypv_container.requestLayout()
@@ -457,6 +492,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                         mActivity.linear.visibility = View.VISIBLE
                         course_list_view_container.visibility = View.VISIBLE
                         actionbar.visibility = View.VISIBLE
+                        ypv_close_btn.visibility = View.GONE
 
                         ypv_container.layoutParams.height = 0
                         ypv_container.requestLayout()
@@ -479,6 +515,7 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                         mActivity.linear.visibility = View.VISIBLE
                         course_list_view_container.visibility = View.VISIBLE
                         actionbar.visibility = View.VISIBLE
+                        ypv_close_btn.visibility = View.GONE
 
                         ypv_container.layoutParams.height = 0
                         ypv_container.requestLayout()
@@ -506,9 +543,51 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                 course_list_view_adaptor?.notifyDataSetChanged()
             }
         }
+
+        ypv_swipe.setOnTouchListener(object : OnSwipeTouchListener(mActivity) {
+            override fun ost() {
+                when (tracker.state) {
+                    PlayerConstants.PlayerState.PLAYING -> yp?.pause()
+                    PlayerConstants.PlayerState.PAUSED -> yp?.play()
+                }
+            }
+
+            override fun onSwipeRight() {
+                super.onSwipeRight()
+                yp?.seekTo(tracker.currentSecond + 5f)
+            }
+
+            override fun onSwipeLeft() {
+                super.onSwipeLeft()
+                yp?.seekTo(tracker.currentSecond - 5f)
+            }
+        })
+
+        ypv_next_btn.setOnClickListener {
+            if (position != (dataSet.size - 1)) {
+                course_list_view_adaptor?.listDataSet?.get(prev_position)?.course_progress = false
+                ypv.removeYouTubePlayerListener(ypv_object!!)
+                prev_position += 1
+                playVR_ver2(dataSet, prev_position)
+            }
+        }
+
+        ypv_prev_btn.setOnClickListener {
+            if (prev_position > 0) {
+                course_list_view_adaptor?.listDataSet?.get(prev_position)?.course_progress = false
+                ypv.removeYouTubePlayerListener(ypv_object!!)
+                prev_position -= 1
+                playVR_ver2(dataSet, prev_position)
+            }
+        }
+
+        ypv_close_btn.setOnClickListener {
+            yp?.pause()
+        }
+
         ypv.addYouTubePlayerListener(ypv_object as AbstractYouTubePlayerListener)
         ypv.enterFullScreen()
-        yp?.loadVideo(dataSet[position].courseURL.replace("https://youtu.be/", ""),70F)
+        yp?.loadVideo(dataSet[position].courseURL.replace("https://youtu.be/", ""),0F)
 
         ypv_flag = true
         lifecycle.addObserver(ypv)
@@ -816,4 +895,19 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
     }
 
     //여기까지
+
+    fun makeCurrentMarker(m : Marker, cl : LatLng) {
+        m.apply {
+            position = cl
+            icon = OverlayImage.fromResource(R.drawable.cur_pos_2)
+            width = 100
+            height = 100
+            map = nMap
+        }
+        currentMarker = m
+    }
+
+    fun deleteCurrentMarker() {
+        currentMarker.map = null
+    }
 }

@@ -29,10 +29,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="220:62"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.55"
+            app:layout_constraintVertical_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
             app:layout_constraintWidth_default="percent"
             app:layout_constraintWidth_percent="0.5"
             android:gravity="center">
@@ -106,7 +106,41 @@
             android:visibility="invisible"
             app:showFullScreenButton="false"
             app:showYouTubeButton="false"
-            app:autoPlay="false" />
+            app:autoPlay="false">
+
+            <LinearLayout
+                android:id="@+id/ypv_swipe"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" />
+
+            <Button
+                android:id="@+id/ypv_close_btn"
+                android:visibility="gone"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:layout_gravity="right"
+                android:background="@drawable/ypv_close_btn"/>
+
+            <Button
+                android:id="@+id/ypv_prev_btn"
+                android:layout_marginLeft="15dp"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:layout_gravity="center_vertical|start"
+                android:background="@drawable/ypv_prev_btn"/>
+
+            <Button
+                android:id="@+id/ypv_next_btn"
+                android:layout_marginRight="15dp"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:layout_gravity="center_vertical|end"
+                android:background="@drawable/ypv_next_btn"/>
+
+        </com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView>
 
     </LinearLayout>
 
