@@ -20,6 +20,7 @@ import java.util.jar.Manifest
 import kotlin.concurrent.timer
 
 class SplashActivity : AppCompatActivity() {
+    var visible_check : Boolean = false;
 
     val PERMISSIONS = arrayOf(
         android.Manifest.permission.ACCESS_FINE_LOCATION,
@@ -32,7 +33,7 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
+        visible_check = Application.prefs.getBoolean("invisible",false);
         ActivityCompat.requestPermissions(this, PERMISSIONS, LOCATION_PERMISSION_REQUEST_CODE)
     }
 
@@ -51,9 +52,15 @@ class SplashActivity : AppCompatActivity() {
                 ActivityCompat.requestPermissions(this, PERMISSIONS, LOCATION_PERMISSION_REQUEST_CODE)
             } else {
                 Handler(Looper.getMainLooper()).postDelayed({
-                    var intent = Intent(this, IntroActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    if (visible_check) {
+                        var intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }else{
+                        var intent = Intent(this, IntroActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
                 }, 3000)
             }
         }

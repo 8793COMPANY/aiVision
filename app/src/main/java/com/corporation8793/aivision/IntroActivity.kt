@@ -37,6 +37,7 @@ class IntroActivity  : AppCompatActivity() {
         })
 
         invisible_forever_btn.setOnClickListener{
+            Application.prefs.setBoolean("invisible", true)
             var intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
