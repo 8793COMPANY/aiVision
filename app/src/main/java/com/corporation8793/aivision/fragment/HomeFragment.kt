@@ -115,6 +115,10 @@ class HomeFragment(activity: MainActivity) : Fragment() {
                             resources.getIdentifier("home_main_background_$position", "drawable", mActivity.packageName),
                             mActivity.theme)
 
+                        binding.homeMainTitle.background = ResourcesCompat.getDrawable(resources,
+                            resources.getIdentifier("home_main_title_$position", "drawable", mActivity.packageName),
+                            mActivity.theme)
+                        /*
                         when (position) {
                             0 -> binding.homeMainTitle.text = "횃불코스"
                             1 -> binding.homeMainTitle.text = "희생코스"
@@ -123,6 +127,7 @@ class HomeFragment(activity: MainActivity) : Fragment() {
                             4 -> binding.homeMainTitle.text = "영혼코스"
                             5 -> binding.homeMainTitle.text = "나만의 VR코스"
                         }
+                        */
                     }
                 }
             } })

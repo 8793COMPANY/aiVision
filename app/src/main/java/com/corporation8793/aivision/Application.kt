@@ -11,6 +11,11 @@ import com.corporation8793.aivision.room.Course
 import kotlinx.coroutines.*
 
 
+/**
+ * aivision 의 애플리케이션 싱글톤 클래스 입니다.
+ * @author  두동근
+ * @see     Application
+ */
 class Application : Application() {
     lateinit var context: Context
     lateinit var excel: Excel
@@ -20,6 +25,13 @@ class Application : Application() {
         lateinit var prefs : MySharedPreferences
     }
 
+    /**
+     * 애플리케이션 인스턴스를 반환합니다.
+     * @author  두동근
+     * @param   c 애플리케이션 콘텍스트.
+     * @return  Application
+     * @see     Application
+     */
     fun getInstance(c: Context) : com.corporation8793.aivision.Application {
         context = c
         excel = Excel(c, "gj_spot.xls")
@@ -31,6 +43,12 @@ class Application : Application() {
         return this
     }
 
+    /**
+     * 엑셀 파일의 데이터를 Room DB 로 마이그레이션합니다.
+     * @author  두동근
+     * @see     Excel
+     * @see     Room
+     */
     fun xlsToRoom() {
         val xlsData : List<Array<String>> = excel.extractTotalSheet(arrayOf("A", "B", "C", "D", "E", "F", "G", "H"))
 

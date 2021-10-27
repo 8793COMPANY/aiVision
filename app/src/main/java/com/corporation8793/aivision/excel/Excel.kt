@@ -6,13 +6,47 @@ import jxl.Sheet
 import jxl.Workbook
 import java.lang.StringBuilder
 
+/**
+ * 엑셀 파일(.xls)을 제어하는 클래스 입니다.
+ * @author  두동근
+ * @param   context 애플리케이션 콘텍스트.
+ * @param   xlsFileNameWithExtension assets 폴더에 위치한 엑셀 파일. 확장자(xls) 포함.
+ * @return
+ * @see     jxl
+ */
 class Excel(context: Context, xlsFileNameWithExtension:String) {
+    /**
+     * 엑셀 파일의 [java.io.InputStream] 인스턴스
+     */
     private val isis = context.resources.assets.open(xlsFileNameWithExtension)
+    /**
+     * [Workbook] 인스턴스
+     * @see jxl.Workbook
+     */
     private var wb : Workbook = Workbook.getWorkbook(isis)
+    /**
+     * [Sheet] 인스턴스
+     * @see jxl.Sheet
+     */
     private var sheet : Sheet = wb.getSheet(0)
+    /**
+     * [Sheet] 인스턴스의 전체 열 개수(columns)
+     * @see jxl.Sheet.getColumns
+     */
     private var colTotal = sheet.columns
+    /**
+     * [Sheet] 인스턴스의 전체 행 개수(rows)
+     * @see jxl.Sheet.getRows
+     */
     private var rowTotal = sheet.rows
 
+    /**
+     * 엑셀 시트를 String 타입 리스트로 반환합니다.
+     * @author  두동근
+     * @param   data 열. arrayOf("A", "B", "C" ... ).
+     * @return  List<Array<String>>
+     * @see     jxl
+     */
     fun extractTotalSheet(data : Array<String>): List<Array<String>> {
         var list : MutableList<Array<String>> = mutableListOf()
 
@@ -37,6 +71,13 @@ class Excel(context: Context, xlsFileNameWithExtension:String) {
         return list
     }
 
+    /**
+     * 엑셀 시트 전체를 Log.i 로 출력합니다.
+     * @author  두동근
+     * @param
+     * @return
+     * @see     jxl
+     */
     fun printTotalSheet() {
         val stringBuilder = StringBuilder("")
 
@@ -52,6 +93,14 @@ class Excel(context: Context, xlsFileNameWithExtension:String) {
         }
     }
 
+    /**
+     * 엑셀 시트의 특정 Row(행)을 String 타입 어레이로 반환합니다.
+     * @author  두동근
+     * @param   row 특정 Row(행).
+     * @param   data 열. arrayOf("A", "B", "C" ... ).
+     * @return  Array<String>
+     * @see     jxl
+     */
     fun extractRow(row : Int, data : Array<String>): Array<String> {
         for (col in data.indices) {
             if (sheet.getCell(col, row).contents != null) {
@@ -65,6 +114,13 @@ class Excel(context: Context, xlsFileNameWithExtension:String) {
         return data
     }
 
+    /**
+     * 엑셀 시트의 특정 Row(행)을 Log.i 로 출력합니다.
+     * @author  두동근
+     * @param   row 특정 Row(행).
+     * @return
+     * @see     jxl
+     */
     fun printRow(row : Int) {
         for (col in 0..colTotal) {
             if (sheet.getCell(col, row).contents != null) {
