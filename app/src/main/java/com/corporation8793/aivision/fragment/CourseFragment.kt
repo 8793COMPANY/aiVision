@@ -524,7 +524,6 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                         listDataSet = course_list_view_adaptor?.listDataSet!!
 
                         ypv.removeYouTubePlayerListener(this)
-                        yp?.removeListener(tracker)
 
                         refreshMap(dataSet, position)
                         if (position != (dataSet.size - 1)) {
@@ -565,7 +564,6 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             if (position != (dataSet.size - 1)) {
                 course_list_view_adaptor?.listDataSet?.get(prev_position)?.course_progress = false
                 ypv.removeYouTubePlayerListener(ypv_object!!)
-                yp?.removeListener(tracker)
                 prev_position += 1
                 playVR_ver2(dataSet, prev_position)
             }
@@ -575,7 +573,6 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
             if (prev_position > 0) {
                 course_list_view_adaptor?.listDataSet?.get(prev_position)?.course_progress = false
                 ypv.removeYouTubePlayerListener(ypv_object!!)
-                yp?.removeListener(tracker)
                 prev_position -= 1
                 playVR_ver2(dataSet, prev_position)
             }
@@ -715,9 +712,10 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                yp?.pause()
                 when (tracker.state) {
-                    PlayerConstants.PlayerState.PLAYING, PlayerConstants.PlayerState.PAUSED -> {
-                        yp?.pause()
+                    PlayerConstants.PlayerState.PLAYING -> {
+                        Log.i("handleOnBackPressed", "handleOnBackPressed: play")
                         course_list_view_adaptor?.listDataSet?.get(prev_position)?.course_progress = false
 
                         mActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -730,10 +728,32 @@ class CourseFragment(activity: MainActivity, courseFlag: Int) : Fragment() {
                         ypv_container.requestLayout()
 
                         listDataSet = course_list_view_adaptor?.listDataSet!!
+                        course_list_view_adaptor?.notifyDataSetChanged()
 
                         ypv_object?.let { ypv.removeYouTubePlayerListener(it) }
                         yp?.removeListener(tracker)
+                        tracker = YouTubePlayerTracker()
+                        refreshMap(result)
+                    }
+                    PlayerConstants.PlayerState.PAUSED -> {
+                        Log.i("handleOnBackPressed", "handleOnBackPressed: pause")
+                        course_list_view_adaptor?.listDataSet?.get(prev_position)?.course_progress = false
 
+                        mActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                        mActivity.linear.visibility = View.VISIBLE
+                        course_list_view_container.visibility = View.VISIBLE
+                        actionbar.visibility = View.VISIBLE
+                        ypv_close_btn.visibility = View.GONE
+
+                        ypv_container.layoutParams.height = 0
+                        ypv_container.requestLayout()
+
+                        listDataSet = course_list_view_adaptor?.listDataSet!!
+                        course_list_view_adaptor?.notifyDataSetChanged()
+
+                        ypv_object?.let { ypv.removeYouTubePlayerListener(it) }
+                        yp?.removeListener(tracker)
+                        tracker = YouTubePlayerTracker()
                         refreshMap(result)
                     }
                     else -> mActivity.replaceFragment(HomeFragment(mActivity), 1)
