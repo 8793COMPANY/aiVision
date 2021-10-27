@@ -112,6 +112,7 @@
                 android:id="@+id/ypv_swipe"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
                 android:orientation="horizontal" />
 
             <Button
