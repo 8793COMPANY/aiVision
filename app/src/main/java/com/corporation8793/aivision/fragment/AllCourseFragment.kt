@@ -144,13 +144,11 @@ class AllCourseFragment(activity: MainActivity) : Fragment() {
             }
 
 
-            course_marker(result,Color.RED )
-            course_marker(result2, Color.CYAN )
+            course_marker(result2, Color.GREEN )
+            course_marker(result,Color.RED)
             course_marker(result3, Color.BLUE )
             course_marker(result4, Color.MAGENTA )
-            course_marker(result5, Color.LTGRAY )
-
-
+            course_marker(result5, Color.YELLOW )
 
 
         }
@@ -172,7 +170,7 @@ class AllCourseFragment(activity: MainActivity) : Fragment() {
             coords.add(coordinateInScope)
             val marker =Marker(coordinateInScope)
             marker.iconTintColor = color
-            marker.alpha = 0.8f
+//            marker.alpha = 0.8f
             markers.add(marker)
         }
 
