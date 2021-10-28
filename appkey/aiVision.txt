@@ -1,0 +1,3 @@
+Key alias : aiVision
+Key store password : @kjins6400
+Key password : @kjins6400
