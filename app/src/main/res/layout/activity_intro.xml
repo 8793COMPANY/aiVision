@@ -7,10 +7,10 @@
     android:weightSum="3040"
     android:orientation="vertical">
 
-    <androidx.viewpager2.widget.ViewPager2
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/intro_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></androidx.viewpager2.widget.ViewPager2>
+        android:layout_height="match_parent"></androidx.viewpager.widget.ViewPager>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -54,5 +54,28 @@
             android:layout_height="match_parent"
             android:layout_weight="100"></View>
     </LinearLayout>
+
+    <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+        android:id="@+id/spring_dots_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:dampingRatio="0.5"
+        app:layout_constraintDimensionRatio="396:36"
+        app:dotsStrokeColor="@color/white"
+        app:dotsCornerRadius="10dp"
+        app:dotsSize="10dp"
+        app:dotsSpacing="4dp"
+        app:dotsStrokeWidth="1dp"
+        app:stiffness="300"
+        app:layout_constraintVertical_bias="0.15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.8"
+
+        />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
